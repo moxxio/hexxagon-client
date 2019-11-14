@@ -1,2 +1,4 @@
-Hilfe, ich bin in vim gefangen und komme nicht mehr raus!
+Hilfe, ich bin gefangen in vim!
+
+Dieses Repository wird genutzt um die Implementierung des Spiels „Hexxagon“ zu versionieren.
 
