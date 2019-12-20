@@ -7,16 +7,20 @@ import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 public class Strike extends AbstractMessage {
 
-	public Integer strikeCount;
-	public Integer maxStrikeCount;
-	
-	public Strike(UUID userId
-			, Integer strikeCount
-			, Integer maxStrikeCount
-			) {
-		super(MessageType.Strike, userId);
-		this.strikeCount = strikeCount;
-		this.maxStrikeCount = maxStrikeCount;
-	}
+    private Integer strikeCount;
+    private Integer maxStrikeCount;
 
+    public Strike(UUID userId, Integer strikeCount, Integer maxStrikeCount) {
+        super(MessageType.Strike, userId);
+        this.strikeCount = strikeCount;
+        this.maxStrikeCount = maxStrikeCount;
+    }
+
+    public Integer getStrikeCount() {
+        return strikeCount;
+    }
+
+    public Integer getMaxStrikeCount() {
+        return maxStrikeCount;
+    }
 }

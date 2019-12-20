@@ -6,12 +6,15 @@ import de.johannesrauch.hexxagon.network.abstractmessage.AbstractMessage;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 public class CreateNewLobby extends AbstractMessage {
-	
-	public String lobbyName;
-	
-	public CreateNewLobby(UUID userId, String lobbyName) {
-		super(MessageType.CreateNewLobby, userId);
-		this.lobbyName = lobbyName;
-	}
-	
+
+    private String lobbyName;
+
+    public CreateNewLobby(UUID userId, String lobbyName) {
+        super(MessageType.CreateNewLobby, userId);
+        this.lobbyName = lobbyName;
+    }
+
+    public String getLobbyName() {
+        return lobbyName;
+    }
 }

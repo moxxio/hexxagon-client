@@ -8,13 +8,15 @@ import de.johannesrauch.hexxagon.network.lobby.Lobby;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 public class AvailableLobbies extends AbstractMessage {
-	
-	public List<Lobby> availableLobbies;
-	
-	public AvailableLobbies(UUID userId
-			, List<Lobby> availableLobbies) {
-		super(MessageType.AvailableLobbies, userId);
-		this.availableLobbies = availableLobbies;
-	}
 
+    private List<Lobby> availableLobbies;
+
+    public AvailableLobbies(UUID userId, List<Lobby> availableLobbies) {
+        super(MessageType.AvailableLobbies, userId);
+        this.availableLobbies = availableLobbies;
+    }
+
+    public List<Lobby> getAvailableLobbies() {
+        return availableLobbies;
+    }
 }

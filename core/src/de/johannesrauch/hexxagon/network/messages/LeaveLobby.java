@@ -7,11 +7,14 @@ import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 public class LeaveLobby extends AbstractMessage {
 
-	public UUID lobbyId;
-	
-	public LeaveLobby(UUID userId, UUID lobbyId) {
-		super(MessageType.LeaveLobby, userId);
-		this.lobbyId = lobbyId;
-	}
+    private UUID lobbyId;
 
+    public LeaveLobby(UUID userId, UUID lobbyId) {
+        super(MessageType.LeaveLobby, userId);
+        this.lobbyId = lobbyId;
+    }
+
+    public UUID getLobbyId() {
+        return lobbyId;
+    }
 }

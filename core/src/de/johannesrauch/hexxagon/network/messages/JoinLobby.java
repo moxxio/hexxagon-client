@@ -6,14 +6,21 @@ import de.johannesrauch.hexxagon.network.abstractmessage.AbstractMessage;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 public class JoinLobby extends AbstractMessage {
-	
-	public UUID lobbyId;
-	public String userName;
-	
-	public JoinLobby(UUID userId, UUID lobbyId, String userName) {
-		super(MessageType.JoinLobby, userId);
-		this.lobbyId = lobbyId;
-		this.userName = userName;
+
+    private UUID lobbyId;
+    private String userName;
+
+    public JoinLobby(UUID userId, UUID lobbyId, String userName) {
+        super(MessageType.JoinLobby, userId);
+        this.lobbyId = lobbyId;
+        this.userName = userName;
+    }
+
+	public UUID getLobbyId() {
+		return lobbyId;
 	}
-	
+
+	public String getUserName() {
+		return userName;
+	}
 }

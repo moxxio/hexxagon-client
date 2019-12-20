@@ -8,15 +8,22 @@ import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 public class GameStarted extends AbstractMessage {
 
-	public UUID gameId;
-	public Date creationDate;
-	
-	public GameStarted(UUID userId
-			, UUID gameId
-			, Date creationDate) {
-		super(MessageType.GameStarted, userId);
-		this.gameId = gameId;
-		this.creationDate = creationDate;
-	}
+    private UUID gameId;
+    private Date creationDate;
 
+    public GameStarted(UUID userId
+            , UUID gameId
+            , Date creationDate) {
+        super(MessageType.GameStarted, userId);
+        this.gameId = gameId;
+        this.creationDate = creationDate;
+    }
+
+    public UUID getGameId() {
+        return gameId;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
 }
