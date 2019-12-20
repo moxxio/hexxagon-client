@@ -157,6 +157,7 @@ public class Hexxagon extends Game {
 		
 		// Den Hauptmenü Screen als aktiven Screen setzen
 		this.showMainMenuScreen();
+		this.showGameScreen();
 	}
 
 	@Override
