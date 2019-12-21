@@ -23,6 +23,9 @@ public class StateContext {
     private ConnectedState connectedState;
     private SearchLobbyState searchLobbyState;
     private JoiningLobbyState joiningLobbyState;
+    private LobbyPlayerOneState lobbyPlayerOneState;
+    private LobbyPlayerTwoState lobbyPlayerTwoState;
+    private ReadyLobbyPlayerOneState readyLobbyPlayerOneState;
 
     public StateContext() {
         disconnectedState = new DisconnectedState();
@@ -30,6 +33,9 @@ public class StateContext {
         connectedState = new ConnectedState();
         searchLobbyState = new SearchLobbyState();
         joiningLobbyState = new JoiningLobbyState();
+        lobbyPlayerOneState = new LobbyPlayerOneState();
+        lobbyPlayerTwoState = new LobbyPlayerTwoState();
+        readyLobbyPlayerOneState = new ReadyLobbyPlayerOneState();
 
         state = disconnectedState;
     }
@@ -80,6 +86,18 @@ public class StateContext {
 
     public JoiningLobbyState getJoiningLobbyState() {
         return joiningLobbyState;
+    }
+
+    public LobbyPlayerOneState getLobbyPlayerOneState() {
+        return lobbyPlayerOneState;
+    }
+
+    public LobbyPlayerTwoState getLobbyPlayerTwoState() {
+        return lobbyPlayerTwoState;
+    }
+
+    public ReadyLobbyPlayerOneState getReadyLobbyPlayerOneState() {
+        return readyLobbyPlayerOneState;
     }
 
     public void setParent(Hexxagon parent) {

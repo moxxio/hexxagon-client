@@ -3,6 +3,7 @@ package de.johannesrauch.hexxagon.automaton.events;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
 import de.johannesrauch.hexxagon.automaton.states.State;
+import de.johannesrauch.hexxagon.controller.LobbyHandler;
 import de.johannesrauch.hexxagon.network.messages.LobbyStatus;
 
 /**
@@ -29,18 +30,28 @@ public class LobbyStatusEvent implements AbstractEvent {
     @Override
     public State reactOnEvent(StateContext context) {
         Hexxagon parent = context.getParent();
+        LobbyHandler lobbyHandler = parent.getLobbyHandler();
 
-        parent.getLobbyHandler().lobbyJoined(message.getUserId(), message.getLobbyId());
-        parent.getLobbyHandler().lobbyStatusUpdate(message.getLobby().getClosed(),
-                message.getLobby().getPlayerOne(),
-                message.getLobby().getPlayerTwo(),
-                message.getLobby().getPlayerOneUserName(),
-                message.getLobby().getPlayerTwoUserName());
+        lobbyHandler.lobbyJoined(message.getUserId(), message.getLobbyId());
+        lobbyHandler.lobbyStatusUpdate(message.getLobby());
 
-        if (context.getState() == context.getJoiningLobbyState()) {
+        State currentState = context.getState();
+        if (currentState == context.getJoiningLobbyState()) {
             parent.getLobbySelectScreen().hideProgressBar(0);
             parent.showLobbyJoinedScreen();
-            return context.get
+
+            if (lobbyHandler.isClientPlayerOne() && lobbyHandler.isLobbyReady()) return context.getReadyLobbyPlayerOneState();
+            if (lobbyHandler.isClientPlayerOne()) return context.getLobbyPlayerOneState();
+            return context.getLobbyPlayerTwoState();
+        } else if (currentState == context.getLobbyPlayerOneState()) {
+            if (lobbyHandler.isLobbyReady()) return context.getReadyLobbyPlayerOneState();
+            return null;
+        } else if (currentState == context.getLobbyPlayerTwoState()) {
+            if (!lobbyHandler.isLobbyReady()) return context.getLobbyPlayerOneState();
+            return null;
+        } else if (currentState == context.getReadyLobbyPlayerOneState()) {
+            if (!lobbyHandler.isLobbyReady()) return context.getLobbyPlayerOneState();
+            return null;
         }
 
         return null;

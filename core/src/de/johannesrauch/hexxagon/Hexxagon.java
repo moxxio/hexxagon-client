@@ -86,7 +86,7 @@ public class Hexxagon extends Game {
 
 		connectionHandler = new ConnectionHandler();
 		messageReceiver = new MessageReceiver();
-		lobbyHandler = new LobbyHandler();
+		lobbyHandler = new LobbyHandler(this);
 		gameHandler = new GameHandler();
 		messageEmitter = new MessageEmitter();
 
@@ -95,8 +95,6 @@ public class Hexxagon extends Game {
 		messageReceiver.setLobbyHandler(lobbyHandler);
 		messageReceiver.setGameHandler(gameHandler);
 		messageReceiver.setMessageEmitter(messageEmitter);
-
-		lobbyHandler.setMessageEmitter(messageEmitter);
 
 		gameHandler.setMessageEmitter(messageEmitter);
 

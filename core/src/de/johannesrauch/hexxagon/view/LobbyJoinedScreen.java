@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.automaton.events.LeaveEvent;
 import de.johannesrauch.hexxagon.controller.LobbyHandler;
 
 public class LobbyJoinedScreen implements Screen {
@@ -46,35 +47,6 @@ public class LobbyJoinedScreen implements Screen {
         viewport = new StretchViewport(1024, 576, camera);
         stage = new Stage(viewport);
 
-        startGameListener = new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                lobbyHandler.sendStartGameMessage();
-            }
-        };
-
-        leaveLobbyListener = new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                lobbyHandler.sendLeaveLobbyMessage();
-                parent.showLobbySelectScreen();
-            }
-        };
-
-    }
-
-    @Override
-    public void show() {
         lobbyLabel = new Label("LOBBY", parent.skin);
         lobbyLabel.setFontScale(2, 2);
         lobbyLabel.setAlignment(Align.center);
@@ -87,9 +59,31 @@ public class LobbyJoinedScreen implements Screen {
 
         startGameButton = new TextButton("START GAME", parent.skin, "small");
         startGameButton.setVisible(false);
+        startGameListener = new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                lobbyHandler.sendStartGameMessage();
+            }
+        };
         startGameButton.addListener(startGameListener);
 
         leaveLobbyButton = new TextButton("LEAVE LOBBY", parent.skin, "small");
+        leaveLobbyListener = new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                parent.getStateContext().reactOnEvent(new LeaveEvent());
+            }
+        };
         leaveLobbyButton.addListener(leaveLobbyListener);
 
         layoutTable = new Table();
@@ -112,7 +106,10 @@ public class LobbyJoinedScreen implements Screen {
         layoutTable.add(leaveLobbyButton);
 
         stage.addActor(layoutTable);
+    }
 
+    @Override
+    public void show() {
         parent.particleEffect.start();
         parent.particleEffect.setPosition((float) viewport.getScreenWidth() / 2, (float) viewport.getScreenHeight() / 2);
 
@@ -130,13 +127,13 @@ public class LobbyJoinedScreen implements Screen {
         else parent.particleEffect.draw(parent.spriteBatch, delta);
         parent.spriteBatch.end();
 
-        if (lobbyHandler.initializationCompleted && lobbyHandler.joinedLobbyUpdated) {
+        if (lobbyHandler.isInitComplete() && lobbyHandler.isJoinedLobbyUpdated()) {
             lobbyLabel.setText("LOBBY connected");
 
-            playerOneUserNameLabel.setText(lobbyHandler.playerOneUserName);
-            playerTwoUserNameLabel.setText(lobbyHandler.playerTwoUserName);
+            playerOneUserNameLabel.setText(lobbyHandler.getPlayerOneUserName());
+            playerTwoUserNameLabel.setText(lobbyHandler.getPlayerTwoUserName());
 
-            if (lobbyHandler.clientIsPlayerOne && lobbyHandler.lobbyReady) {
+            if (lobbyHandler.isClientPlayerOne() && lobbyHandler.isLobbyReady()) {
                 startGameButton.setVisible(true);
             } else {
                 startGameButton.setVisible(false);
@@ -167,5 +164,4 @@ public class LobbyJoinedScreen implements Screen {
     public void dispose() {
         // TODO: free resources
     }
-
 }

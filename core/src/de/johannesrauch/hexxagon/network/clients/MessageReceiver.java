@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.automaton.events.LobbyJoinedEvent;
+import de.johannesrauch.hexxagon.automaton.events.LobbyStatusEvent;
 import de.johannesrauch.hexxagon.automaton.events.WelcomeEvent;
 import de.johannesrauch.hexxagon.controller.ConnectionHandler;
 import de.johannesrauch.hexxagon.controller.GameHandler;
@@ -65,7 +66,7 @@ public class MessageReceiver {
                     receiveStrikeMessage(gson.fromJson(json, Strike.class));
                 }
             } catch (JsonSyntaxException jse) {
-                logger.error("JsonSyntaxException: " + jse.getMessage());
+                logger.error(jse.getMessage());
             }
         });
     }
@@ -117,11 +118,7 @@ public class MessageReceiver {
     }
 
     private void receiveLobbyStatusMessage(LobbyStatus message) {
-        lobbyHandler.lobbyStatusUpdate(message.getLobby().isClosed,
-                message.getLobby().playerOne,
-                message.getLobby().playerTwo,
-                message.getLobby().playerOneUserName,
-                message.getLobby().playerTwoUserName);
+        parent.getStateContext().reactOnEvent(new LobbyStatusEvent(message));
     }
 
     private void receiveStrikeMessage(Strike message) {

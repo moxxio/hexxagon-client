@@ -271,15 +271,15 @@ public class LobbySelectScreen implements Screen {
         lobbyGdxList.clearItems();
         ArrayList<String> stringList = new ArrayList<>();
         availableLobbies.forEach((lobby) -> {
-            String hashString = lobby.lobbyName + lobby.lobbyId.toString();
+            String hashString = lobby.getLobbyName() + lobby.getLobbyId().toString();
 
             java.util.zip.Adler32 a32 = new java.util.zip.Adler32();
             a32.update(hashString.getBytes());
 
-            String lobbyString = lobby.lobbyName + " [" + a32.getValue() + "]";
+            String lobbyString = lobby.getLobbyName() + " [" + a32.getValue() + "]";
 
             stringList.add(lobbyString);
-            lobbyIds.put(lobbyString, lobby.lobbyId);
+            lobbyIds.put(lobbyString, lobby.getLobbyId());
         });
         String[] stringArray = stringList.toArray(new String[0]);
         lobbyGdxList.setItems(stringArray);
