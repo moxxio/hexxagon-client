@@ -3,29 +3,24 @@ package de.johannesrauch.hexxagon.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import de.johannesrauch.hexxagon.controller.Hexxagon;
+import org.lwjgl.Sys;
 
 /**
- * Die Klasse DesktopLauncher wird benötigt um das Spiel auf einem Desktop System zu starten.
- *
+ * TODO: comment
  * @author Dennis Jehle
  * @author Johannes Rauch
  */
 public class DesktopLauncher {
 	
 	/**
-	 * Die main Methode dient als Programmeinstieg.
-	 * Innerhalb der Methode wird eine LwjglApplication erzeugt, diese erstellt ein Fenster
-	 * und startet das eigentliche Spiel Hexxagon, welches sich im core-Modul befindet.
-	 * 
-	 * @param arg Kommandozeilenparameter
+	 * TODO: comment
+	 * @param args Kommandozeilenparameter
 	 */
-	public static void main (String[] arg) {
-		// Neue Konfigurationsdatei erzeugen
+	public static void main (String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 1024;
 		config.height = 576;
 
-		// Fenster erzeugen und Hexxagon starten
 		new LwjglApplication(new Hexxagon(), config);
 	}
 }
