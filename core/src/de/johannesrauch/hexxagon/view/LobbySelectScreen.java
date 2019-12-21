@@ -90,24 +90,24 @@ public class LobbySelectScreen implements Screen {
         buttonTable = new Table();
         userNameTable = new Table();
 
-        lobbyLabel = new Label("CHOOSE LOBBY", Hexxagon.skin);
+        lobbyLabel = new Label("CHOOSE LOBBY", parent.skin);
         lobbyLabel.setFontScale(2, 2);
         lobbyLabel.setAlignment(Align.center);
 
-        progressBarLabel = new Label("JOINING LOBBY ...", Hexxagon.skin);
+        progressBarLabel = new Label("JOINING LOBBY ...", parent.skin);
         progressBarLabel.setFontScale(2, 2);
         progressBarLabel.setAlignment(Align.center);
 
-        progressBar = new ProgressBar(0.0f, 1.0f, 0.01f, false, Hexxagon.skin);
+        progressBar = new ProgressBar(0.0f, 1.0f, 0.01f, false, parent.skin);
 
-        userNameLabel = new Label("User name: ", Hexxagon.skin);
+        userNameLabel = new Label("User name: ", parent.skin);
 
         java.util.zip.Adler32 a32 = new java.util.zip.Adler32();
         a32.update(UUID.randomUUID().toString().getBytes());
 
-        userNameTextField = new TextField("P" + a32.getValue(), Hexxagon.skin);
+        userNameTextField = new TextField("P" + a32.getValue(), parent.skin);
 
-        joinLobbyButton = new TextButton("JOIN", Hexxagon.skin, "small");
+        joinLobbyButton = new TextButton("JOIN", parent.skin, "small");
         //joinLobbyButton.setTouchable(Touchable.disabled);
         joinLobbyButton.addListener(new InputListener() {
             @Override
@@ -138,7 +138,7 @@ public class LobbySelectScreen implements Screen {
             }
         });
 
-        stopJoiningButton = new TextButton("CANCEL", Hexxagon.skin, "small");
+        stopJoiningButton = new TextButton("CANCEL", parent.skin, "small");
         stopJoiningButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -151,7 +151,7 @@ public class LobbySelectScreen implements Screen {
             }
         });
 
-        createLobbyButton = new TextButton("CREATE", Hexxagon.skin, "small");
+        createLobbyButton = new TextButton("CREATE", parent.skin, "small");
         createLobbyButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -160,18 +160,18 @@ public class LobbySelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                TextButton createButton = new TextButton("CREATE", Hexxagon.skin, "small");
-                TextButton cancelButton = new TextButton("CANCEL", Hexxagon.skin, "small");
+                TextButton createButton = new TextButton("CREATE", parent.skin, "small");
+                TextButton cancelButton = new TextButton("CANCEL", parent.skin, "small");
 
-                Label lobbyNameLabel = new Label("Lobby name:", Hexxagon.skin);
+                Label lobbyNameLabel = new Label("Lobby name:", parent.skin);
                 lobbyNameLabel.setColor(Color.BLACK);
 
                 java.util.zip.Adler32 a32 = new java.util.zip.Adler32();
                 a32.update(UUID.randomUUID().toString().getBytes());
 
-                TextField lobbyNameTextField = new TextField("LOBBY" + a32.getValue(), Hexxagon.skin);
+                TextField lobbyNameTextField = new TextField("LOBBY" + a32.getValue(), parent.skin);
 
-                Dialog dialog = new Dialog("CREATE LOBBY", Hexxagon.skin) {
+                Dialog dialog = new Dialog("CREATE LOBBY", parent.skin) {
                     @Override
                     protected void result(Object object) {
                         boolean result = (boolean) object;
@@ -189,7 +189,7 @@ public class LobbySelectScreen implements Screen {
             }
         });
 
-        refreshButton = new TextButton("REFRESH", Hexxagon.skin, "small");
+        refreshButton = new TextButton("REFRESH", parent.skin, "small");
         refreshButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -202,7 +202,7 @@ public class LobbySelectScreen implements Screen {
             }
         });
 
-        backButton = new TextButton("BACK", Hexxagon.skin, "small");
+        backButton = new TextButton("BACK", parent.skin, "small");
         backButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -219,7 +219,7 @@ public class LobbySelectScreen implements Screen {
             }
         });
 
-        lobbyGdxList = new List<>(Hexxagon.skin);
+        lobbyGdxList = new List<>(parent.skin);
 
         scrollPane = new ScrollPane(lobbyGdxList);
         scrollPane.setScrollbarsOnTop(true);
@@ -302,8 +302,8 @@ public class LobbySelectScreen implements Screen {
 
     @Override
     public void show() {
-        Hexxagon.particleEffect.start();
-        Hexxagon.particleEffect.setPosition((float) viewport.getScreenWidth() / 2, (float) viewport.getScreenHeight() / 2);
+        parent.particleEffect.start();
+        parent.particleEffect.setPosition((float) viewport.getScreenWidth() / 2, (float) viewport.getScreenHeight() / 2);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -313,11 +313,11 @@ public class LobbySelectScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Hexxagon.spriteBatch.begin();
-        Hexxagon.spriteBatch.draw(Hexxagon.space, 0, 0, 1024, 576);
-        if (Hexxagon.particleEffect.isComplete()) Hexxagon.particleEffect.reset();
-        else Hexxagon.particleEffect.draw(Hexxagon.spriteBatch, delta);
-        Hexxagon.spriteBatch.end();
+        parent.spriteBatch.begin();
+        parent.spriteBatch.draw(parent.space, 0, 0, 1024, 576);
+        if (parent.particleEffect.isComplete()) parent.particleEffect.reset();
+        else parent.particleEffect.draw(parent.spriteBatch, delta);
+        parent.spriteBatch.end();
 
         if (lobbyHandler.availableLobbiesUpdated) {
             updateAvailableLobbies(lobbyHandler.availableLobbies);

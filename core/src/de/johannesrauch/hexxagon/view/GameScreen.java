@@ -65,17 +65,17 @@ public class GameScreen implements Screen {
     	viewport = new StretchViewport(1024, 576, camera);
     	stage = new Stage(viewport);
     	
-    	Hexxagon.particleEffect.start();
-    	Hexxagon.particleEffect.setPosition(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2);
+    	parent.particleEffect.start();
+    	parent.particleEffect.setPosition(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2);
     	
-    	loadingImage = new Image(Hexxagon.loading);
+    	loadingImage = new Image(parent.loading);
 		loadingImage.setSize(128, 128);
 		loadingImage.setPosition(0, viewport.getScreenHeight() - loadingImage.getHeight());
 		loadingImage.setOrigin(64, 64);
 		
-		playerOneLabel = new Label("", Hexxagon.skin);
-		playerTwoLabel = new Label("", Hexxagon.skin);
-		leaveGameLabel = new Label("", Hexxagon.skin);
+		playerOneLabel = new Label("", parent.skin);
+		playerTwoLabel = new Label("", parent.skin);
+		leaveGameLabel = new Label("", parent.skin);
 		
 		gameScreenTiles = new HashMap<TileEnum, GameScreenTile>();
 		
@@ -101,11 +101,11 @@ public class GameScreen implements Screen {
         	parent.showMainMenuScreen();
         }
         
-        Hexxagon.spriteBatch.setProjectionMatrix(camera.combined);
-        Hexxagon.spriteBatch.begin();
-        Hexxagon.spriteBatch.draw(Hexxagon.space, 0, 0, 1024, 576);
-        if (Hexxagon.particleEffect.isComplete()) Hexxagon.particleEffect.reset(); else Hexxagon.particleEffect.draw(Hexxagon.spriteBatch, delta);
-        Hexxagon.spriteBatch.end();
+        parent.spriteBatch.setProjectionMatrix(camera.combined);
+        parent.spriteBatch.begin();
+        parent.spriteBatch.draw(parent.space, 0, 0, 1024, 576);
+        if (parent.particleEffect.isComplete()) parent.particleEffect.reset(); else parent.particleEffect.draw(parent.spriteBatch, delta);
+        parent.spriteBatch.end();
         
         if (loadingImage != null) loadingImage.rotateBy(delta * -90.0f);
 
@@ -232,7 +232,7 @@ public class GameScreen implements Screen {
 			image.setPosition(posx, posy);
 			image.setSize(sizex, sizey);
 			
-			image.setDrawable(new SpriteDrawable(new Sprite(Hexxagon.tileFree)));
+			image.setDrawable(new SpriteDrawable(new Sprite(parent.tileFree)));
 			image.addListener(new ClickListener() {
 				    @Override
 				    public void clicked(InputEvent event, float x, float y) {
