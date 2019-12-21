@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import de.johannesrauch.hexxagon.controller.GameHandler;
-import de.johannesrauch.hexxagon.controller.Hexxagon;
+import de.johannesrauch.hexxagon.Hexxagon;
 
 public class GameScreen implements Screen {
 	

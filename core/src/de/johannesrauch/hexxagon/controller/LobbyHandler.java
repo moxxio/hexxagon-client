@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import de.johannesrauch.hexxagon.network.clients.MessageEmitter;
 import de.johannesrauch.hexxagon.network.lobby.Lobby;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,13 +56,9 @@ public class LobbyHandler {
     }
 
     public void lobbyJoined(UUID userId, UUID lobbyId) {
-
         lobbyIsClosed = false;
-
         this.userId = userId;
-
         this.lobbyId = lobbyId;
-
     }
 
     public void lobbyStatusUpdate(boolean isClosed,
@@ -90,7 +87,6 @@ public class LobbyHandler {
         }
 
         joinedLobbyUpdated = true;
-
     }
 
     public void sendLeaveLobbyMessage() {
@@ -99,9 +95,6 @@ public class LobbyHandler {
         }
     }
 
-    /**
-     * @author Dennis Jehle
-     */
     public void sendStartGameMessage() {
         if (clientIsPlayerOne && playerTwo != null) {
             messageEmitter.sendStartGameMessage(lobbyId);

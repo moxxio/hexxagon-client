@@ -1,6 +1,5 @@
 package de.johannesrauch.hexxagon.network.messages;
 
-import de.johannesrauch.hexxagon.network.abstractmessage.AbstractMessage;
 import de.johannesrauch.hexxagon.network.board.TileEnum;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 

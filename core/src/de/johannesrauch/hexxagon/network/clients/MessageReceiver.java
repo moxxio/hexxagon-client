@@ -1,10 +1,15 @@
-package de.johannesrauch.hexxagon.controller;
+package de.johannesrauch.hexxagon.network.clients;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.automaton.events.LobbyJoinedEvent;
+import de.johannesrauch.hexxagon.automaton.events.WelcomeEvent;
+import de.johannesrauch.hexxagon.controller.ConnectionHandler;
+import de.johannesrauch.hexxagon.controller.GameHandler;
+import de.johannesrauch.hexxagon.controller.LobbyHandler;
 import de.johannesrauch.hexxagon.network.lobby.Lobby;
 import de.johannesrauch.hexxagon.network.messages.*;
 import de.johannesrauch.hexxagon.view.LobbySelectScreen;
@@ -13,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import de.johannesrauch.hexxagon.network.abstractmessage.BaseMessage;
+import de.johannesrauch.hexxagon.network.messages.BaseMessage;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 public class MessageReceiver {
@@ -41,7 +46,7 @@ public class MessageReceiver {
             logger.info("Received message: " + json);
             try {
                 BaseMessage message = gson.fromJson(json, BaseMessage.class);
-                MessageType messageType = message.messageType;
+                MessageType messageType = message.getMessageType();
                 if (messageType.equals(MessageType.Welcome)) {
                     receiveWelcomeMessage(gson.fromJson(json, Welcome.class));
                 } else if (messageType.equals(MessageType.AvailableLobbies)) {
@@ -95,7 +100,7 @@ public class MessageReceiver {
     }
 
     private void receiveGameStartedMessage(GameStarted message) {
-        gameHandler.gameStarted(message.userId, message.getGameId(), message.getCreationDate());
+        gameHandler.gameStarted(message.getUserId(), message.getGameId(), message.getCreationDate());
         parent.showGameScreen();
     }
 
@@ -108,9 +113,7 @@ public class MessageReceiver {
     }
 
     private void receiveLobbyJoinedMessage(LobbyJoined message) {
-        lobbyHandler.lobbyJoined(message.userId, message.getLobbyId());
-        lobbySelectScreen.hideProgressBar(0); // TODO: remove the ugly and unnecessary progress bar
-        parent.showLobbyJoinedScreen();
+        parent.getStateContext().reactOnEvent(new LobbyJoinedEvent(message));
     }
 
     private void receiveLobbyStatusMessage(LobbyStatus message) {
@@ -126,7 +129,6 @@ public class MessageReceiver {
     }
 
     private void receiveWelcomeMessage(Welcome message) {
-        UUID userId = message.userId;
-        connectionHandler.setUserId(userId);
+        parent.getStateContext().reactOnEvent(new WelcomeEvent(message));
     }
 }

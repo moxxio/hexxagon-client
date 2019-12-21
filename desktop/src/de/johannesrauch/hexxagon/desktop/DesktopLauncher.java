@@ -2,8 +2,7 @@ package de.johannesrauch.hexxagon.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import de.johannesrauch.hexxagon.controller.Hexxagon;
-import org.lwjgl.Sys;
+import de.johannesrauch.hexxagon.Hexxagon;
 
 /**
  * TODO: comment

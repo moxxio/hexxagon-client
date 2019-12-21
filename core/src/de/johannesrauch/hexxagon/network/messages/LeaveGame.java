@@ -1,6 +1,5 @@
 package de.johannesrauch.hexxagon.network.messages;
 
-import de.johannesrauch.hexxagon.network.abstractmessage.AbstractMessage;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 import java.util.UUID;

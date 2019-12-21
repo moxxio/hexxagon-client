@@ -1,7 +1,8 @@
-package de.johannesrauch.hexxagon.controller;
+package de.johannesrauch.hexxagon.network.clients;
 
 import java.net.URI;
 
+import de.johannesrauch.hexxagon.controller.ConnectionHandler;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class SimpleClient extends WebSocketClient {
 	}
 
 	@Override
-	public void onOpen(ServerHandshake handshakedata) {
+	public void onOpen(ServerHandshake handshake) {
 		logger.info("SimpleClient connected to: " + this.getConnection().getRemoteSocketAddress().toString());
 		connectionHandler.setConnection(this);
 	}

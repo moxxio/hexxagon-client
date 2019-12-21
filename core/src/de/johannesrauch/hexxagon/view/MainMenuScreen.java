@@ -1,8 +1,8 @@
 package de.johannesrauch.hexxagon.view;
 
-import java.net.URI;
-import java.util.concurrent.TimeUnit;
-
+import de.johannesrauch.hexxagon.automaton.events.ConnectEvent;
+import de.johannesrauch.hexxagon.automaton.events.DisconnectEvent;
+import de.johannesrauch.hexxagon.automaton.events.SearchGameEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,47 +21,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import de.johannesrauch.hexxagon.controller.ConnectionHandler;
-import de.johannesrauch.hexxagon.controller.GameHandler;
-import de.johannesrauch.hexxagon.controller.Hexxagon;
-import de.johannesrauch.hexxagon.controller.MessageEmitter;
-import de.johannesrauch.hexxagon.controller.MessageReceiver;
-import de.johannesrauch.hexxagon.controller.SimpleClient;
+import de.johannesrauch.hexxagon.Hexxagon;
 
 /**
- * Die Klasse MainMenuScreen implementiert das com.badlogic.gdx.Screen Interface.
- * Somit kann eine Instanz der Klasse als Screen gerendert werden.
+ * This class implements the com.badlogic.gdx.Screen interface.
+ * Therefore an instance of this class can be rendered as a screen.
  * <p>
- * Die Klasse dient dazu, das Hauptmenü darzustellen.
- * Über das Hauptmenü kann der Benutzer folgende Aktionen ausführen:
+ * This class' purpose is to display the main menu.
+ * The user may do the following actions here:
+ * - Connecting to a server and then switch to the select lobby screen;
+ * - Disconnect from a server;
+ * - Close the application.
  * <p>
- * 1. Eine Verbindung zu einem Spielserver aufbauen
- * 2. Eine bestehende Verbindung zu einem Spielserver trennen
- * 3. Die Anwendung schließen
- * 4. Sobald eine Verbindung zu einem Spielserver hergestellt wurde auf den LobbySelectScreen wechseln
- * <p>
- * Aus dem Interface com.badlogic.gdx.Screen werden folgende Methoden implementiert:
- * <p>
- * show(), render(float delta), resize(int width, int height), pause(), resume(), hide(), dispose()
- * <p>
- * show(): wird aufgerufen nachdem dieser Screen aktiv wird
- * render(float delta): wird jeden Frame aufgerufen, delta gibt die Zeit in Millisekunden seit dem letzten Frame an
- * <p>
- * Mehr zum Life Cycle finden Sie unter: https://github.com/libgdx/libgdx/wiki/The-life-cycle
+ * More on the lifecycle of a screen object and when the overridden methods get called can be found in the documentation:
+ * https://github.com/libgdx/libgdx/wiki/The-life-cycle.
  *
  * @author Dennis Jehle
  * @author Johannes Rauch
  */
 public class MainMenuScreen implements Screen {
-
     private final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
-    private Hexxagon parent;
-
-    private ConnectionHandler connectionHandler;
-    private MessageReceiver messageReceiver;
-    private GameHandler gameHandler;
-    private MessageEmitter messageEmitter;
+    private final Hexxagon parent;
 
     private OrthographicCamera camera;
     private StretchViewport viewport;
@@ -78,7 +59,7 @@ public class MainMenuScreen implements Screen {
     private TextField portTextField;
 
     private Label hexxagonLabel;
-    private Label connectionStatusLable;
+    private Label connectionStatusLabel;
     private Label versionLabel;
 
     private InputListener connectionListener;
@@ -86,17 +67,17 @@ public class MainMenuScreen implements Screen {
     private InputListener closeListener;
     private InputListener disconnectListener;
 
-    public MainMenuScreen(Hexxagon parent,
-                          ConnectionHandler connectionHandler,
-                          MessageReceiver messageReceiver,
-                          GameHandler gameHandler,
-                          MessageEmitter messageEmitter) {
+    public MainMenuScreen(Hexxagon parent) {
         this.parent = parent;
-        this.connectionHandler = connectionHandler;
-        this.messageReceiver = messageReceiver;
-        this.gameHandler = gameHandler;
-        this.messageEmitter = messageEmitter;
 
+        camera = new OrthographicCamera(1024, 576);
+        viewport = new StretchViewport(1024, 576, camera);
+        stage = new Stage(viewport);
+
+        hostnameTextField = new TextField("localhost", parent.skin);
+        portTextField = new TextField("4444", parent.skin);
+
+        connectButton = new TextButton("CONNECT", parent.skin, "small");
         connectionListener = new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -105,38 +86,15 @@ public class MainMenuScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                boolean successfullyConnected = false;
-                connectClient:
-                try {
-                    String hostname = hostnameTextField.getText();
-                    String port = portTextField.getText();
-
-                    SimpleClient simpleClient = new SimpleClient(new URI("ws://" + hostname + ":" + port),
-                            connectionHandler,
-                            messageReceiver);
-                    successfullyConnected = simpleClient.connectBlocking(10, TimeUnit.SECONDS);
-
-                    if (!successfullyConnected) {
-                        break connectClient; // TODO: throw exception
-                    }
-
-                    connectionHandler.setSimpleClient(simpleClient);
-                    connectionStatusLable.setText("connected");
-                    connectButton.setTouchable(Touchable.disabled);
-                    searchGameButton.setVisible(true);
-                    successfullyConnected = true;
-                } catch (Exception e) {
-                    logger.error("Exception: " + e.getMessage());
-                } finally {
-                    if (!successfullyConnected) {
-                        connectButton.setTouchable(Touchable.enabled);
-                        connectionStatusLable.setText("connection failed");
-                        searchGameButton.setVisible(false);
-                    }
-                }
+                String hostname = hostnameTextField.getText();
+                String port = portTextField.getText();
+                parent.getStateContext().reactOnEvent(new ConnectEvent(hostname, port));
             }
         };
+        connectButton.addListener(connectionListener);
 
+        disconnectButton = new TextButton("DISCONNECT", parent.skin, "small");
+        disconnectButton.setTouchable(Touchable.disabled);
         disconnectListener = new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -145,30 +103,12 @@ public class MainMenuScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                connectionHandler.closeConnection();
-                connectButton.setTouchable(Touchable.enabled);
-                connectionStatusLable.setText("disconnected");
-                searchGameButton.setVisible(false);
+                parent.getStateContext().reactOnEvent(new DisconnectEvent());
             }
         };
+        disconnectButton.addListener(disconnectListener);
 
-        searchGameListener = new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    messageEmitter.sendGetAvailableLobbiesMessage();
-                    parent.showLobbySelectScreen();
-                } catch (NullPointerException npe) {
-                    logger.error("NullPointerException: " + npe.getMessage());
-                }
-            }
-        };
-
+        closeButton = new TextButton("CLOSE", parent.skin, "small");
         closeListener = new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -180,42 +120,30 @@ public class MainMenuScreen implements Screen {
                 Gdx.app.exit();
             }
         };
-    }
-
-    /**
-     * Diese Methode erzeugt die UI und setzt den InputProcessor.
-     *
-     * @author Dennis Jehle
-     */
-    @Override
-    public void show() {
-        camera = new OrthographicCamera(1024, 576);
-        viewport = new StretchViewport(1024, 576, camera);
-        stage = new Stage(viewport);
-
-        hostnameTextField = new TextField("localhost", parent.skin);
-        portTextField = new TextField("4444", parent.skin);
-
-        connectButton = new TextButton("CONNECT", parent.skin, "small");
-        connectButton.addListener(connectionListener);
-
-        disconnectButton = new TextButton("DISCONNECT", parent.skin, "small");
-        disconnectButton.addListener(disconnectListener);
-
-        closeButton = new TextButton("CLOSE", parent.skin, "small");
         closeButton.addListener(closeListener);
 
         searchGameButton = new TextButton("SEARCH GAME", parent.skin, "small");
         searchGameButton.setVisible(false);
+        searchGameListener = new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                parent.getStateContext().reactOnEvent(new SearchGameEvent());
+            }
+        };
         searchGameButton.addListener(searchGameListener);
 
         hexxagonLabel = new Label("HEXXAGON", parent.skin);
         hexxagonLabel.setFontScale(2, 2);
         hexxagonLabel.setAlignment(Align.center);
 
-        connectionStatusLable = new Label("disconnected", parent.skin);
-        connectionStatusLable.setWrap(true);
-        connectionStatusLable.setAlignment(Align.center);
+        connectionStatusLabel = new Label("Disconnected", parent.skin);
+        connectionStatusLabel.setWrap(true);
+        connectionStatusLabel.setAlignment(Align.center);
 
         versionLabel = new Label("Version " + Hexxagon.versionNumber, parent.skin);
         versionLabel.setPosition(15, 15);
@@ -236,13 +164,21 @@ public class MainMenuScreen implements Screen {
         layoutTable.row();
         layoutTable.add(closeButton).padBottom(5).minSize(200, 50).colspan(2);
         layoutTable.row();
-        layoutTable.add(connectionStatusLable).padBottom(5).minSize(200, 50).colspan(2);
+        layoutTable.add(connectionStatusLabel).padBottom(5).minSize(200, 50).colspan(2);
         layoutTable.row();
         layoutTable.add(searchGameButton).minSize(200, 50).colspan(2);
 
         stage.addActor(layoutTable);
         stage.addActor(versionLabel);
+    }
 
+    /**
+     * This method creates the ui and sets the input processor.
+     *
+     * @author Dennis Jehle
+     */
+    @Override
+    public void show() {
         parent.particleEffect.start();
         parent.particleEffect.setPosition((float) viewport.getScreenWidth() / 2, (float) viewport.getScreenHeight() / 2);
 
@@ -286,4 +222,21 @@ public class MainMenuScreen implements Screen {
         // TODO: geben Sie alle Ressourcen mit implementiertem Disposable Interface frei
     }
 
+    public void setConnectionStatusLabelText(String text) {
+        connectionStatusLabel.setText(text);
+    }
+
+    public void setConnectButtonTouchable(boolean touchable) {
+        if (touchable) connectButton.setTouchable(Touchable.enabled);
+        else connectButton.setTouchable(Touchable.disabled);
+    }
+
+    public void setDisconnectButtonTouchable(boolean touchable) {
+        if (touchable) disconnectButton.setTouchable(Touchable.enabled);
+        else disconnectButton.setTouchable(Touchable.disabled);
+    }
+
+    public void setSearchGameButtonVisible(boolean visible) {
+        searchGameButton.setVisible(visible);
+    }
 }

@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.johannesrauch.hexxagon.network.board.Board;
 import de.johannesrauch.hexxagon.network.board.BoardGraph;
 import de.johannesrauch.hexxagon.network.board.TileEnum;
+import de.johannesrauch.hexxagon.network.clients.MessageEmitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

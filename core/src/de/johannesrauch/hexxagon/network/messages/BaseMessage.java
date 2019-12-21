@@ -1,4 +1,4 @@
-package de.johannesrauch.hexxagon.network.abstractmessage;
+package de.johannesrauch.hexxagon.network.messages;
 
 import java.util.UUID;
 

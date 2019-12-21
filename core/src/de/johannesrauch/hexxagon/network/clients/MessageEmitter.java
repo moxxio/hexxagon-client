@@ -1,7 +1,8 @@
-package de.johannesrauch.hexxagon.controller;
+package de.johannesrauch.hexxagon.network.clients;
 
 import java.util.UUID;
 
+import de.johannesrauch.hexxagon.controller.ConnectionHandler;
 import de.johannesrauch.hexxagon.network.board.TileEnum;
 import org.java_websocket.WebSocket;
 

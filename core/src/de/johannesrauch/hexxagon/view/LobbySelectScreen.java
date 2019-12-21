@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import de.johannesrauch.hexxagon.automaton.events.BackEvent;
+import de.johannesrauch.hexxagon.automaton.events.JoinLobbyEvent;
 import de.johannesrauch.hexxagon.network.lobby.Lobby;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,19 +29,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import de.johannesrauch.hexxagon.controller.Hexxagon;
+import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.LobbyHandler;
-import de.johannesrauch.hexxagon.controller.MessageEmitter;
 
 public class LobbySelectScreen implements Screen {
-
     final Logger logger = LoggerFactory.getLogger(LobbySelectScreen.class);
 
     private Hexxagon parent;
-    private LobbyHandler lobbyHandler;
-    private MessageEmitter messageEmitter;
 
-    private HashMap<String, UUID> lobbyIds = new HashMap<String, UUID>();
+    private HashMap<String, UUID> lobbyIds = new HashMap<>();
 
     private OrthographicCamera camera;
     private StretchViewport viewport;
@@ -68,10 +66,8 @@ public class LobbySelectScreen implements Screen {
 
     private List<String> lobbyGdxList;
 
-    public LobbySelectScreen(Hexxagon parent, LobbyHandler lobbyHandler, MessageEmitter messageEmitter) {
+    public LobbySelectScreen(Hexxagon parent) {
         this.parent = parent;
-        this.lobbyHandler = lobbyHandler;
-        this.messageEmitter = messageEmitter;
 
         camera = new OrthographicCamera(1024, 576);
         viewport = new StretchViewport(1024, 576, camera);
@@ -108,33 +104,26 @@ public class LobbySelectScreen implements Screen {
         userNameTextField = new TextField("P" + a32.getValue(), parent.skin);
 
         joinLobbyButton = new TextButton("JOIN", parent.skin, "small");
-        //joinLobbyButton.setTouchable(Touchable.disabled);
         joinLobbyButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            	return true;
+                return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 String selectedLobby = lobbyGdxList.getSelected();
                 if (selectedLobby == null) return;
-
                 logger.info(selectedLobby);
 
                 UUID lobbyId = lobbyIds.get(selectedLobby);
-
                 if (lobbyId == null) return;
-
                 logger.info(lobbyId.toString());
 
                 String userName = userNameTextField.getText();
-
                 if (userName == null) return;
 
-                messageEmitter.sendJoinLobbyMessage(lobbyId, userName);
-
-                showProgressBar();
+                parent.getStateContext().reactOnEvent(new JoinLobbyEvent(lobbyId, userName));
             }
         });
 
@@ -168,7 +157,6 @@ public class LobbySelectScreen implements Screen {
 
                 java.util.zip.Adler32 a32 = new java.util.zip.Adler32();
                 a32.update(UUID.randomUUID().toString().getBytes());
-
                 TextField lobbyNameTextField = new TextField("LOBBY" + a32.getValue(), parent.skin);
 
                 Dialog dialog = new Dialog("CREATE LOBBY", parent.skin) {
@@ -176,10 +164,11 @@ public class LobbySelectScreen implements Screen {
                     protected void result(Object object) {
                         boolean result = (boolean) object;
                         if (result) {
-                            messageEmitter.sendCreateNewLobbyMessage(lobbyNameTextField.getText());
+                            parent.getMessageEmitter().sendCreateNewLobbyMessage(lobbyNameTextField.getText());
                         }
                     }
                 };
+
                 dialog.getContentTable().pad(15);
                 dialog.getContentTable().add(lobbyNameLabel);
                 dialog.getContentTable().add(lobbyNameTextField).width(500);
@@ -198,7 +187,7 @@ public class LobbySelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                messageEmitter.sendGetAvailableLobbiesMessage();
+                parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
             }
         });
 
@@ -211,11 +200,7 @@ public class LobbySelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    parent.showMainMenuScreen();
-                } catch (NullPointerException npe) {
-                    logger.error("NullPointerException: " + npe.getMessage());
-                }
+                parent.getStateContext().reactOnEvent(new BackEvent());
             }
         });
 
@@ -319,6 +304,7 @@ public class LobbySelectScreen implements Screen {
         else parent.particleEffect.draw(parent.spriteBatch, delta);
         parent.spriteBatch.end();
 
+        LobbyHandler lobbyHandler = parent.getLobbyHandler();
         if (lobbyHandler.availableLobbiesUpdated) {
             updateAvailableLobbies(lobbyHandler.availableLobbies);
             lobbyHandler.availableLobbiesUpdated = false;
@@ -347,7 +333,7 @@ public class LobbySelectScreen implements Screen {
 
     @Override
     public void dispose() {
-        // TODO: geben Sie alle Ressourcen mit implementiertem Disposable Interface frei
+        // TODO: free resources
     }
 
 }

@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import de.johannesrauch.hexxagon.controller.Hexxagon;
+import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.LobbyHandler;
 
 public class LobbyJoinedScreen implements Screen {

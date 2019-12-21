@@ -1,11 +1,11 @@
 package de.johannesrauch.hexxagon.automaton.states;
 
-import de.johannesrauch.hexxagon.automaton.actions.AbstractEvent;
+import de.johannesrauch.hexxagon.automaton.events.AbstractEvent;
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
 
 public class Winner implements State {
     @Override
-    public void handleAction(AbstractEvent event, StateContext context) {
+    public void reactOnEvent(AbstractEvent event, StateContext context) {
         // TODO
     }
 }
