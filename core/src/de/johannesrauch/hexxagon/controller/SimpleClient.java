@@ -10,13 +10,11 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 /**
- * Diese Klasse erbt von org.java_websocket.client.WebSocketClient und wird benötigt um
- * eine WebSocket Verbindung zum Server aufzubauen.
- * 
  * Link zur Library: https://github.com/TooTallNate/Java-WebSocket
  * Link zum Wiki: https://github.com/TooTallNate/Java-WebSocket/wiki
  *
  * @author Dennis Jehle
+ * @author Johannes Rauch
  */
 public class SimpleClient extends WebSocketClient {
 	
@@ -27,9 +25,7 @@ public class SimpleClient extends WebSocketClient {
 	private ConnectionHandler connectionHandler;
 	private MessageReceiver messageReceiver;
 	
-	public SimpleClient(URI serverUri
-			, ConnectionHandler connectionHandler
-			, MessageReceiver messageReceiver) {
+	public SimpleClient(URI serverUri, ConnectionHandler connectionHandler, MessageReceiver messageReceiver) {
 		super(serverUri);
 		this.connectionHandler = connectionHandler;
 		this.messageReceiver = messageReceiver;

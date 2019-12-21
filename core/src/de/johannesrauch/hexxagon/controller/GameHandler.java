@@ -125,7 +125,7 @@ public class GameHandler {
 	
 	/**
 	 * Setter for the private attribute messageEmitter.
-	 * @param messageEmitter
+	 * @param messageEmitter TODO
 	 */
 	public void setMessageEmitter(MessageEmitter messageEmitter) {
 		this.messageEmitter = messageEmitter;
@@ -136,53 +136,37 @@ public class GameHandler {
 	 * Constructor sets default values for all class attributes. 
 	 */
 	public GameHandler() {
-		// set all values to their defaults, except messageEmitter
 		setDefaultValues();
 	}
 	
 	public void gameStarted(UUID userId, UUID gameId, Date creationDate) {
-		// reset all values
 		setDefaultValues();
-		// set all values provided through GameStarted message
 		this.userId = userId;
 		this.gameId = gameId;
 		this.creationDate = creationDate;
-		// set isGameActive to true
 		isGameActive = true;
 	}
 	
-	public void gameStatusInitialize(
-			UUID playerOne
-			, UUID playerTwo
-			, String playerOneUserName
-			, String playerTwoUserName
-			, int playerOnePoints
-			, int playerTwoPoints
-			, UUID activePlayer
-			, Board board) {
-		// set playerOne
+	public void gameStatusInitialize(UUID playerOne,
+									 UUID playerTwo,
+									 String playerOneUserName,
+									 String playerTwoUserName,
+									 int playerOnePoints,
+									 int playerTwoPoints,
+									 UUID activePlayer,
+									 Board board) {
 		this.playerOne = playerOne;
-		// set playerTwo
 		this.playerTwo = playerTwo;
-		// set playerOneUserName
 		this.playerOneUserName = playerOneUserName;
-		// set playerTwoUsername
 		this.playerTwoUserName = playerTwoUserName;
-		// set player ones points
 		this.playerOnePoints = playerOnePoints;
-		// set player twos points
 		this.playerTwoPoints = playerTwoPoints;
-		// check and set if client is playerOne or playerTwo
 		clientIsPlayerOne = userId.equals(playerOne);
 		clientIsPlayerTwo = userId.equals(playerTwo);
-		// check and set if playerOne or playerTwo is allowed to make the next move
 		whoseTurnIsIt(activePlayer);
-		// receive the initial board
 		this.board = board;
 		
-		// initialization done
 		initializationCompleted = true;
-		// board updated
 		boardUpdated.set(true);
 	}
 	
@@ -204,7 +188,7 @@ public class GameHandler {
 		// check and set if playerOne or playerTwo is allowed to make the next move
 		whoseTurnIsIt(activePlayer);
 		// update board
-		// TODO make this more elegant, so that the renderer becomes all information needed for rendering moves
+		// TODO: make this more elegant, so that the renderer becomes all information needed for rendering moves
 		this.board = board;
 		
 		// board updated
@@ -219,7 +203,7 @@ public class GameHandler {
 	
 	public void gameOver(UUID winner) {
 		isGameActive = false;
-		// TODO: process winner
+		// TODO: process winner (server's job?)
 	}
 	
 	public void leaveGame() {
