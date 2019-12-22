@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import de.johannesrauch.hexxagon.automaton.states.DisconnectedState;
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
-import de.johannesrauch.hexxagon.automaton.states.State;
 import de.johannesrauch.hexxagon.controller.*;
 import de.johannesrauch.hexxagon.network.clients.MessageEmitter;
 import de.johannesrauch.hexxagon.network.clients.MessageReceiver;
@@ -17,8 +15,6 @@ import de.johannesrauch.hexxagon.view.GameScreen;
 import de.johannesrauch.hexxagon.view.LobbyJoinedScreen;
 import de.johannesrauch.hexxagon.view.LobbySelectScreen;
 import de.johannesrauch.hexxagon.view.MainMenuScreen;
-
-import java.awt.*;
 
 /**
  * Sources of background images:
@@ -55,7 +51,7 @@ public class Hexxagon extends Game {
 	public ParticleEffect particleEffect;
 
 	public Hexxagon() {
-		stateContext = new StateContext();
+		stateContext = new StateContext(this);
 	}
 
 	/**
@@ -99,12 +95,6 @@ public class Hexxagon extends Game {
 		gameHandler.setMessageEmitter(messageEmitter);
 
 		messageEmitter.setConnectionHandler(connectionHandler);
-
-		stateContext.setParent(this);
-		stateContext.setConnectionHandler(connectionHandler);
-		stateContext.setMessageEmitter(messageEmitter);
-		stateContext.setMessageReceiver(messageReceiver);
-		stateContext.setGameHandler(gameHandler);
 
 		mainMenuScreen = new MainMenuScreen(this);
 		lobbySelectScreen = new LobbySelectScreen(this);
