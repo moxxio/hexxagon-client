@@ -39,10 +39,10 @@ public class SampleTests {
 	@Test
 	public void checkTile1Neighbors() {
 		BoardGraph boardGraph = new BoardGraph();
-		List<TileEnum> neighbors = boardGraph.tileMapping.get(TileEnum.TILE_1);
-		assertTrue(neighbors.contains(TileEnum.TILE_2));
-		assertTrue(neighbors.contains(TileEnum.TILE_6));
-		assertTrue(neighbors.contains(TileEnum.TILE_7));
+		List<TileEnum> neighbors = boardGraph.tileMapping.get(TileEnum.Tile_1);
+		assertTrue(neighbors.contains(TileEnum.Tile_2));
+		assertTrue(neighbors.contains(TileEnum.Tile_6));
+		assertTrue(neighbors.contains(TileEnum.Tile_7));
 		
 		for (int i = 1; i <= 61; i++) {
 			if (i == 2 || i == 6 || i == 7) continue;

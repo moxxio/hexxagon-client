@@ -46,7 +46,8 @@ public class Hexxagon extends Game {
 	public SpriteBatch spriteBatch;
 
 	public Texture space;
-	public Texture tileFree, tileBlocked, tilePlayerOne, tilePlayerTwo, tileMoveOne, tileMoveTwo, tilePlayerOneSelected, tilePlayerTwoSelected;
+	public Texture tileFree, tileBlocked, tilePlayerOne, tilePlayerTwo,
+			tileMoveOne, tileMoveTwo, tilePlayerOneSelected, tilePlayerTwoSelected;
 	public Texture loading;
 	public Skin skin;
 	public ParticleEffect particleEffect;
@@ -90,7 +91,7 @@ public class Hexxagon extends Game {
 		mainMenuScreen = new MainMenuScreen(this);
 		lobbySelectScreen = new LobbySelectScreen(this);
 		lobbyJoinedScreen = new LobbyJoinedScreen(this, lobbyHandler);
-		gameScreen = new GameScreen(this, gameHandler);
+		gameScreen = new GameScreen(this);
 
 		messageReceiver.setLobbySelectScreen(lobbySelectScreen);
 

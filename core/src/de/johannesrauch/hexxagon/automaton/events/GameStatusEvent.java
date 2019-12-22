@@ -41,7 +41,7 @@ public class GameStatusEvent implements AbstractEvent {
         }
 
         if (currentState == StateEnum.UninitializedGame || gameStatusArrivedBeforeGameStarted) {
-            gameHandler.gameStatusInitialize(message.getPlayerOne(),
+            gameHandler.gameStatusInit(message.getPlayerOne(),
                     message.getPlayerTwo(),
                     message.getPlayerOneUserName(),
                     message.getPlayerTwoUserName(),
@@ -62,6 +62,7 @@ public class GameStatusEvent implements AbstractEvent {
                     message.getBoard(),
                     message.getActivePlayer());
 
+            // TODO: if game is over, go to winner's or loser's state
             if (gameHandler.isMyTurn()) return StateEnum.InGameMyTurn;
             else return StateEnum.InGameOpponentsTurn;
         }

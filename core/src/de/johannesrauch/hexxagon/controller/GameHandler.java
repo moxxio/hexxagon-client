@@ -43,6 +43,7 @@ public class GameHandler {
 
 	public GameHandler(Hexxagon parent) {
 		this.parent = parent;
+		boardGraph = new BoardGraph();
 		setDefaultValues();
 	}
 
@@ -59,14 +60,14 @@ public class GameHandler {
 		isGameActive = true;
 	}
 
-	public void gameStatusInitialize(UUID playerOne,
-									 UUID playerTwo,
-									 String playerOneUserName,
-									 String playerTwoUserName,
-									 int playerOnePoints,
-									 int playerTwoPoints,
-									 Board board,
-									 UUID activePlayer) {
+	public void gameStatusInit(UUID playerOne,
+							   UUID playerTwo,
+							   String playerOneUserName,
+							   String playerTwoUserName,
+							   int playerOnePoints,
+							   int playerTwoPoints,
+							   Board board,
+							   UUID activePlayer) {
 		this.playerOne = playerOne;
 		this.playerTwo = playerTwo;
 		this.playerOneUserName = playerOneUserName != null ? playerOneUserName : "";
@@ -157,7 +158,6 @@ public class GameHandler {
 		lastMoveFrom = null;
 		lastMoveTo = null;
 		board = null;
-		boardGraph = new BoardGraph();
 		isInitComplete = false;
 		boardUpdated = new AtomicBoolean();
 		opponentLeft = false;

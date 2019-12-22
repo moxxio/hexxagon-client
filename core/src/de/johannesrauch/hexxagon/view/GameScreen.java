@@ -1,11 +1,17 @@
 package de.johannesrauch.hexxagon.view;
 
 import java.util.HashMap;
+import java.util.UUID;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import de.johannesrauch.hexxagon.automaton.events.BackEvent;
 import de.johannesrauch.hexxagon.automaton.events.LeaveEvent;
 import de.johannesrauch.hexxagon.model.GameScreenTile;
+import de.johannesrauch.hexxagon.model.GameScreenTileStateEnum;
 import de.johannesrauch.hexxagon.network.board.TileEnum;
+import de.johannesrauch.hexxagon.network.board.TileStateEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,14 +23,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import de.johannesrauch.hexxagon.controller.GameHandler;
 import de.johannesrauch.hexxagon.Hexxagon;
 
+// TODO: rescaling does fuck up hit boxes
 public class GameScreen implements Screen {
 
     final Logger logger = LoggerFactory.getLogger(GameScreen.class);
@@ -39,7 +44,7 @@ public class GameScreen implements Screen {
 
     private Label playerOneLabel;
     private Label playerTwoLabel;
-    private Label leaveGameLabel;
+    private TextButton leaveGameButton;
 
     public HashMap<TileEnum, GameScreenTile> gameScreenTiles;
 
@@ -49,13 +54,7 @@ public class GameScreen implements Screen {
     TileEnum moveFrom = null;
     TileEnum moveTo = null;
 
-    boolean gameHandlerInitializationCompleted = false;
-
-    // TODO: entfernen Sie dieses Attribut, es dient nur dazu, dass Sie initial ein Spielfeld angezeigt bekommen
-    //       Diese Funktionalität werden Sie nun selbst schreiben.
-    boolean debug = true;
-
-    public GameScreen(Hexxagon parent, GameHandler gameHandler) {
+    public GameScreen(Hexxagon parent) {
         this.parent = parent;
 
         camera = new OrthographicCamera(1024, 576);
@@ -71,15 +70,59 @@ public class GameScreen implements Screen {
         loadingImage.setPosition(0, viewport.getScreenHeight() - loadingImage.getHeight());
         loadingImage.setOrigin(64, 64);
 
-        playerOneLabel = new Label("", parent.skin);
-        playerTwoLabel = new Label("", parent.skin);
-        leaveGameLabel = new Label("", parent.skin);
+        playerOneLabel = new Label("Label1", parent.skin);
+        playerOneLabel.setPosition(15, 50);
+        playerTwoLabel = new Label("Label2", parent.skin);
+        playerTwoLabel.setPosition(15, 25);
+
+        leaveGameButton = new TextButton("LEAVE GAME", parent.skin, "small");
+        leaveGameButton.setSize(150, 50);
+        leaveGameButton.setPosition(850, 25);
+        leaveGameButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                TextButton yesButton = new TextButton("YES", parent.skin, "small");
+                TextButton noButton = new TextButton("NO", parent.skin, "small");
+
+                Label reassureLabel = new Label("Are you sure you want to leave?", parent.skin);
+                reassureLabel.setColor(Color.BLACK);
+
+                Dialog dialog = new Dialog("", parent.skin) {
+                    @Override
+                    protected void result(Object object) {
+                        boolean result = (boolean) object;
+                        if (result) {
+                            parent.getStateContext().reactOnEvent(new LeaveEvent());
+                        }
+                    }
+                };
+
+                dialog.getContentTable().pad(15);
+                dialog.getContentTable().add(reassureLabel);
+                dialog.button(yesButton, true);
+                dialog.button(noButton, false);
+                dialog.show(stage);
+            }
+        });
 
         gameScreenTiles = new HashMap<TileEnum, GameScreenTile>();
+        initGameScreenTiles();
+
+        stage.addActor(loadingImage);
+        stage.addActor(playerOneLabel);
+        stage.addActor(playerTwoLabel);
+        stage.addActor(leaveGameButton);
     }
 
     @Override
     public void show() {
+        resetGameScreenTiles();
+
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -87,11 +130,6 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        if (Gdx.input.isKeyPressed(Keys.F10)) {
-            logger.info("F10 was pressed, leaving game now.");
-            parent.getStateContext().reactOnEvent(new LeaveEvent());
-        }
 
         parent.spriteBatch.setProjectionMatrix(camera.combined);
         parent.spriteBatch.begin();
@@ -102,44 +140,13 @@ public class GameScreen implements Screen {
 
         if (loadingImage != null) loadingImage.rotateBy(delta * -90.0f);
 
-		GameHandler gameHandler = parent.getGameHandler();
-        // Falls die Initialisierung des GameHandlers nicht abgeschlossen ist, aber die Initialisierung des GameScreens abgeschlossen ist, so ist etwas falsch gelaufen.
-        // In diesem Fall werden Aufräumarbeiten durchgeführt.
-        if (!gameHandler.isInitComplete() && gameHandlerInitializationCompleted) {
-            logger.error("GameScreen initialization states not matching.");
-            gameHandlerInitializationCompleted = false;
-        }
-        // Falls die Inititalisierugn des GameHandlers abgeschlossen ist, jedoch die des GameScreens nicht, wird der GameScreen initialisiert. 
-        else if (gameHandler.isInitComplete() && !gameHandlerInitializationCompleted || debug) {
-            // initialize gameScreenTiles
-            initializeGameScreenTiles();
-            // change gameHandlerInitializationCompleted to true
-            gameHandlerInitializationCompleted = true;
+        GameHandler gameHandler = parent.getGameHandler();
+        if (gameHandler.isInitComplete()) {
 
-            debug = false;
-        }
-        // Das Spielfeld wird gerendert, falls alle Initialisierungen abgeschlossen sind.
-        else if (gameHandler.isInitComplete() && gameHandlerInitializationCompleted || !debug) {
-
-            // show or hide loading animation
-            if (gameHandler.isMyTurn()) {
-                if (loadingImage.isVisible()) {
-                    loadingImage.setVisible(false);
-                }
-            } else {
-                if (!loadingImage.isVisible()) {
-                    loadingImage.setVisible(true);
-                }
-            }
-
-            // TODO: Überprüfen Sie, ob sich am Zustand des Spielfelds etwas geändert hat
-            //       Falls eine Änderung vorliegt, aktuallisieren Sie die Kacheln in der Stage
-            //       danach soll der aktuelle Zustand des Spielfeldes gezeichnet werden.
 
             stage.act();
             stage.draw();
         }
-
     }
 
     @Override
@@ -163,12 +170,15 @@ public class GameScreen implements Screen {
         // TODO: geben Sie alle Ressourcen mit implementiertem Disposable Interface frei
     }
 
-    private void initializeGameScreenTiles() {
-        stage.clear();
-        gameScreenTiles.clear();
-
+    /**
+     * This methods gets called by the constructor and initializes the game screen tiles.
+     * It mainly sets the right positions of the game screen tiles and constructs the gameScreenTiles hash map.
+     *
+     * @author Dennis Jehle
+     * @author Johannes Rauch
+     */
+    private void initGameScreenTiles() {
         for (int i = 0; i < 61; i++) {
-
             final int index = i + 1;
 
             int startPosX = 512;
@@ -216,43 +226,38 @@ public class GameScreen implements Screen {
             Image image = new Image();
             image.setPosition(posX, posY);
             image.setSize(sizeX, sizeY);
+            image.addListener(new InputListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
+                }
 
-            image.setDrawable(new SpriteDrawable(new Sprite(parent.tileFree)));
-            image.addListener(new ClickListener() {
-                                  @Override
-                                  public void clicked(InputEvent event, float x, float y) {
-                                      System.out.println("You clicked an image: " + index);
-
-                                      // TODO: nachdem auf eine Kachel geklickt wurde, sollte hier etwas sinnvolles passieren
-                                  }
-                              }
-            );
-
-            // TODO: hier sollte die Kachel dahingehend angepasst werden, dass der richtige Kachelzustand gesetzt ist
-            //       Kachel frei, Kachel blockiert, Kachel belegt durch Spielstein Spieler 1/2
-
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    System.out.println("Touched tile " + index);
+                }
+            });
             stage.addActor(image);
+
+            GameScreenTile gameScreenTile = new GameScreenTile(image, null);
+            gameScreenTiles.put(TileEnum.valueOf("Tile_" + index), gameScreenTile);
         }
-
-
-        // TODO: zeigen Sie für Spieler 1 den Benutzernamen und die Punktezahl an
-        playerOneLabel.setText("USERNAME1" + ": " + "XYZ" + " points");
-        playerOneLabel.setPosition(15, 50);
-
-        // TODO: zeigen Sie für Spieler 2 den Benutzernamen und die Punktezahl an
-        playerTwoLabel.setText("USERNAME2" + ": " + "XYZ" + " points");
-        playerTwoLabel.setPosition(15, 25);
-
-        leaveGameLabel.setText("[F10] LEAVE GAME");
-        leaveGameLabel.setPosition(850, 25);
-
-        stage.addActor(playerOneLabel);
-        stage.addActor(playerTwoLabel);
-        stage.addActor(leaveGameLabel);
-
-        stage.addActor(loadingImage);
-
-
     }
 
+    /**
+     * This methods gets called by show. It resets the tiles to the free tile image and state.
+     *
+     * @author Johannes Rauch
+     */
+    private void resetGameScreenTiles() {
+        for (int i = 1; i <= 61; i++) {
+            TileEnum tile = TileEnum.valueOf("Tile_" + i);
+            GameScreenTile gameScreenTile = gameScreenTiles.get(tile);
+
+            if (gameScreenTile != null) {
+                gameScreenTile.setDrawableOfImage(new SpriteDrawable(new Sprite(parent.tileFree)));
+                gameScreenTile.setTileState(GameScreenTileStateEnum.Free);
+            }
+        }
+    }
 }
