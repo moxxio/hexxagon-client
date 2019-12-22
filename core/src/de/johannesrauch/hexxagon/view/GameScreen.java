@@ -214,11 +214,9 @@ public class GameScreen implements Screen {
             } else if (i < 56) {
                 posX = startPosX + offsetX * 3;
                 posY = startPosY - sizeY - sizeY / 2 - (i - 50) * sizeY;
-            } else if (i < 61) {
+            } else {
                 posX = startPosX + offsetX * 4;
                 posY = startPosY - 2 * sizeY - (i - 56) * sizeY;
-            } else {
-                posX = posY = 0;
             }
 
             Image image = new Image();
