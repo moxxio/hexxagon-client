@@ -123,13 +123,13 @@ public class BoardGraph {
     private String getTileStateShort(int tileNumber) {
         TileStateEnum tse = board.getTile(TileEnum.valueOf("TILE_" + tileNumber));
         switch (tse) {
-            case FREE:
+            case Free:
                 return "████";
-            case PLAYERONE:
+            case PlayerOne:
                 return "PL01";
-            case PLAYERTWO:
+            case PlayerTwo:
                 return "PL02";
-            case BLOCKED:
+            case Blocked:
                 return "BLKD";
         }
         return "ERR!";
