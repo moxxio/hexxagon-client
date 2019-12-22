@@ -22,7 +22,7 @@ public class LobbyStatusEvent implements AbstractEvent {
 
     /**
      * This method gets called by the current state from the state context.
-     * It executes the received lobby status event.
+     * It executes the reaction on the received lobby status event.
      *
      * @param context the state context in which this event object is used
      * @return the next state or null, if the finite-state machine stays in his current state
