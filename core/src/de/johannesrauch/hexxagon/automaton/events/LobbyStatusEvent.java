@@ -2,7 +2,7 @@ package de.johannesrauch.hexxagon.automaton.events;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
-import de.johannesrauch.hexxagon.automaton.states.State;
+import de.johannesrauch.hexxagon.automaton.states.StateEnum;
 import de.johannesrauch.hexxagon.controller.LobbyHandler;
 import de.johannesrauch.hexxagon.network.messages.LobbyStatus;
 
@@ -28,32 +28,40 @@ public class LobbyStatusEvent implements AbstractEvent {
      * @return the next state or null, if the finite-state machine stays in his current state
      */
     @Override
-    public State reactOnEvent(StateContext context) {
+    public StateEnum reactOnEvent(StateContext context) {
+        StateEnum currentState = context.getState();
+
         Hexxagon parent = context.getParent();
         LobbyHandler lobbyHandler = parent.getLobbyHandler();
 
         lobbyHandler.lobbyJoined(message.getUserId(), message.getLobbyId());
         lobbyHandler.lobbyStatusUpdate(message.getLobby());
 
-        State currentState = context.getState();
-        if (currentState == context.getJoiningLobbyState()) {
+        if (currentState == StateEnum.JoiningLobby) {
             parent.getLobbySelectScreen().hideProgressBar(0);
             parent.showLobbyJoinedScreen();
 
-            if (lobbyHandler.isClientPlayerOne() && lobbyHandler.isLobbyReady()) return context.getReadyLobbyPlayerOneState();
-            if (lobbyHandler.isClientPlayerOne()) return context.getLobbyPlayerOneState();
-            return context.getLobbyPlayerTwoState();
-        } else if (currentState == context.getLobbyPlayerOneState()) {
-            if (lobbyHandler.isLobbyReady()) return context.getReadyLobbyPlayerOneState();
-            return null;
-        } else if (currentState == context.getLobbyPlayerTwoState()) {
-            if (!lobbyHandler.isLobbyReady()) return context.getLobbyPlayerOneState();
-            return null;
-        } else if (currentState == context.getReadyLobbyPlayerOneState()) {
-            if (!lobbyHandler.isLobbyReady()) return context.getLobbyPlayerOneState();
-            return null;
+            if (lobbyHandler.isClientPlayerOne() && lobbyHandler.isLobbyReady())
+                return StateEnum.InFullLobbyAsPlayerOne;
+            if (lobbyHandler.isClientPlayerOne()) return StateEnum.InLobbyAsPlayerOne;
+            return StateEnum.InLobbyAsPlayerTwo;
         }
 
-        return null;
+        if (currentState == StateEnum.InLobbyAsPlayerOne) {
+            if (lobbyHandler.isLobbyReady()) return StateEnum.InFullLobbyAsPlayerOne;
+            return currentState;
+        }
+
+        if (currentState == StateEnum.InLobbyAsPlayerTwo) {
+            if (!lobbyHandler.isLobbyReady()) return StateEnum.InLobbyAsPlayerOne;
+            return currentState;
+        }
+
+        if (currentState == StateEnum.InFullLobbyAsPlayerOne) {
+            if (!lobbyHandler.isLobbyReady()) return StateEnum.InLobbyAsPlayerOne;
+            return currentState;
+        }
+
+        return currentState;
     }
 }

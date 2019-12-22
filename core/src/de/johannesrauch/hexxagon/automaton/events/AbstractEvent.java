@@ -1,7 +1,7 @@
 package de.johannesrauch.hexxagon.automaton.events;
 
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
-import de.johannesrauch.hexxagon.automaton.states.State;
+import de.johannesrauch.hexxagon.automaton.states.StateEnum;
 
 /**
  * Every class implementing the abstract event interface is an transition event class for the finite-state machine.
@@ -11,5 +11,5 @@ import de.johannesrauch.hexxagon.automaton.states.State;
  * @author Johannes Rauch
  */
 public interface AbstractEvent {
-    public abstract State reactOnEvent(StateContext context);
+    public abstract StateEnum reactOnEvent(StateContext context);
 }

@@ -2,7 +2,7 @@ package de.johannesrauch.hexxagon.automaton.events;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
-import de.johannesrauch.hexxagon.automaton.states.State;
+import de.johannesrauch.hexxagon.automaton.states.StateEnum;
 
 import java.util.UUID;
 
@@ -23,19 +23,25 @@ public class JoinLobbyEvent implements AbstractEvent {
     }
 
     /**
-     * This method gets called by the current state from the state context.
-     * It executes the pressed join lobby event.
+     * This method gets called by the state context.
+     * It executes the reaction on the pressed join lobby event.
      *
      * @param context the state context in which this event object is used
      * @return the next state or null, if the finite-state machine stays in his current state
      */
     @Override
-    public State reactOnEvent(StateContext context) {
-        Hexxagon parent = context.getParent();
+    public StateEnum reactOnEvent(StateContext context) {
+        StateEnum currentState = context.getState();
 
-        parent.getMessageEmitter().sendJoinLobbyMessage(lobbyId, userName);
-        parent.getLobbySelectScreen().showProgressBar();
+        if (currentState == StateEnum.SearchLobby) {
+            Hexxagon parent = context.getParent();
 
-        return context.getJoiningLobbyState();
+            parent.getMessageEmitter().sendJoinLobbyMessage(lobbyId, userName);
+            parent.getLobbySelectScreen().showProgressBar();
+
+            return StateEnum.JoiningLobby;
+        }
+
+        return currentState;
     }
 }

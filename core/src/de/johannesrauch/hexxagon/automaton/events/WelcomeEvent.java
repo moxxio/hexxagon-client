@@ -2,7 +2,7 @@ package de.johannesrauch.hexxagon.automaton.events;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
-import de.johannesrauch.hexxagon.automaton.states.State;
+import de.johannesrauch.hexxagon.automaton.states.StateEnum;
 import de.johannesrauch.hexxagon.network.messages.Welcome;
 import de.johannesrauch.hexxagon.view.MainMenuScreen;
 
@@ -13,6 +13,7 @@ import de.johannesrauch.hexxagon.view.MainMenuScreen;
  * @author Johannes Rauch
  */
 public class WelcomeEvent implements AbstractEvent {
+
     private Welcome message;
 
     public WelcomeEvent(Welcome message) {
@@ -20,21 +21,27 @@ public class WelcomeEvent implements AbstractEvent {
     }
 
     /**
-     * This method gets called by the current state from the state context.
-     * It executes the effect of the received welcome message.
+     * This method gets called by the state context.
+     * It executes the reaction on the received welcome message.
      *
      * @param context the state context in which this event object is used
      * @return the next state or null, if the finite-state machine stays in his current state
      */
     @Override
-    public State reactOnEvent(StateContext context) {
-        Hexxagon parent = context.getParent();
-        MainMenuScreen mainMenuScreen = parent.getMainMenuScreen();
+    public StateEnum reactOnEvent(StateContext context) {
+        StateEnum currentState = context.getState();
 
-        parent.getConnectionHandler().setUserId(message.getUserId());
-        mainMenuScreen.setConnectionStatusLabelText("Connected");
-        mainMenuScreen.setDisconnectButtonTouchable(true);
+        if (currentState == StateEnum.ConnectionAttempt) {
+            Hexxagon parent = context.getParent();
+            MainMenuScreen mainMenuScreen = parent.getMainMenuScreen();
 
-        return context.getConnectedState();
+            parent.getConnectionHandler().setUserId(message.getUserId());
+            mainMenuScreen.setConnectionStatusLabelText("Connected");
+            mainMenuScreen.setDisconnectButtonTouchable(true);
+
+            return StateEnum.Connected;
+        }
+
+        return currentState;
     }
 }

@@ -2,7 +2,7 @@ package de.johannesrauch.hexxagon.automaton.events;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
-import de.johannesrauch.hexxagon.automaton.states.State;
+import de.johannesrauch.hexxagon.automaton.states.StateEnum;
 
 /**
  * This class represents a pressed search game event from the search game button in the main menu.
@@ -13,19 +13,25 @@ import de.johannesrauch.hexxagon.automaton.states.State;
 public class SearchGameEvent implements AbstractEvent {
 
     /**
-     * This method gets called by the current state from the state context.
-     * It executes the pressed search game event.
+     * This method gets called by the state context.
+     * It executes the reaction on the pressed search game event.
      *
      * @param context the state context in which this event object is used
      * @return the next state or null, if the finite-state machine stays in his current state
      */
     @Override
-    public State reactOnEvent(StateContext context) {
-        Hexxagon parent = context.getParent();
+    public StateEnum reactOnEvent(StateContext context) {
+        StateEnum currentState = context.getState();
 
-        parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
-        parent.showLobbySelectScreen();
+        if (currentState == StateEnum.Connected) {
+            Hexxagon parent = context.getParent();
 
-        return context.getSearchLobbyState();
+            parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
+            parent.showLobbySelectScreen();
+
+            return StateEnum.SearchLobby;
+        }
+
+        return currentState;
     }
 }

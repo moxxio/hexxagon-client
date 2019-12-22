@@ -2,7 +2,7 @@ package de.johannesrauch.hexxagon.automaton.events;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
-import de.johannesrauch.hexxagon.automaton.states.State;
+import de.johannesrauch.hexxagon.automaton.states.StateEnum;
 import de.johannesrauch.hexxagon.network.messages.LobbyJoined;
 
 /**
@@ -20,22 +20,28 @@ public class LobbyJoinedEvent implements AbstractEvent {
     }
 
     /**
-     * This method gets called by the current state from the state context.
-     * It executes the received joined lobby event.
+     * This method gets called by the state context.
+     * It executes the reaction on the received joined lobby event.
      *
      * @param context the state context in which this event object is used
      * @return the next state or null, if the finite-state machine stays in his current state
      */
     @Override
-    public State reactOnEvent(StateContext context) {
-        Hexxagon parent = context.getParent();
+    public StateEnum reactOnEvent(StateContext context) {
+        StateEnum currentState = context.getState();
 
-        if (message.getSuccessfullyJoined()) {
-            parent.getLobbyHandler().lobbyJoined(message.getUserId(), message.getLobbyId());
-            return null;
-        } else {
-            parent.getLobbySelectScreen().hideProgressBar(0);
-            return context.getSearchLobbyState();
+        if (currentState == StateEnum.JoiningLobby) {
+            Hexxagon parent = context.getParent();
+
+            if (message.getSuccessfullyJoined()) {
+                parent.getLobbyHandler().lobbyJoined(message.getUserId(), message.getLobbyId());
+                return currentState;
+            } else {
+                parent.getLobbySelectScreen().hideProgressBar(0);
+                return StateEnum.SearchLobby;
+            }
         }
+
+        return currentState;
     }
 }
