@@ -38,6 +38,7 @@ public class GameStartedEvent implements AbstractEvent {
 
             return StateEnum.UninitializedGame;
         }
-        return null;
+
+        return currentState;
     }
 }
