@@ -8,7 +8,7 @@ import de.johannesrauch.hexxagon.network.messages.LobbyStatus;
 
 /**
  * This class represents a received lobby status event from the join button in the lobby select menu.
- * The state context and interface uses this class to model the finite-state machine of the client.
+ * The state context uses this class as a transition event. A new state may occur.
  *
  * @author Johannes Rauch
  */

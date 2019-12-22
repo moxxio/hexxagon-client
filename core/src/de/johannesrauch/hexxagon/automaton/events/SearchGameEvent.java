@@ -6,7 +6,7 @@ import de.johannesrauch.hexxagon.automaton.states.StateEnum;
 
 /**
  * This class represents a pressed search game event from the search game button in the main menu.
- * The state context and interface uses this class to model the finite-state machine of the client.
+ * The state context uses this class as a transition event. A new state may occur.
  *
  * @author Johannes Rauch
  */
