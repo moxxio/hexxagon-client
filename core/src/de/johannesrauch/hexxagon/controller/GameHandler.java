@@ -1,170 +1,60 @@
 package de.johannesrauch.hexxagon.controller;
 
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.network.board.Board;
-import de.johannesrauch.hexxagon.network.board.BoardGraph;
-import de.johannesrauch.hexxagon.network.board.TileEnum;
+import de.johannesrauch.hexxagon.network.message.GameStatusMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
+
 public class GameHandler {
-	
-	private final Logger logger = LoggerFactory.getLogger(GameHandler.class);
 
-	private final Hexxagon parent;
-	
-	private UUID userId;
-	private UUID gameId;
-	private Date creationDate;
-	private UUID playerOne;
-	private UUID playerTwo;
-	private String playerOneUserName;
-	private String playerTwoUserName;
-	private int playerOnePoints;
-	private int playerTwoPoints;
-	private Board board;
-	TileEnum lastMoveFrom;
-	TileEnum lastMoveTo;
+    private final Hexxagon parent;
 
-	private boolean isGameActive;
-	private boolean isClientPlayerOne;
-	private boolean isClientPlayerTwo;
-	private boolean isPlayerOneMove;
-	private boolean isPlayerTwoMove;
-	private boolean isInitComplete;
-	private boolean opponentLeft;
-	private AtomicBoolean boardUpdated;
+    private final Logger logger;
 
-	private BoardGraph boardGraph;
+    private GameStatusMessage gameStatus;
 
-	public GameHandler(Hexxagon parent) {
-		this.parent = parent;
-		boardGraph = new BoardGraph();
-		setDefaultValues();
-	}
+    private UUID userId;
+    private UUID gameId;
 
-	public void gameOver(UUID winner) {
-		isGameActive = false;
-		// TODO: process winner (server's job?)
-	}
+    public GameHandler(Hexxagon parent) {
+        this.parent = parent;
+        logger = LoggerFactory.getLogger(GameHandler.class);
+        reset();
+    }
 
-	public void gameStarted(UUID userId, UUID gameId, Date creationDate) {
-		setDefaultValues();
-		this.userId = userId;
-		this.gameId = gameId;
-		this.creationDate = creationDate;
-		isGameActive = true;
-	}
+    public boolean isInitComplete() {
+        return gameStatus != null;
+    }
 
-	public void gameStatusInit(UUID playerOne,
-							   UUID playerTwo,
-							   String playerOneUserName,
-							   String playerTwoUserName,
-							   int playerOnePoints,
-							   int playerTwoPoints,
-							   Board board,
-							   UUID activePlayer) {
-		this.playerOne = playerOne;
-		this.playerTwo = playerTwo;
-		this.playerOneUserName = playerOneUserName != null ? playerOneUserName : "";
-		this.playerTwoUserName = playerTwoUserName != null ? playerTwoUserName : "";
-		this.playerOnePoints = playerOnePoints;
-		this.playerTwoPoints = playerTwoPoints;
-		isClientPlayerOne = userId.equals(playerOne);
-		isClientPlayerTwo = userId.equals(playerTwo);
-		setPlayerMove(activePlayer);
-		this.board = board;
+    public boolean isMyTurn() {
+        if (gameStatus == null || userId == null) return false;
+        return gameStatus.getActivePlayer() == userId;
+    }
 
-		isInitComplete = true;
-		boardUpdated.set(true);
-	}
+    public void leaveGame() {
+        if (gameId != null) {
+            logger.info("Left game: " + gameId.toString());
+            parent.getMessageEmitter().sendLeaveGameMessage(gameId);
+        } else logger.warn("GameId is null in leaveGame()!");
+        reset();
+    }
 
-	public void gameStatusUpdate(TileEnum lastMoveFrom,
-								 TileEnum lastMoveTo,
-								 int playerOnePoints,
-								 int playerTwoPoints,
-								 Board board,
-								 UUID activePlayer) {
-		this.lastMoveFrom = lastMoveFrom;
-		this.lastMoveTo = lastMoveTo;
-		this.playerOnePoints = playerOnePoints;
-		this.playerTwoPoints = playerTwoPoints;
-		setPlayerMove(activePlayer);
-		// TODO: make this more elegant, so that the renderer becomes all information needed for rendering moves
-		this.board = board;
+    public void startedGame(UUID userId, UUID gameId) {
+        logger.info("Started game: " + gameId.toString());
+        this.userId = userId;
+        this.gameId = gameId;
+    }
 
-		boardUpdated.set(true);
-	}
+    public void updateGame(GameStatusMessage gameStatus) {
+        logger.info("Game update: " + gameStatus.toString());
+        this.gameStatus = gameStatus;
+    }
 
-	public boolean isClientPlayerOne() {
-		return isClientPlayerOne;
-	}
-
-	public boolean isClientPlayerTwo() {
-		return isClientPlayerTwo;
-	}
-
-	public boolean isPlayerOneMove() {
-		return isPlayerOneMove;
-	}
-
-	public boolean isPlayerTwoMove() {
-		return isPlayerTwoMove;
-	}
-
-	public boolean isMyTurn() {
-		return (isClientPlayerOne && isPlayerOneMove) || (isClientPlayerTwo && isPlayerTwoMove);
-	}
-
-	public boolean isInitComplete() {
-		return isInitComplete;
-	}
-
-	public void leaveGame() {
-		if (gameId != null && isGameActive) {
-			parent.getMessageEmitter().sendLeaveGameMessage(gameId);
-		}
-		setDefaultValues();
-	}
-
-	public void opponentLeftGame() {
-		opponentLeft = true;
-		isGameActive = false;
-	}
-
-	public void sendGameMoveMessage(TileEnum moveFrom, TileEnum moveTo) {
-		parent.getMessageEmitter().sendGameMoveMessage(gameId, moveFrom, moveTo);
-	}
-	
-	private void setDefaultValues() {
-		userId = null;
-		gameId = null;
-		isGameActive = false;
-		creationDate = null;
-		playerOne = null;
-		playerTwo = null;
-		playerOneUserName = null;
-		playerTwoUserName = null;
-		isClientPlayerOne = false;
-		isClientPlayerTwo = false;
-		isPlayerOneMove = false;
-		isPlayerTwoMove = false;
-		playerOnePoints = 0;
-		playerTwoPoints = 0;
-		lastMoveFrom = null;
-		lastMoveTo = null;
-		board = null;
-		isInitComplete = false;
-		boardUpdated = new AtomicBoolean();
-		opponentLeft = false;
-	}
-
-	private void setPlayerMove(UUID activePlayer) {
-		isPlayerOneMove = playerOne.equals(activePlayer);
-		isPlayerTwoMove = playerTwo.equals(activePlayer);
-	}
+    private void reset() {
+        gameStatus = null;
+        userId = null;
+        gameId = null;
+    }
 }

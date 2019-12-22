@@ -1,0 +1,36 @@
+package de.johannesrauch.hexxagon.state.event;
+
+import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.state.context.StateContext;
+import de.johannesrauch.hexxagon.state.context.StateEnum;
+
+/**
+ * This class represents a pressed back event from the back button in the lobby select menu.
+ * The state context uses this class as a transition event. A new state may occur.
+ *
+ * @author Johannes Rauch
+ */
+public class BackEvent implements AbstractEvent {
+
+    /**
+     * This method gets called by the state context.
+     * It executes the reaction on the pressed back event.
+     *
+     * @param context the state context in which this event object is used
+     * @return the next state or null, if the finite-state machine stays in his current state
+     */
+    @Override
+    public StateEnum reactOnEvent(StateContext context) {
+        StateEnum currentState = context.getState();
+
+        if (currentState == StateEnum.SearchLobby) {
+            Hexxagon parent = context.getParent();
+
+            parent.showMainMenuScreen();
+
+            return StateEnum.Connected;
+        }
+
+        return currentState;
+    }
+}

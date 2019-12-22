@@ -1,112 +1,80 @@
 package de.johannesrauch.hexxagon.controller;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.network.lobby.Lobby;
+import de.johannesrauch.hexxagon.model.lobby.Lobby;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * This class maintains the condition of the lobby.
- *
- * @author Dennis Jehle
- */
+import java.util.*;
+
 public class LobbyHandler {
 
-    final Logger logger = LoggerFactory.getLogger(LobbyHandler.class);
+    private final Hexxagon parent;
 
-    private Hexxagon parent;
+    private final Logger logger;
 
-    public ArrayList<Lobby> availableLobbies;
-    public boolean availableLobbiesUpdated;
-    public boolean lobbyIsClosed;
-
-    private UUID userId;
-    public UUID lobbyId;
-
+    private java.util.List<Lobby> availableLobbies;
+    private boolean updatedLobbies;
     private Lobby lobby;
 
-    private boolean isClientPlayerOne;
-    private boolean isClientPlayerTwo;
-    private boolean isLobbyReady;
-    private boolean isInitComplete;
-    private boolean isJoinedLobbyUpdated;
+    private UUID userId;
+    private UUID lobbyId;
 
     public LobbyHandler(Hexxagon parent) {
         this.parent = parent;
+        logger = LoggerFactory.getLogger(Hexxagon.class);
         availableLobbies = new ArrayList<>();
-        setDefaultValues();
+        reset();
     }
 
-    public String getPlayerOneUserName() {
-        return lobby.getPlayerOneUserName() != null ? lobby.getPlayerOneUserName() : "";
+    public void clearAvailableLobbies() {
+        availableLobbies.clear();
     }
 
-    public String getPlayerTwoUserName() {
-        return lobby.getPlayerTwoUserName() != null ? lobby.getPlayerTwoUserName() : "";
+    public boolean areLobbiesUpdated() {
+        if (updatedLobbies) {
+            updatedLobbies = false;
+            return true;
+        } else return false;
+    }
+
+    public List<Lobby> getAvailableLobbies() {
+        return availableLobbies;
     }
 
     public boolean isClientPlayerOne() {
-        return isClientPlayerOne;
+        if (lobby == null) return false;
+        return lobby.getPlayerOne().equals(userId);
     }
 
     public boolean isLobbyReady() {
-        return isLobbyReady;
+        if (lobby == null) return false;
+        return lobby.getPlayerOne() != null && lobby.getPlayerTwo() != null;
     }
 
-    public boolean isInitComplete() {
-        return isInitComplete;
-    }
-
-    public boolean isJoinedLobbyUpdated() {
-        return isJoinedLobbyUpdated;
-    }
-
-    public void lobbyJoined(UUID userId, UUID lobbyId) {
-        lobbyIsClosed = false;
+    public void joinedLobby(UUID userId, UUID lobbyId) {
+        logger.info("Joined lobby: " + lobbyId.toString());
         this.userId = userId;
         this.lobbyId = lobbyId;
     }
 
-    public void lobbyStatusUpdate(Lobby lobby) {
-        if (lobby.isClosed()) {
-            setDefaultValues();
-        } else {
-            this.lobby = lobby;
-
-            isClientPlayerOne = userId.equals(lobby.getPlayerOne());
-            isClientPlayerTwo = userId.equals(lobby.getPlayerTwo());
-            isLobbyReady = lobby.getPlayerOne() != null && lobby.getPlayerTwo() != null;
-            if (!isInitComplete) {
-                isInitComplete = true;
-            }
-            isJoinedLobbyUpdated = true;
-        }
-    }
-
-    public void sendLeaveLobbyMessage() {
+    public void leaveLobby() {
         if (lobbyId != null) {
+            logger.info("Left lobby: " + lobbyId.toString());
             parent.getMessageEmitter().sendLeaveLobbyMessage(lobbyId);
-            setDefaultValues();
-        }
+        } else logger.warn("LobbyId is null in leaveLobby()!");
+        reset();
     }
 
-    public void sendStartGameMessage() {
-        if (isClientPlayerOne && lobby != null && lobby.getPlayerTwo() != null) {
-            parent.getMessageEmitter().sendStartGameMessage(lobbyId);
-        }
+    public void updateLobbies(List<Lobby> availableLobbies) {
+        this.availableLobbies.clear();
+        this.availableLobbies.addAll(availableLobbies);
+        updatedLobbies = true;
     }
 
-    private void setDefaultValues() {
-        lobbyIsClosed = true;
-        lobbyId = null;
+    private void reset() {
         lobby = null;
-        isClientPlayerOne = false;
-        isClientPlayerTwo = false;
-        isLobbyReady = false;
-        isInitComplete = false;
-        isJoinedLobbyUpdated = false;
+        userId = null;
+        lobbyId = null;
     }
 }

@@ -1,92 +1,77 @@
 package de.johannesrauch.hexxagon.controller;
 
+import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.network.client.MessageEmitter;
+import de.johannesrauch.hexxagon.network.client.MessageReceiver;
+import de.johannesrauch.hexxagon.network.client.SimpleClient;
+import de.johannesrauch.hexxagon.state.event.ConnectFailedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
-import de.johannesrauch.hexxagon.network.clients.SimpleClient;
-import org.java_websocket.WebSocket;
-
-/**
- * Diese Klasse verwaltet eine WebSocket Verbindung zu einem Spielserver.
- *
- * @author Dennis Jehle
- */
 public class ConnectionHandler {
 
-    private SimpleClient simpleClient;
-    private WebSocket connection;
+    private final Hexxagon parent;
+
+    private final Logger logger;
+
+    private MessageReceiver messageReceiver;
+    private MessageEmitter messageEmitter;
+    private SimpleClient client;
+
     private UUID userId;
 
-    public ConnectionHandler() {
+    public ConnectionHandler(Hexxagon parent) {
+        this.parent = parent;
+        logger = LoggerFactory.getLogger(ConnectionHandler.class);
+        messageReceiver = new MessageReceiver(parent);
+        messageEmitter = new MessageEmitter(this);
         reset();
     }
 
-    public void setSimpleClient(SimpleClient simpleClient) {
-        this.simpleClient = simpleClient;
+    public void connect(String hostName, String port) {
+        boolean successful = false;
+
+        SimpleClient client = null;
+        try {
+            client = new SimpleClient(new URI("ws://" + hostName + ":" + port), messageReceiver);
+            successful = client.connectBlocking(5, TimeUnit.SECONDS);
+        } catch (URISyntaxException e) {
+            logger.error(e.getMessage());
+        } catch (InterruptedException ignore) { }
+
+        if (successful) this.client = client;
+        else parent.getContext().reactOnEvent(new ConnectFailedEvent());
     }
 
-    public SimpleClient getSimpleClient() {
-        if (simpleClient == null) {
-            reset();
-        }
-
-        return simpleClient;
+    public void disconnect() {
+        if (client != null) client.close();
+        parent.getLobbyHandler().clearAvailableLobbies();
+        reset();
     }
 
-    public void setConnection(WebSocket connection) {
-        if (this.connection == null) {
-            this.userId = null;
-            this.connection = connection;
-            this.connection.setAttachment(null);
-        } else {
-            closeConnection();
-            setConnection(connection);
-        }
+    private void reset() {
+        client = null;
+        userId = null;
     }
 
-    public WebSocket getConnection() {
-        if (connection == null) {
-            return null;
-        }
-
-        if (userId.equals((UUID) connection.getAttachment())) {
-            return connection;
-        }
-
-        return null;
+    public SimpleClient getClient() {
+        return client;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-        this.connection.setAttachment(this.userId);
+    public MessageEmitter getMessageEmitter() {
+        return messageEmitter;
     }
 
     public UUID getUserId() {
         return userId;
     }
 
-    public boolean connectionOpen() {
-        if (connection == null) {
-            return false;
-        }
-
-        if (connection.isOpen()) {
-            return true;
-        } else {
-            closeConnection();
-            return false;
-        }
-    }
-
-    public void closeConnection() {
-        if (connection != null) {
-            connection.close();
-            reset();
-        }
-    }
-
-    private void reset() {
-        this.simpleClient = null;
-        this.connection = null;
-        this.userId = null;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 }
