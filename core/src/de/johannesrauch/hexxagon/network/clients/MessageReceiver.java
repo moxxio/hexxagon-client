@@ -5,10 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.automaton.events.GameStartedEvent;
-import de.johannesrauch.hexxagon.automaton.events.LobbyJoinedEvent;
-import de.johannesrauch.hexxagon.automaton.events.LobbyStatusEvent;
-import de.johannesrauch.hexxagon.automaton.events.WelcomeEvent;
+import de.johannesrauch.hexxagon.automaton.events.*;
 import de.johannesrauch.hexxagon.controller.ConnectionHandler;
 import de.johannesrauch.hexxagon.controller.GameHandler;
 import de.johannesrauch.hexxagon.controller.LobbyHandler;
@@ -83,7 +80,7 @@ public class MessageReceiver {
     }
 
     private void receiveGameStatusMessage(GameStatus message) {
-        // TODO: Implement actions for game status message
+        parent.getStateContext().reactOnEvent(new GameStatusEvent(message));
     }
 
     private void receiveLobbyCreatedMessage(LobbyCreated ignore) {

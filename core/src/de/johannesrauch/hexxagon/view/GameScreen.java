@@ -127,8 +127,7 @@ public class GameScreen implements Screen {
         else if (gameHandler.isInitComplete() && gameHandlerInitializationCompleted || !debug) {
 
             // show or hide loading animation
-            if ((gameHandler.isClientPlayerOne() && gameHandler.isPlayerOneMove())
-					|| (gameHandler.isClientPlayerTwo() && gameHandler.isPlayerTwoMove())) {
+            if (gameHandler.isMyTurn()) {
                 if (loadingImage.isVisible()) {
                     loadingImage.setVisible(false);
                 }

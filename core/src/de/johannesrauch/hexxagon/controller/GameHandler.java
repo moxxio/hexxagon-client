@@ -82,28 +82,20 @@ public class GameHandler {
 		boardUpdated.set(true);
 	}
 
-	public void gameStatusUpdate(
-			TileEnum lastMoveFrom
-			, TileEnum lastMoveTo
-			, int playerOnePoints
-			, int playerTwoPoints
-			, UUID activePlayer
-			, Board board) {
-		// set lastMoveFrom
+	public void gameStatusUpdate(TileEnum lastMoveFrom,
+								 TileEnum lastMoveTo,
+								 int playerOnePoints,
+								 int playerTwoPoints,
+								 Board board,
+								 UUID activePlayer) {
 		this.lastMoveFrom = lastMoveFrom;
-		// set lastMoveTo
 		this.lastMoveTo = lastMoveTo;
-		// set player ones points
 		this.playerOnePoints = playerOnePoints;
-		// set player twos points
 		this.playerTwoPoints = playerTwoPoints;
-		// check and set if playerOne or playerTwo is allowed to make the next move
 		setPlayerMove(activePlayer);
-		// update board
 		// TODO: make this more elegant, so that the renderer becomes all information needed for rendering moves
 		this.board = board;
 
-		// board updated
 		boardUpdated.set(true);
 	}
 
@@ -121,6 +113,10 @@ public class GameHandler {
 
 	public boolean isPlayerTwoMove() {
 		return isPlayerTwoMove;
+	}
+
+	public boolean isMyTurn() {
+		return (isClientPlayerOne && isPlayerOneMove) || (isClientPlayerTwo && isPlayerTwoMove);
 	}
 
 	public boolean isInitComplete() {
