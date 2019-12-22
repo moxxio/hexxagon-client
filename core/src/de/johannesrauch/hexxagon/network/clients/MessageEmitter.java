@@ -2,6 +2,7 @@ package de.johannesrauch.hexxagon.network.clients;
 
 import java.util.UUID;
 
+import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.ConnectionHandler;
 import de.johannesrauch.hexxagon.network.board.TileEnum;
 import org.java_websocket.WebSocket;
@@ -22,18 +23,15 @@ import de.johannesrauch.hexxagon.network.messages.StartGame;
  */
 public class MessageEmitter {
 	
-	Gson gson = new Gson();
+	private final Gson gson;
 	
-	private ConnectionHandler connectionHandler;
-	
-	public void setConnectionHandler(ConnectionHandler connectionHandler) {
-		this.connectionHandler = connectionHandler;
+	private final Hexxagon parent;
+
+	public MessageEmitter(Hexxagon parent) {
+		gson = new Gson();
+		this.parent = parent;
 	}
-	
-	public MessageEmitter() {
-		connectionHandler = null;
-	}
-	
+
 	/**
 	 * Diese Methode sendet eine bereits als json String formatierte Nachricht an den Spielserver.
 	 * 
@@ -41,61 +39,54 @@ public class MessageEmitter {
 	 * @author Dennis Jehle
 	 */
 	private void sendMessage(String jsonMessage) {
-		WebSocket connection = connectionHandler.getConnection();
+		WebSocket connection = parent.getConnectionHandler().getConnection();
 		if (connection == null) {
 			return;
 		}
 		connection.send(jsonMessage);
 	}
 	
-	// GetAvailableLobbies
 	public void sendGetAvailableLobbiesMessage() {
-		UUID userId = connectionHandler.getUserId();
+		UUID userId = parent.getConnectionHandler().getUserId();
 		GetAvailableLobbies getAvailableLobbies = new GetAvailableLobbies(userId);
 		String jsonMessage = gson.toJson(getAvailableLobbies);
 		sendMessage(jsonMessage);
 	}
 	
-	// CreateNewLobby
 	public void sendCreateNewLobbyMessage(String lobbyName) {
-		UUID userId = connectionHandler.getUserId();
+		UUID userId = parent.getConnectionHandler().getUserId();
 		CreateNewLobby createNewLobby = new CreateNewLobby(userId, lobbyName);
 		String jsonMessage = gson.toJson(createNewLobby);
 		sendMessage(jsonMessage);
 	}
 	
-	// JoinLobby
 	public void sendJoinLobbyMessage(UUID lobbyId, String userName) {
-		UUID userId = connectionHandler.getUserId();
+		UUID userId = parent.getConnectionHandler().getUserId();
 		JoinLobby joinLobby = new JoinLobby(userId, lobbyId, userName);
 		String jsonMessage = gson.toJson(joinLobby);
 		sendMessage(jsonMessage);
 	}
 	
-	// LeaveLobby
 	public void sendLeaveLobbyMessage(UUID lobbyId) {
-		UUID userId = connectionHandler.getUserId();
+		UUID userId = parent.getConnectionHandler().getUserId();
 		LeaveLobby leaveLobby = new LeaveLobby(userId, lobbyId);
 		String jsonMessage = gson.toJson(leaveLobby);
 		sendMessage(jsonMessage);
 	}
 	
-	// StartGame
 	public void sendStartGameMessage(UUID lobbyId) {
-		UUID userId = connectionHandler.getUserId();
+		UUID userId = parent.getConnectionHandler().getUserId();
 		StartGame startGame = new StartGame(userId, lobbyId);
 		String jsonMessage = gson.toJson(startGame);
 		sendMessage(jsonMessage);
 	}
 	
-	// GameMove
 	public void sendGameMoveMessage(UUID gameId, TileEnum moveFrom, TileEnum moveTo) {
-		// TODO: implementieren
+		// TODO: implement this
 	}
 	
-	// LeaveGame
 	public void sendLeaveGameMessage(UUID gameId) {
-		// TODO: implementieren
+		// TODO: implement this
 	}
 	
 }

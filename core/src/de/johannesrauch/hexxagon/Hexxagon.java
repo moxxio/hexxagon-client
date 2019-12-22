@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import de.johannesrauch.hexxagon.automaton.context.StateContext;
 import de.johannesrauch.hexxagon.controller.*;
 import de.johannesrauch.hexxagon.network.clients.MessageEmitter;
@@ -81,20 +82,10 @@ public class Hexxagon extends Game {
     	particleEffect.load(Gdx.files.internal("slowbuzz.p"), Gdx.files.internal(""));
 
 		connectionHandler = new ConnectionHandler();
-		messageReceiver = new MessageReceiver();
+		messageReceiver = new MessageReceiver(this);
 		lobbyHandler = new LobbyHandler(this);
-		gameHandler = new GameHandler();
-		messageEmitter = new MessageEmitter();
-
-		messageReceiver.setParent(this);
-		messageReceiver.setConnectionHandler(connectionHandler);
-		messageReceiver.setLobbyHandler(lobbyHandler);
-		messageReceiver.setGameHandler(gameHandler);
-		messageReceiver.setMessageEmitter(messageEmitter);
-
-		gameHandler.setMessageEmitter(messageEmitter);
-
-		messageEmitter.setConnectionHandler(connectionHandler);
+		gameHandler = new GameHandler(this);
+		messageEmitter = new MessageEmitter(this);
 
 		mainMenuScreen = new MainMenuScreen(this);
 		lobbySelectScreen = new LobbySelectScreen(this);
@@ -113,7 +104,7 @@ public class Hexxagon extends Game {
 
 	@Override
 	public void dispose () {
-		// TODO
+		// TODO: free resources
 	}
 
 	public StateContext getStateContext() {

@@ -25,22 +25,19 @@ import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 
 public class MessageReceiver {
 
-    final Logger logger = LoggerFactory.getLogger(MessageReceiver.class);
-    final ExecutorService executorService = Executors.newFixedThreadPool(1);
-    final Gson gson = new Gson();
+    private final Logger logger;
+    private final ExecutorService executorService;
+    private final Gson gson;
 
-    private Hexxagon parent;
-    private ConnectionHandler connectionHandler;
-    private LobbyHandler lobbyHandler;
-    private GameHandler gameHandler;
-    private MessageEmitter messageEmitter;
+    private final Hexxagon parent;
 
     private LobbySelectScreen lobbySelectScreen;
 
-    public MessageReceiver() {
-        connectionHandler = null;
-        gameHandler = null;
-        lobbySelectScreen = null;
+    public MessageReceiver(Hexxagon parent) {
+        logger = LoggerFactory.getLogger(MessageReceiver.class);
+        executorService = Executors.newFixedThreadPool(1);
+        gson = new Gson();
+        this.parent = parent;
     }
 
     public void handleMessage(String json) {
@@ -72,28 +69,8 @@ public class MessageReceiver {
         });
     }
 
-    public void setConnectionHandler(ConnectionHandler connectionHandler) {
-        this.connectionHandler = connectionHandler;
-    }
-
-    public void setGameHandler(GameHandler gameHandler) {
-        this.gameHandler = gameHandler;
-    }
-
-    public void setLobbyHandler(LobbyHandler lobbyHandler) {
-        this.lobbyHandler = lobbyHandler;
-    }
-
-    public void setMessageEmitter(MessageEmitter messageEmitter) {
-        this.messageEmitter = messageEmitter;
-    }
-
     public void setLobbySelectScreen(LobbySelectScreen lobbySelectScreen) {
         this.lobbySelectScreen = lobbySelectScreen;
-    }
-
-    public void setParent(Hexxagon parent) {
-        this.parent = parent;
     }
 
     private void receiveAvailableLobbiesMessage(AvailableLobbies message) {
@@ -110,7 +87,7 @@ public class MessageReceiver {
     }
 
     private void receiveLobbyCreatedMessage(LobbyCreated ignore) {
-        messageEmitter.sendGetAvailableLobbiesMessage();
+        parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
     }
 
     private void receiveLobbyJoinedMessage(LobbyJoined message) {
