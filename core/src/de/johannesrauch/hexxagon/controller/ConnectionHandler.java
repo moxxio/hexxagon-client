@@ -16,6 +16,10 @@ public class ConnectionHandler {
     private WebSocket connection;
     private UUID userId;
 
+    public ConnectionHandler() {
+        reset();
+    }
+
     public void setSimpleClient(SimpleClient simpleClient) {
         this.simpleClient = simpleClient;
     }
@@ -58,10 +62,6 @@ public class ConnectionHandler {
 
     public UUID getUserId() {
         return userId;
-    }
-
-    public ConnectionHandler() {
-        reset();
     }
 
     public boolean connectionOpen() {
