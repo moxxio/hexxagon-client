@@ -3,6 +3,7 @@ package de.johannesrauch.hexxagon.view;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Game;
+import de.johannesrauch.hexxagon.automaton.events.LeaveEvent;
 import de.johannesrauch.hexxagon.model.GameScreenTile;
 import de.johannesrauch.hexxagon.network.board.TileEnum;
 import org.slf4j.Logger;
@@ -50,8 +51,6 @@ public class GameScreen implements Screen {
 
     boolean gameHandlerInitializationCompleted = false;
 
-    boolean dialogOpened = false;
-
     // TODO: entfernen Sie dieses Attribut, es dient nur dazu, dass Sie initial ein Spielfeld angezeigt bekommen
     //       Diese Funktionalität werden Sie nun selbst schreiben.
     boolean debug = true;
@@ -89,13 +88,9 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // TODO: Dieser Codeblock könnte verbessert werden
-        //       Zum Beispiel durch einen Dialog, der sich öffnet und auf dem ein Button "YES, EXIT GAME" geklickt werden muss,
-        //       um die Spielpartie zu verlassen.
-        if (Gdx.input.isKeyPressed(Keys.F10) && !dialogOpened) {
+        if (Gdx.input.isKeyPressed(Keys.F10)) {
             logger.info("F10 was pressed, leaving game now.");
-            // TODO: an dieser Stelle muss eine GameLeave Message gesendet werden
-            parent.showMainMenuScreen();
+            parent.getStateContext().reactOnEvent(new LeaveEvent());
         }
 
         parent.spriteBatch.setProjectionMatrix(camera.combined);

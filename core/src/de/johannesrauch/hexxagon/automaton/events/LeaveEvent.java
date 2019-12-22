@@ -22,14 +22,25 @@ public class LeaveEvent implements AbstractEvent {
     @Override
     public StateEnum reactOnEvent(StateContext context) {
         StateEnum currentState = context.getState();
+        Hexxagon parent = context.getParent();
 
         if (currentState == StateEnum.InLobbyAsPlayerOne
                 || currentState == StateEnum.InLobbyAsPlayerTwo
                 || currentState == StateEnum.InFullLobbyAsPlayerOne) {
-            Hexxagon parent = context.getParent();
-
             parent.getLobbyHandler().sendLeaveLobbyMessage();
             parent.showLobbySelectScreen();
+
+            return StateEnum.SearchLobby;
+        }
+
+        if (currentState == StateEnum.UninitializedGame
+                || currentState == StateEnum.InGameMyTurn
+                || currentState == StateEnum.InGameOpponentsTurn
+                || currentState == StateEnum.Winner
+                || currentState == StateEnum.Loser) {
+            parent.showLobbySelectScreen();
+            parent.getGameHandler().leaveGame();
+            parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
 
             return StateEnum.SearchLobby;
         }
