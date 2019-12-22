@@ -104,7 +104,6 @@ public class Hexxagon extends Game {
 		messageReceiver.setLobbySelectScreen(lobbySelectScreen);
 
 		this.showMainMenuScreen();
-		// this.showGameScreen();
 	}
 
 	@Override
@@ -135,6 +134,10 @@ public class Hexxagon extends Game {
 
 	public LobbyHandler getLobbyHandler() {
 		return lobbyHandler;
+	}
+
+	public GameHandler getGameHandler() {
+		return gameHandler;
 	}
 
 	public MainMenuScreen getMainMenuScreen() {
