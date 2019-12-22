@@ -26,7 +26,7 @@ public class BoardGraph {
     }
 
     private TileEnum assembleTileEnum(int t) {
-        return TileEnum.valueOf("TILE_" + t);
+        return TileEnum.valueOf("Tile_" + t);
     }
 
     private List<TileEnum> assembleTileEnumList(Integer... tiles) {
