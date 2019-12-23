@@ -5,6 +5,8 @@ import com.google.gson.JsonSyntaxException;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.network.message.*;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
+import de.johannesrauch.hexxagon.state.event.JoinedLobbyEvent;
+import de.johannesrauch.hexxagon.state.event.LobbyStatusEvent;
 import de.johannesrauch.hexxagon.state.event.WelcomeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,11 +64,13 @@ public class MessageReceiver {
     }
 
     private void receivedLobbyJoined(LobbyJoinedMessage message) {
-
+        logger.info("Received joined lobby");
+        parent.getContext().reactOnEvent(new JoinedLobbyEvent(message));
     }
 
     private void receivedLobbyStatus(LobbyStatusMessage message) {
-
+        logger.info("Received lobby status");
+        parent.getContext().reactOnEvent(new LobbyStatusEvent(message));
     }
 
     private void receivedGameStarted(GameStartedMessage message) {

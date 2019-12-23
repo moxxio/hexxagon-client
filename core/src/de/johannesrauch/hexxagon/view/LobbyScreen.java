@@ -2,12 +2,17 @@ package de.johannesrauch.hexxagon.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.controller.LobbyHandler;
+import de.johannesrauch.hexxagon.state.event.GameStartedEvent;
+import de.johannesrauch.hexxagon.state.event.LeaveEvent;
 
 public class LobbyScreen extends BaseScreen {
 
@@ -33,7 +38,19 @@ public class LobbyScreen extends BaseScreen {
         playerTwoUserNameLabel = new Label("<PLAYER TWO USER NAME>", skin);
 
         startButton = new TextButton("START", skin);
+        startButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                parent.getLobbyHandler().startGame();
+            }
+        });
         leaveButton = new TextButton("LEAVE", skin);
+        leaveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                parent.getContext().reactOnEvent(new LeaveEvent());
+            }
+        });
 
         mainTable = new Table();
         mainTable.setWidth(stage.getWidth());
@@ -57,6 +74,8 @@ public class LobbyScreen extends BaseScreen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+
+        startButton.setVisible(false);
     }
 
     @Override
@@ -64,7 +83,12 @@ public class LobbyScreen extends BaseScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // TODO: retrieve player names
+        LobbyHandler lobbyHandler = parent.getLobbyHandler();
+        if (lobbyHandler.isLobbyUpdated()) {
+            startButton.setVisible(lobbyHandler.isClientPlayerOne() && lobbyHandler.isLobbyReady());
+            playerOneUserNameLabel.setText(lobbyHandler.getPlayerOneUserName());
+            playerTwoUserNameLabel.setText(lobbyHandler.getPlayerTwoUserName());
+        }
 
         stage.act(delta);
         stage.draw();

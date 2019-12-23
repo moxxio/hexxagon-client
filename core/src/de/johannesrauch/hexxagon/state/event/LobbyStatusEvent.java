@@ -35,6 +35,7 @@ public class LobbyStatusEvent implements AbstractEvent {
         LobbyHandler lobbyHandler = parent.getLobbyHandler();
 
         if (currentState == StateEnum.JoiningLobby) {
+            lobbyHandler.updateLobby(message.getLobby());
             parent.showLobbyScreen();
 
             if (lobbyHandler.isClientPlayerOne() && lobbyHandler.isLobbyReady())
@@ -44,16 +45,22 @@ public class LobbyStatusEvent implements AbstractEvent {
         }
 
         if (currentState == StateEnum.InLobbyAsPlayerOne) {
+            lobbyHandler.updateLobby(message.getLobby());
+
             if (lobbyHandler.isLobbyReady()) return StateEnum.InFullLobbyAsPlayerOne;
             return currentState;
         }
 
         if (currentState == StateEnum.InLobbyAsPlayerTwo) {
+            lobbyHandler.updateLobby(message.getLobby());
+
             if (!lobbyHandler.isLobbyReady()) return StateEnum.InLobbyAsPlayerOne;
             return currentState;
         }
 
         if (currentState == StateEnum.InFullLobbyAsPlayerOne) {
+            lobbyHandler.updateLobby(message.getLobby());
+
             if (!lobbyHandler.isLobbyReady()) return StateEnum.InLobbyAsPlayerOne;
             return currentState;
         }

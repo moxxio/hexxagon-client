@@ -104,6 +104,7 @@ public class Hexxagon extends Game {
     }
 
     public void showSelectLobbyScreen() {
+        selectLobbyScreen.hideProgressBar();
         setScreen(selectLobbyScreen);
     }
 

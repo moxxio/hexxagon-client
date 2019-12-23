@@ -14,7 +14,8 @@ public class LobbyHandler {
     private final Logger logger;
 
     private java.util.List<Lobby> availableLobbies;
-    private boolean updatedLobbies;
+    private boolean lobbiesUpdated;
+    private boolean lobbyUpdated;
     private Lobby lobby;
 
     private UUID userId;
@@ -32,14 +33,33 @@ public class LobbyHandler {
     }
 
     public boolean areLobbiesUpdated() {
-        if (updatedLobbies) {
-            updatedLobbies = false;
+        if (lobbiesUpdated) {
+            lobbiesUpdated = false;
             return true;
-        } else return false;
+        }
+        return false;
     }
 
     public List<Lobby> getAvailableLobbies() {
         return availableLobbies;
+    }
+
+    public void updateLobbies(List<Lobby> availableLobbies) {
+        this.availableLobbies.clear();
+        this.availableLobbies.addAll(availableLobbies);
+        lobbiesUpdated = true;
+    }
+
+    public String getPlayerOneUserName() {
+        if (lobby == null) return "";
+        if (lobby.getPlayerOneUserName() == null) return "";
+        return lobby.getPlayerOneUserName();
+    }
+
+    public String getPlayerTwoUserName() {
+        if (lobby == null) return "";
+        if (lobby.getPlayerTwoUserName() == null) return "";
+        return lobby.getPlayerTwoUserName();
     }
 
     public boolean isClientPlayerOne() {
@@ -50,6 +70,14 @@ public class LobbyHandler {
     public boolean isLobbyReady() {
         if (lobby == null) return false;
         return lobby.getPlayerOne() != null && lobby.getPlayerTwo() != null;
+    }
+
+    public boolean isLobbyUpdated() {
+        if (lobbyUpdated) {
+            lobbyUpdated = false;
+            return true;
+        }
+        return false;
     }
 
     public void joinedLobby(UUID userId, UUID lobbyId) {
@@ -66,15 +94,20 @@ public class LobbyHandler {
         reset();
     }
 
-    public void updateLobbies(List<Lobby> availableLobbies) {
-        this.availableLobbies.clear();
-        this.availableLobbies.addAll(availableLobbies);
-        updatedLobbies = true;
+    public void updateLobby(Lobby lobby) {
+        this.lobby = lobby;
+        lobbyUpdated = true;
+    }
+
+    public void startGame() {
+        if (isClientPlayerOne() && isLobbyReady()) parent.getMessageEmitter().sendStartGameMessage(lobbyId);
     }
 
     private void reset() {
         lobby = null;
         userId = null;
         lobbyId = null;
+        lobbiesUpdated = false;
+        lobbyUpdated = false;
     }
 }

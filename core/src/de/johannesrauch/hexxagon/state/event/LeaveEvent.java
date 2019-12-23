@@ -24,6 +24,13 @@ public class LeaveEvent implements AbstractEvent {
         StateEnum currentState = context.getState();
         Hexxagon parent = context.getParent();
 
+        if (currentState == StateEnum.JoiningLobby) {
+            parent.getLobbyHandler().leaveLobby();
+            parent.getSelectLobbyScreen().hideProgressBar();
+
+            return StateEnum.SearchLobby;
+        }
+
         if (currentState == StateEnum.InLobbyAsPlayerOne
                 || currentState == StateEnum.InLobbyAsPlayerTwo
                 || currentState == StateEnum.InFullLobbyAsPlayerOne) {

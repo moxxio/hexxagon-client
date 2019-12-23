@@ -29,16 +29,19 @@ public class JoinedLobbyEvent implements AbstractEvent {
     @Override
     public StateEnum reactOnEvent(StateContext context) {
         StateEnum currentState = context.getState();
+        Hexxagon parent = context.getParent();
 
         if (currentState == StateEnum.JoiningLobby) {
-            Hexxagon parent = context.getParent();
-
             if (message.getSuccessfullyJoined()) {
                 parent.getLobbyHandler().joinedLobby(message.getUserId(), message.getLobbyId());
                 return currentState;
             } else {
                 return StateEnum.SearchLobby;
             }
+        }
+
+        if (currentState == StateEnum.SearchLobby) {
+            parent.getMessageEmitter().sendLeaveLobbyMessage(message.getLobbyId());
         }
 
         return currentState;

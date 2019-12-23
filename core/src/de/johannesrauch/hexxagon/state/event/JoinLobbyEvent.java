@@ -37,7 +37,7 @@ public class JoinLobbyEvent implements AbstractEvent {
             Hexxagon parent = context.getParent();
 
             parent.getMessageEmitter().sendJoinLobbyMessage(lobbyId, userName);
-            // parent.getSelectLobbyScreen().showProgressBar(); // No progress bar!
+            parent.getSelectLobbyScreen().showProgressBar();
 
             return StateEnum.JoiningLobby;
         }
