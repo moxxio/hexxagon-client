@@ -24,7 +24,7 @@ import java.util.zip.Adler32;
 
 public class SelectLobbyScreen extends BaseScreen {
 
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(SelectLobbyScreen.class);;
 
     private Label headingLabel;
     private ButtonLabel userNameLabel;
@@ -56,7 +56,6 @@ public class SelectLobbyScreen extends BaseScreen {
         Skin skin = parent.getResources().getSkin();
         Adler32 a32 = new Adler32();
         a32.update(UUID.randomUUID().toString().getBytes());
-        logger = LoggerFactory.getLogger(SelectLobbyScreen.class);
 
         headingLabel = new Label("CHOOSE LOBBY", skin, "title");
         userNameLabel = new ButtonLabel("USERNAME: ", skin);
@@ -255,7 +254,7 @@ public class SelectLobbyScreen extends BaseScreen {
         progressBar.setValue(1.0f);
     }
 
-    public void hideProgressBar(int millis) {
+    public void hideProgressBar(int millis) { // TODO: necessary?
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ignored) {

@@ -12,6 +12,7 @@ import de.johannesrauch.hexxagon.view.GameScreen;
 import de.johannesrauch.hexxagon.view.LobbyScreen;
 import de.johannesrauch.hexxagon.view.MainMenuScreen;
 import de.johannesrauch.hexxagon.view.SelectLobbyScreen;
+import org.apache.log4j.BasicConfigurator;
 
 public class Hexxagon extends Game {
 
@@ -31,6 +32,7 @@ public class Hexxagon extends Game {
     @Override
     public void create() {
         Gdx.graphics.setTitle("Hexxagon");
+        BasicConfigurator.configure();
 
         context = new StateContext(this);
 

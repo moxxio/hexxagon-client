@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 
 public class MessageReceiver {
 
+    private static final Logger logger = LoggerFactory.getLogger(MessageReceiver.class);
     private final Hexxagon parent;
     private final Gson gson;
-    private final Logger logger = LoggerFactory.getLogger(MessageReceiver.class);
 
     public MessageReceiver(Hexxagon parent) {
         this.parent = parent;

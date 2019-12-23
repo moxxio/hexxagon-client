@@ -11,15 +11,12 @@ import java.util.UUID;
 
 public class MessageEmitter {
 
+    private final Logger logger = LoggerFactory.getLogger(MessageEmitter.class);
     private final ConnectionHandler connection;
-
-    private final Logger logger;
-
     private final Gson gson;
 
     public MessageEmitter(ConnectionHandler connection) {
         this.connection = connection;
-        logger = LoggerFactory.getLogger(MessageEmitter.class);
         gson = new Gson();
     }
 
