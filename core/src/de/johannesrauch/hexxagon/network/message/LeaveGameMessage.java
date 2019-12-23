@@ -8,8 +8,9 @@ public class LeaveGameMessage extends AbstractMessage {
 
     private UUID gameId;
 
-    public LeaveGameMessage(UUID userId) {
+    public LeaveGameMessage(UUID userId, UUID gameId) {
         super(MessageType.LeaveGame, userId);
+        this.gameId = gameId;
     }
 
     public UUID getGameId() {

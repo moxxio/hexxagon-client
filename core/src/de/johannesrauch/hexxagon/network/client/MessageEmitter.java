@@ -1,7 +1,7 @@
 package de.johannesrauch.hexxagon.network.client;
 
 import com.google.gson.Gson;
-import de.johannesrauch.hexxagon.controller.ConnectionHandler;
+import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.network.message.*;
 import org.slf4j.Logger;
@@ -74,11 +74,19 @@ public class MessageEmitter {
     }
 
     public void sendGameMoveMessage(UUID gameId, TileEnum moveFrom, TileEnum moveTo) {
-        // TODO: implement this
+        UUID userId = connection.getUserId();
+        GameMoveMessage gameMove = new GameMoveMessage(userId, gameId, moveFrom, moveTo);
+        String jsonMessage = gson.toJson(gameMove);
+        checkUserId(userId, jsonMessage);
+        sendMessage(jsonMessage);
     }
 
     public void sendLeaveGameMessage(UUID gameId) {
-        // TODO: implement this
+        UUID userId = connection.getUserId();
+        LeaveGameMessage leaveGame = new LeaveGameMessage(userId, gameId);
+        String jsonMessage = gson.toJson(leaveGame);
+        checkUserId(userId, jsonMessage);
+        sendMessage(jsonMessage);
     }
 
     private void checkUserId(UUID userId, String jsonMessage) {

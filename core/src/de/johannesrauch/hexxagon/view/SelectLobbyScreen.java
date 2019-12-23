@@ -2,16 +2,18 @@ package de.johannesrauch.hexxagon.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.controller.LobbyHandler;
+import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.model.lobby.Lobby;
 import de.johannesrauch.hexxagon.state.event.BackEvent;
 import de.johannesrauch.hexxagon.state.event.JoinLobbyEvent;
 import de.johannesrauch.hexxagon.state.event.LeaveEvent;
+import de.johannesrauch.hexxagon.view.label.ButtonLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +27,7 @@ public class SelectLobbyScreen extends BaseScreen {
     private final Logger logger;
 
     private Label headingLabel;
-    private Label userNameLabel;
+    private ButtonLabel userNameLabel;
     private Label joiningLabel;
 
     private TextField userNameTextField;
@@ -47,6 +49,8 @@ public class SelectLobbyScreen extends BaseScreen {
     private Table mainTable;
     private Table joiningTable;
 
+    private SpriteBatch spriteBatch;
+
     public SelectLobbyScreen(Hexxagon parent) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
@@ -54,11 +58,12 @@ public class SelectLobbyScreen extends BaseScreen {
         a32.update(UUID.randomUUID().toString().getBytes());
         logger = LoggerFactory.getLogger(SelectLobbyScreen.class);
 
-        headingLabel = new Label("CHOOSE LOBBY", skin);
-        userNameLabel = new Label("USERNAME: ", skin);
+        headingLabel = new Label("CHOOSE LOBBY", skin, "title");
+        userNameLabel = new ButtonLabel("USERNAME: ", skin);
         joiningLabel = new Label("JOINING LOBBY...", skin);
 
         userNameTextField = new TextField("PLAYER" + a32.getValue() / 1000, skin);
+        userNameTextField.setAlignment(Align.center);
 
         joinButton = new TextButton("JOIN", skin);
         joinButton.addListener(new ClickListener() {
@@ -136,45 +141,48 @@ public class SelectLobbyScreen extends BaseScreen {
         progressBar = new ProgressBar(0.0f, 1.0f, 0.01f, false, skin);
 
         userNameTable = new Table();
-        userNameTable.add(userNameLabel);
-        userNameTable.add(userNameTextField).minWidth(300);
+        userNameTable.align(Align.center);
+        userNameTable.add(userNameLabel).minSize(300, 50).padRight(15);
+        userNameTable.add(userNameTextField).minSize(300, 50);
 
         buttonTable = new Table();
         buttonTable.padLeft(15);
-        buttonTable.add(joinButton).padBottom(5).minSize(100, 50);
+        buttonTable.add(joinButton).padBottom(5).minSize(300, 50);
         buttonTable.row();
-        buttonTable.add(createButton).padBottom(5).minSize(100, 50);
+        buttonTable.add(createButton).padBottom(5).minSize(300, 50);
         buttonTable.row();
-        buttonTable.add(refreshButton).padBottom(5).minSize(100, 50);
+        buttonTable.add(refreshButton).padBottom(5).minSize(300, 50);
         buttonTable.row();
-        buttonTable.add(backButton).padBottom(5).minSize(100, 50);
+        buttonTable.add(backButton).padBottom(5).minSize(300, 50);
 
         mainTable = new Table();
         mainTable.setWidth(stage.getWidth());
         mainTable.align(Align.top | Align.center);
         mainTable.setPosition(0, Gdx.graphics.getHeight());
-        mainTable.padTop(30);
+        mainTable.padTop(100);
         mainTable.add(headingLabel).padBottom(15).colspan(2);
         mainTable.row();
-        mainTable.add(userNameTable).align(Align.left).padBottom(15).colspan(2);
+        mainTable.add(userNameTable).align(Align.center).padBottom(15).colspan(2);
         mainTable.row();
-        mainTable.add(scrollPane).padBottom(15).minSize(500, 300);
-        mainTable.add(buttonTable).maxSize(200, 50).align(Align.center);
+        mainTable.add(scrollPane).padBottom(15).minSize(600, 400);
+        mainTable.add(buttonTable).maxSize(300, 50).align(Align.center);
 
         joiningTable = new Table();
         joiningTable.setWidth(stage.getWidth());
         joiningTable.align(Align.top | Align.center);
         joiningTable.setPosition(0, Gdx.graphics.getHeight());
-        joiningTable.padTop(30);
+        joiningTable.padTop(100);
         joiningTable.add(joiningLabel).padBottom(15).colspan(2);
         joiningTable.row();
         joiningTable.add(progressBar).minSize(600, 50);
         joiningTable.row();
-        joiningTable.add(cancelButton).minSize(100, 50).padBottom(5);
+        joiningTable.add(cancelButton).minSize(300, 50).padBottom(5);
         joiningTable.setVisible(false);
 
         stage.addActor(mainTable);
         stage.addActor(joiningTable);
+
+        spriteBatch = new SpriteBatch();
     }
 
     @Override
@@ -206,13 +214,18 @@ public class SelectLobbyScreen extends BaseScreen {
             lobbyList.setItems(tmp.toArray(new String[0]));
         }
 
+        // Background
+        spriteBatch.begin();
+        spriteBatch.draw(parent.getResources().getBackground(), 0, 0, 1280, 720);
+        spriteBatch.end();
+
         stage.act(delta);
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().setScreenSize(width, height);
     }
 
     @Override

@@ -16,13 +16,14 @@ public class Resources {
     private final Texture tileMoveOne;
     private final Texture tileMoveTwo;
     private final Texture loading;
+    private final Texture background;
 
     public Resources() {
-        this("quantum-horizon");
+        this("quantum-horizon", "quantum-horizon-ui");
     }
 
-    public Resources(String skinName) {
-        skin = new Skin(Gdx.files.internal(skinName + "/skin/" + skinName + "-ui.json"));
+    public Resources(String skinFolder, String skinName) {
+        skin = new Skin(Gdx.files.internal(skinFolder + "/skin/" + skinName + ".json"));
         tileFree = new Texture(Gdx.files.internal("TileFree.png"));
         tileBlocked = new Texture(Gdx.files.internal("TileBlocked.png"));
         tilePlayerOne = new Texture(Gdx.files.internal("TilePlayerOne.png"));
@@ -32,6 +33,7 @@ public class Resources {
         tileMoveOne = new Texture(Gdx.files.internal("TileMoveOne.png"));
         tileMoveTwo = new Texture(Gdx.files.internal("TileMoveTwo.png"));
         loading = new Texture(Gdx.files.internal("loading.png"));
+        background = new Texture(Gdx.files.internal("background-dark.png"));
     }
 
     public Skin getSkin() {
@@ -72,5 +74,9 @@ public class Resources {
 
     public Texture getLoading() {
         return loading;
+    }
+
+    public Texture getBackground() {
+        return background;
     }
 }

@@ -11,8 +11,11 @@ public class GameMoveMessage extends AbstractMessage {
     private TileEnum moveFrom;
     private TileEnum moveTo;
 
-    public GameMoveMessage(UUID userId) {
+    public GameMoveMessage(UUID userId, UUID gameId, TileEnum moveFrom, TileEnum moveTo) {
         super(MessageType.GameMove, userId);
+        this.gameId = gameId;
+        this.moveFrom = moveFrom;
+        this.moveTo = moveTo;
     }
 
     public UUID getGameId() {

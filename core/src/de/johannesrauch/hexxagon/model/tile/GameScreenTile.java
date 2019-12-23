@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class GameScreenTile extends Image {
+
     public GameScreenTile(Texture texture) {
         super(new SpriteDrawable(new Sprite(texture)));
     }

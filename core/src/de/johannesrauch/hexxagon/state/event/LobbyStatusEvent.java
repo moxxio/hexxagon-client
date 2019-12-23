@@ -1,7 +1,7 @@
 package de.johannesrauch.hexxagon.state.event;
 
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.controller.LobbyHandler;
+import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.network.message.LobbyStatusMessage;
 import de.johannesrauch.hexxagon.state.context.StateContext;
 import de.johannesrauch.hexxagon.state.context.StateEnum;

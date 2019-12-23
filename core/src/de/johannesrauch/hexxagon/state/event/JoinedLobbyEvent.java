@@ -36,6 +36,7 @@ public class JoinedLobbyEvent implements AbstractEvent {
                 parent.getLobbyHandler().joinedLobby(message.getUserId(), message.getLobbyId());
                 return currentState;
             } else {
+                parent.showSelectLobbyScreen();
                 return StateEnum.SearchLobby;
             }
         }

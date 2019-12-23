@@ -13,5 +13,6 @@ public enum StateEnum {
     InGameMyTurn,
     InGameOpponentsTurn,
     Winner,
-    Loser
+    Loser,
+    Tie
 }

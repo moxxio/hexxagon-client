@@ -1,57 +1,164 @@
 package de.johannesrauch.hexxagon.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.controller.handler.GameHandler;
+import de.johannesrauch.hexxagon.controller.listener.TileClickListener;
+import de.johannesrauch.hexxagon.model.board.Board;
 import de.johannesrauch.hexxagon.model.tile.GameScreenTile;
+import de.johannesrauch.hexxagon.model.tile.TileEnum;
+import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
+import de.johannesrauch.hexxagon.state.context.StateEnum;
+import de.johannesrauch.hexxagon.state.event.LeaveEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameScreen extends BaseScreen {
 
     private Label playerOneLabel;
     private Label playerTwoLabel;
+    private Label playerOneUserNameLabel;
+    private Label playerTwoUserNameLabel;
+    private Label playerOnePointsLabel;
+    private Label playerTwoPointsLabel;
+    private Label playerOneScoreLabel;
+    private Label playerTwoScoreLabel;
+    private Label turnLabel;
+    private Label winnerLabel;
 
     private TextButton leaveButton;
 
-    private GameScreenTile[] gameScreenTiles;
+    private Map<TileEnum, GameScreenTile> gameScreenTiles;
+
+    private SpriteBatch spriteBatch;
 
     public GameScreen(Hexxagon parent) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
 
-        // TODO: get the right values
-        playerOneLabel = new Label("USERNAME 1: POINTS", skin);
-        playerOneLabel.setSize(150, 50);
-        playerOneLabel.setPosition(15, 660);
-        playerTwoLabel = new Label("USERNAME 2: Points", skin);
-        playerTwoLabel.setSize(150, 50);
-        playerTwoLabel.setPosition(15, 630);
+        playerOneLabel = new Label("PLAYER ONE: ", skin);
+        playerOneLabel.setPosition(20, 40);
+        playerTwoLabel = new Label("PLAYER TWO: ", skin);
+        playerTwoLabel.setPosition(760, 40);
+        playerOneUserNameLabel = new Label("<PLAYER ONE USER NAME>", skin);
+        playerOneUserNameLabel.setPosition(205, 40);
+        playerTwoUserNameLabel = new Label("<PLAYER ONE USER NAME>", skin);
+        playerTwoUserNameLabel.setPosition(945, 40);
+        playerOnePointsLabel = new Label("POINTS: ", skin);
+        playerOnePointsLabel.setPosition(20, 20);
+        playerTwoPointsLabel = new Label("POINTS: ", skin);
+        playerTwoPointsLabel.setPosition(760, 20);
+        playerOneScoreLabel = new Label("<SCORE>", skin);
+        playerOneScoreLabel.setPosition(205, 20);
+        playerTwoScoreLabel = new Label("<SCORE>", skin);
+        playerTwoScoreLabel.setPosition(945, 20);
+        turnLabel = new Label("<WHOSE TURN>", skin);
+        turnLabel.setPosition(20, 690);
+        winnerLabel = new Label("<WHO WON>", skin);
+        winnerLabel.setPosition(20, 670);
+        winnerLabel.setVisible(false);
 
         leaveButton = new TextButton("LEAVE", skin);
         leaveButton.setPosition(1115, 660);
         leaveButton.setSize(150, 50);
+        leaveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                TextButton yesButton = new TextButton("YES", skin);
+                TextButton noButton = new TextButton("NO", skin);
 
-        gameScreenTiles = new GameScreenTile[61];
+                Label reassureLabel = new Label("ARE YOU SURE YOU WANT TO LEAVE?", skin);
+                reassureLabel.setColor(Color.BLACK);
+
+                Dialog dialog = new Dialog("LEAVE GAME", skin) {
+                    @Override
+                    protected void result(Object object) {
+                        boolean result = (boolean) object;
+                        if (result) {
+                            parent.getContext().reactOnEvent(new LeaveEvent());
+                        }
+                    }
+                };
+
+                dialog.getContentTable().pad(15);
+                dialog.getContentTable().add(reassureLabel);
+                dialog.button(yesButton, true);
+                dialog.button(noButton, false);
+                dialog.show(stage);
+            }
+        });
+
+        gameScreenTiles = new HashMap<>();
         setupTiles();
 
         stage.addActor(playerOneLabel);
         stage.addActor(playerTwoLabel);
+        stage.addActor(playerOneUserNameLabel);
+        stage.addActor(playerTwoUserNameLabel);
+        stage.addActor(playerOnePointsLabel);
+        stage.addActor(playerTwoPointsLabel);
+        stage.addActor(playerOneScoreLabel);
+        stage.addActor(playerTwoScoreLabel);
+        stage.addActor(turnLabel);
+        stage.addActor(winnerLabel);
         stage.addActor(leaveButton);
+
+        spriteBatch = new SpriteBatch();
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+
+        reset();
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Game board
+        GameHandler gameHandler = parent.getGameHandler();
+        if (gameHandler.isGameUpdated()) { // TODO: receive label values
+            playerOneUserNameLabel.setText(gameHandler.getPlayerOneUserName());
+            playerTwoUserNameLabel.setText(gameHandler.getPlayerTwoUserName());
+            playerOneScoreLabel.setText(gameHandler.getPlayerOnePoints());
+            playerTwoScoreLabel.setText(gameHandler.getPlayerTwoPoints());
+            turnLabel.setText(gameHandler.getWhoseTurn());
+
+            if (gameHandler.isGameOver()) {
+                if (gameHandler.isTie()) winnerLabel.setText("TIE");
+                else if (gameHandler.isWinnerMe()) winnerLabel.setText("WINNER");
+                else winnerLabel.setText("LOSER");
+                winnerLabel.setVisible(true);
+            }
+
+            // TODO: check null pointers
+            for (TileEnum tile : TileEnum.values()) {
+                TileStateEnum tileState = gameHandler.getTileState(tile);
+                if (tileState == TileStateEnum.PLAYERONE)
+                    gameScreenTiles.get(tile).setTexture(parent.getResources().getTilePlayerOne());
+                else if (tileState == TileStateEnum.PLAYERTWO)
+                    gameScreenTiles.get(tile).setTexture(parent.getResources().getTilePlayerTwo());
+                else if (tileState == TileStateEnum.BLOCKED)
+                    gameScreenTiles.get(tile).setTexture(parent.getResources().getTileBlocked());
+                else
+                    gameScreenTiles.get(tile).setTexture(parent.getResources().getTileFree());
+            }
+        }
+
+        // Background
+        spriteBatch.begin();
+        spriteBatch.draw(parent.getResources().getBackground(), 0, 0, 1280, 720);
+        spriteBatch.end();
 
         stage.act(delta);
         stage.draw();
@@ -80,6 +187,27 @@ public class GameScreen extends BaseScreen {
     @Override
     public void dispose() {
 
+    }
+
+    public Map<TileEnum, GameScreenTile> getGameScreenTiles() {
+        return gameScreenTiles;
+    }
+
+    private TileEnum getTileEnumFromInt(int i) {
+        return TileEnum.valueOf("TILE_" + i);
+    }
+
+    private void reset() {
+        for (TileEnum tile : TileEnum.values()) {
+            gameScreenTiles.get(tile).setTexture(parent.getResources().getTileFree());
+        }
+        playerOneUserNameLabel.setText("<PLAYER ONE USER NAME>");
+        playerTwoUserNameLabel.setText("<PLAYER TWO USER NAME>");
+        playerOneScoreLabel.setText("<SCORE>");
+        playerTwoScoreLabel.setText("<SCORE>");
+        turnLabel.setText("<WHOSE TURN>");
+        winnerLabel.setText("<WHO WON>");
+        winnerLabel.setVisible(false);
     }
 
     private void setupTiles() {
@@ -118,25 +246,21 @@ public class GameScreen extends BaseScreen {
                 posY = startPosY - sizeY - (i - 43) * sizeY - offsetY - (i - 43) * offsetY;
             } else if (i < 56) {
                 posX = startPosX + offsetX * 3;
-                posY = startPosY - sizeY - sizeY / 2 - (i - 50) * sizeY - 3 * offsetY / 2 - (i - 50) * offsetY;;
+                posY = startPosY - sizeY - sizeY / 2 - (i - 50) * sizeY - 3 * offsetY / 2 - (i - 50) * offsetY;
+                ;
             } else {
                 posX = startPosX + offsetX * 4;
                 posY = startPosY - 2 * sizeY - (i - 56) * sizeY - 2 * offsetY - (i - 56) * offsetY;
             }
 
-            GameScreenTile tile = new GameScreenTile(parent.getResources().getTileFree());
-            tile.setPosition(posX, posY);
-            tile.setSize(sizeX, sizeY);
-            tile.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    // TODO: actually handle event
-                    System.out.println("CLICKED " + index);
-                }
-            });
+            TileEnum tile = getTileEnumFromInt(i + 1);
+            GameScreenTile gameScreenTile = new GameScreenTile(parent.getResources().getTileFree());
+            gameScreenTile.setPosition(posX, posY);
+            gameScreenTile.setSize(sizeX, sizeY);
+            gameScreenTile.addListener(new TileClickListener(parent, tile, gameScreenTile));
 
-            gameScreenTiles[i] = tile;
-            stage.addActor(tile);
+            gameScreenTiles.put(tile, gameScreenTile);
+            stage.addActor(gameScreenTile);
         }
     }
 }

@@ -1,7 +1,7 @@
 package de.johannesrauch.hexxagon.state.event;
 
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.controller.GameHandler;
+import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.network.message.GameStatusMessage;
 import de.johannesrauch.hexxagon.state.context.StateContext;
 import de.johannesrauch.hexxagon.state.context.StateEnum;
@@ -44,15 +44,20 @@ public class GameStatusEvent implements AbstractEvent {
             gameHandler.updateGame(message);
 
             if (gameHandler.isMyTurn()) return StateEnum.InGameMyTurn;
-            else return StateEnum.InGameOpponentsTurn;
+            return StateEnum.InGameOpponentsTurn;
         }
 
         if (currentState == StateEnum.InGameMyTurn || currentState == StateEnum.InGameOpponentsTurn) {
             gameHandler.updateGame(message);
 
-            // TODO: if game is over, go to winner's or loser's state
+            // TODO: show winner, tie or loser
+            if (gameHandler.isGameOver()) {
+                if (gameHandler.isTie()) return StateEnum.Tie;
+                if (gameHandler.isWinnerMe()) return StateEnum.Winner;
+                return StateEnum.Loser;
+            }
             if (gameHandler.isMyTurn()) return StateEnum.InGameMyTurn;
-            else return StateEnum.InGameOpponentsTurn;
+            return StateEnum.InGameOpponentsTurn;
         }
 
         return currentState;

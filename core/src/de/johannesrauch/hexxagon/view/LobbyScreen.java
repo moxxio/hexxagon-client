@@ -2,6 +2,7 @@ package de.johannesrauch.hexxagon.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -10,8 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.controller.LobbyHandler;
-import de.johannesrauch.hexxagon.state.event.GameStartedEvent;
+import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.state.event.LeaveEvent;
 
 public class LobbyScreen extends BaseScreen {
@@ -27,11 +27,13 @@ public class LobbyScreen extends BaseScreen {
 
     private Table mainTable;
 
+    private SpriteBatch spriteBatch;
+
     public LobbyScreen(Hexxagon parent) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
 
-        headingLabel = new Label("LOBBY", skin);
+        headingLabel = new Label("LOBBY", skin, "title");
         playerOneLabel = new Label("PLAYER ONE: ", skin);
         playerTwoLabel = new Label("PLAYER TWO: ", skin);
         playerOneUserNameLabel = new Label("<PLAYER ONE USER NAME>", skin);
@@ -56,7 +58,7 @@ public class LobbyScreen extends BaseScreen {
         mainTable.setWidth(stage.getWidth());
         mainTable.align(Align.top | Align.center);
         mainTable.setPosition(0, Gdx.graphics.getHeight());
-        mainTable.padTop(30);
+        mainTable.padTop(100);
         mainTable.add(headingLabel).padBottom(15).minSize(200, 50).colspan(2);
         mainTable.row();
         mainTable.add(playerOneLabel).padBottom(15).minSize(200, 50);
@@ -65,17 +67,19 @@ public class LobbyScreen extends BaseScreen {
         mainTable.add(playerTwoLabel).padBottom(15).minSize(200, 50);
         mainTable.add(playerTwoUserNameLabel).padBottom(15).minSize(200, 50);
         mainTable.row();
-        mainTable.add(startButton).padBottom(15).minSize(200, 50);
+        mainTable.add(startButton).padBottom(15).minSize(200, 50).padRight(5);
         mainTable.add(leaveButton).padBottom(15).minSize(200, 50);
 
         stage.addActor(mainTable);
+
+        spriteBatch = new SpriteBatch();
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        startButton.setVisible(false);
+        reset();
     }
 
     @Override
@@ -90,13 +94,18 @@ public class LobbyScreen extends BaseScreen {
             playerTwoUserNameLabel.setText(lobbyHandler.getPlayerTwoUserName());
         }
 
+        // Background
+        spriteBatch.begin();
+        spriteBatch.draw(parent.getResources().getBackground(), 0, 0, 1280, 720);
+        spriteBatch.end();
+
         stage.act(delta);
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().setScreenSize(width, height);
     }
 
     @Override
@@ -117,5 +126,11 @@ public class LobbyScreen extends BaseScreen {
     @Override
     public void dispose() {
 
+    }
+
+    private void reset() {
+        startButton.setVisible(false);
+        playerOneUserNameLabel.setText("<PLAYER ONE USER NAME>");
+        playerTwoUserNameLabel.setText("<PLAYER ONE USER NAME>");
     }
 }

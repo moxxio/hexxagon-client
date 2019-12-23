@@ -1,7 +1,10 @@
 package de.johannesrauch.hexxagon.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -11,11 +14,13 @@ import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.state.event.ConnectEvent;
 import de.johannesrauch.hexxagon.state.event.DisconnectEvent;
 import de.johannesrauch.hexxagon.state.event.SearchGameEvent;
+import de.johannesrauch.hexxagon.view.label.ButtonLabel;
+import de.johannesrauch.hexxagon.view.shape.RoundedRectangleRenderer;
 
 public class MainMenuScreen extends BaseScreen {
 
     private Label headingLabel;
-    private Label connStatusLabel;
+    private ButtonLabel connStatusLabel;
 
     private TextField hostNameTextField;
     private TextField portTextField;
@@ -27,15 +32,20 @@ public class MainMenuScreen extends BaseScreen {
 
     private Table mainTable;
 
+    private SpriteBatch spriteBatch;
+    private RoundedRectangleRenderer roundedRectangle;
+
     public MainMenuScreen(Hexxagon parent) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
 
-        headingLabel = new Label("HEXXAGON", skin);
-        connStatusLabel = new Label("DISCONNECTED", skin);
+        headingLabel = new Label("HEXXAGON", skin, "title");
+        connStatusLabel = new ButtonLabel("DISCONNECTED", skin);
 
         hostNameTextField = new TextField("localhost", skin);
+        hostNameTextField.setAlignment(Align.center);
         portTextField = new TextField("4444", skin);
+        portTextField.setAlignment(Align.center);
 
         connectButton = new TextButton("CONNECT", skin);
         connectButton.addListener(new ClickListener() {
@@ -74,23 +84,26 @@ public class MainMenuScreen extends BaseScreen {
         mainTable.setWidth(stage.getWidth());
         mainTable.align(Align.top | Align.center);
         mainTable.setPosition(0, Gdx.graphics.getHeight());
-        mainTable.padTop(30);
+        mainTable.padTop(100);
         mainTable.add(headingLabel).padBottom(15).minSize(200, 50).colspan(2);
         mainTable.row();
-        mainTable.add(hostNameTextField).minSize(200, 50);
+        mainTable.add(hostNameTextField).minSize(300, 50);
         mainTable.add(portTextField).minSize(100, 50);
         mainTable.row();
-        mainTable.add(playButton).padTop(15).minSize(200, 50).colspan(2);
+        mainTable.add(playButton).padTop(15).padBottom(5).minSize(300, 50).colspan(2);
         mainTable.row();
-        mainTable.add(connectButton).padBottom(5).minSize(200, 50).colspan(2);
+        mainTable.add(connectButton).padBottom(5).minSize(300, 50).colspan(2);
         mainTable.row();
-        mainTable.add(disconnectButton).padBottom(5).minSize(200, 50).colspan(2);
+        mainTable.add(disconnectButton).padBottom(5).minSize(300, 50).colspan(2);
         mainTable.row();
-        mainTable.add(connStatusLabel).padBottom(5).minSize(200, 50).colspan(2);
+        mainTable.add(connStatusLabel).padBottom(5).minSize(300, 50).colspan(2);
         mainTable.row();
-        mainTable.add(closeButton).padBottom(5).minSize(200, 50).colspan(2);
+        mainTable.add(closeButton).padBottom(5).minSize(300, 50).colspan(2);
 
         stage.addActor(mainTable);
+
+        spriteBatch = new SpriteBatch();
+        roundedRectangle = new RoundedRectangleRenderer();
     }
 
     @Override
@@ -103,13 +116,24 @@ public class MainMenuScreen extends BaseScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        spriteBatch.begin();
+        spriteBatch.draw(parent.getResources().getBackground(), 0, 0, 1280, 720);
+        spriteBatch.end();
+
+        /* // TODO: just playing
+        roundedRectangle.setColor(new Color((float) 0.76862746, (float) 0.4509804, 0, 1));
+        roundedRectangle.begin(ShapeRenderer.ShapeType.Filled);
+        roundedRectangle.roundedRect(20, 20, 1240, 680, 40);
+        roundedRectangle.end();
+        */
+
         stage.act(delta);
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().setScreenSize(width, height);
     }
 
     @Override

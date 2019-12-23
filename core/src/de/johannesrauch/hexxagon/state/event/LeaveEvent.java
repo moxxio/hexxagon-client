@@ -44,10 +44,12 @@ public class LeaveEvent implements AbstractEvent {
                 || currentState == StateEnum.InGameMyTurn
                 || currentState == StateEnum.InGameOpponentsTurn
                 || currentState == StateEnum.Winner
-                || currentState == StateEnum.Loser) {
-            parent.showSelectLobbyScreen();
+                || currentState == StateEnum.Loser
+                || currentState == StateEnum.Tie) {
+            parent.getLobbyHandler().leaveLobby();
             parent.getGameHandler().leaveGame();
             parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
+            parent.showSelectLobbyScreen();
 
             return StateEnum.SearchLobby;
         }

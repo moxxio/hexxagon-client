@@ -1,7 +1,7 @@
 package de.johannesrauch.hexxagon.state.event;
 
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.controller.GameHandler;
+import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.network.message.GameStartedMessage;
 import de.johannesrauch.hexxagon.state.context.StateContext;
 import de.johannesrauch.hexxagon.state.context.StateEnum;
