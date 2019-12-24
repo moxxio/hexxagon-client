@@ -3,7 +3,7 @@ package de.johannesrauch.hexxagon.state.event;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.state.context.StateContext;
 import de.johannesrauch.hexxagon.state.context.StateEnum;
-import de.johannesrauch.hexxagon.view.MainMenuScreen;
+import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

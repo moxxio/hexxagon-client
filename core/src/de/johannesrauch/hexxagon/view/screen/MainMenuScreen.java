@@ -14,7 +14,6 @@ import de.johannesrauch.hexxagon.state.event.ConnectEvent;
 import de.johannesrauch.hexxagon.state.event.DisconnectEvent;
 import de.johannesrauch.hexxagon.state.event.SearchGameEvent;
 import de.johannesrauch.hexxagon.view.label.ButtonLabel;
-import de.johannesrauch.hexxagon.view.shape.RoundedRectangleRenderer;
 
 public class MainMenuScreen extends BaseScreen {
 

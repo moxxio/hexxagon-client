@@ -4,7 +4,7 @@ import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.network.message.WelcomeMessage;
 import de.johannesrauch.hexxagon.state.context.StateContext;
 import de.johannesrauch.hexxagon.state.context.StateEnum;
-import de.johannesrauch.hexxagon.view.MainMenuScreen;
+import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
 
 /**
  * This class represents a received welcome message event.
