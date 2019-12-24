@@ -15,9 +15,9 @@ com.badlogic.gdx.graphics.Color: {
 		a: 1
 	}
 	black: {
-		r: 0
+      r: 0.3
 		g: 0
-		b: 0
+      b: 0.3
 		a: 1
 	}
 	color: {
@@ -265,7 +265,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	}
 	list-pressed: {
 		name: list
-		color: pressed
+      color: black
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
