@@ -33,7 +33,7 @@ public class Resources {
         tilePlayerTwoSelected = new Texture(Gdx.files.internal("TilePlayerTwoSelected.png"));
         tileMoveOne = new Texture(Gdx.files.internal("TileMoveOne.png"));
         tileMoveTwo = new Texture(Gdx.files.internal("TileMoveTwo.png"));
-        background = new Texture(Gdx.files.internal("background-purple-dark.png"));
+        background = new Texture(Gdx.files.internal("background-purple-dark-1.png"));
         particleEffect = new ParticleEffect();
         particleEffect.load(Gdx.files.internal("slowbuzz-purple.p"), Gdx.files.internal(""));
         particleEffect.start();
