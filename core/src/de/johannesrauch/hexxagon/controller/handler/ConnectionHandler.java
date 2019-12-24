@@ -39,10 +39,17 @@ public class ConnectionHandler {
         SimpleClient client = null;
         try {
             client = new SimpleClient(new URI("ws://" + hostName + ":" + port), messageReceiver);
-            successful = client.connectBlocking(5, TimeUnit.SECONDS);
+            successful = true;
         } catch (URISyntaxException e) {
             logger.error(e.getMessage());
-        } catch (InterruptedException ignore) { }
+        }
+
+        if (successful) {
+            successful = false;
+            try {
+                successful = client.connectBlocking(5, TimeUnit.SECONDS);
+            } catch (InterruptedException ignore) { }
+        }
 
         if (successful) this.client = client;
         else parent.getContext().reactOnEvent(new ConnectFailedEvent());
