@@ -70,11 +70,9 @@ public class GameScreen extends BaseScreen {
         leaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Label reassureLabel = new Label("ARE YOU SURE YOU WANT TO LEAVE?", skin);
                 TextButton yesButton = new TextButton("YES", skin);
                 TextButton noButton = new TextButton("NO", skin);
-
-                Label reassureLabel = new Label("ARE YOU SURE YOU WANT TO LEAVE?", skin);
-                reassureLabel.setColor(Color.BLACK);
 
                 Dialog dialog = new Dialog("LEAVE GAME", skin) {
                     @Override
