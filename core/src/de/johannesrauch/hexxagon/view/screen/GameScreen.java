@@ -1,8 +1,9 @@
-package de.johannesrauch.hexxagon.view;
+package de.johannesrauch.hexxagon.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -10,11 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.controller.listener.TileClickListener;
-import de.johannesrauch.hexxagon.model.board.Board;
 import de.johannesrauch.hexxagon.model.tile.GameScreenTile;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
-import de.johannesrauch.hexxagon.state.context.StateEnum;
 import de.johannesrauch.hexxagon.state.event.LeaveEvent;
 
 import java.util.HashMap;
@@ -155,9 +154,12 @@ public class GameScreen extends BaseScreen {
             }
         }
 
-        // Background
+        // Draw background and particle effect
         spriteBatch.begin();
         spriteBatch.draw(parent.getResources().getBackground(), 0, 0, 1280, 720);
+        ParticleEffect particleEffect = parent.getResources().getParticleEffect();
+        if (particleEffect.isComplete()) particleEffect.reset();
+        else particleEffect.draw(spriteBatch, delta);
         spriteBatch.end();
 
         stage.act(delta);

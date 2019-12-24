@@ -8,10 +8,10 @@ import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.resource.Resources;
 import de.johannesrauch.hexxagon.state.context.StateContext;
-import de.johannesrauch.hexxagon.view.GameScreen;
-import de.johannesrauch.hexxagon.view.LobbyScreen;
-import de.johannesrauch.hexxagon.view.MainMenuScreen;
-import de.johannesrauch.hexxagon.view.SelectLobbyScreen;
+import de.johannesrauch.hexxagon.view.screen.GameScreen;
+import de.johannesrauch.hexxagon.view.screen.LobbyScreen;
+import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
+import de.johannesrauch.hexxagon.view.screen.SelectLobbyScreen;
 import org.apache.log4j.BasicConfigurator;
 
 public class Hexxagon extends Game {

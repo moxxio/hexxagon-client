@@ -1,4 +1,4 @@
-package de.johannesrauch.hexxagon.view;
+package de.johannesrauch.hexxagon.view.screen;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;

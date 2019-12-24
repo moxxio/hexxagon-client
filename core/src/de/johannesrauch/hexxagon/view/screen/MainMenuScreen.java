@@ -1,10 +1,9 @@
-package de.johannesrauch.hexxagon.view;
+package de.johannesrauch.hexxagon.view.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -33,7 +32,6 @@ public class MainMenuScreen extends BaseScreen {
     private Table mainTable;
 
     private SpriteBatch spriteBatch;
-    private RoundedRectangleRenderer roundedRectangle;
 
     public MainMenuScreen(Hexxagon parent) {
         super(parent);
@@ -103,12 +101,14 @@ public class MainMenuScreen extends BaseScreen {
         stage.addActor(mainTable);
 
         spriteBatch = new SpriteBatch();
-        roundedRectangle = new RoundedRectangleRenderer();
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+
+        parent.getResources().getParticleEffect().setPosition((float) stage.getViewport().getScreenWidth() / 2,
+                (float) stage.getViewport().getScreenHeight() / 2);
     }
 
     @Override
@@ -116,16 +116,13 @@ public class MainMenuScreen extends BaseScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Draw background and particle effect
         spriteBatch.begin();
         spriteBatch.draw(parent.getResources().getBackground(), 0, 0, 1280, 720);
+        ParticleEffect particleEffect = parent.getResources().getParticleEffect();
+        if (particleEffect.isComplete()) particleEffect.reset();
+        else particleEffect.draw(spriteBatch, delta);
         spriteBatch.end();
-
-        /* // TODO: just playing
-        roundedRectangle.setColor(new Color((float) 0.76862746, (float) 0.4509804, 0, 1));
-        roundedRectangle.begin(ShapeRenderer.ShapeType.Filled);
-        roundedRectangle.roundedRect(20, 20, 1240, 680, 40);
-        roundedRectangle.end();
-        */
 
         stage.act(delta);
         stage.draw();
