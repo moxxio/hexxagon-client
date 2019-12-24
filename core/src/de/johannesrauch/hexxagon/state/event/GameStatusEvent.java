@@ -50,7 +50,6 @@ public class GameStatusEvent implements AbstractEvent {
         if (currentState == StateEnum.InGameMyTurn || currentState == StateEnum.InGameOpponentsTurn) {
             gameHandler.updateGame(message);
 
-            // TODO: show winner, tie or loser
             if (gameHandler.isGameOver()) {
                 if (gameHandler.isTie()) return StateEnum.Tie;
                 if (gameHandler.isWinnerMe()) return StateEnum.Winner;

@@ -126,7 +126,7 @@ public class GameScreen extends BaseScreen {
 
         // Game board
         GameHandler gameHandler = parent.getGameHandler();
-        if (gameHandler.isGameUpdated()) { // TODO: receive label values
+        if (gameHandler.isGameUpdated()) {
             playerOneUserNameLabel.setText(gameHandler.getPlayerOneUserName());
             playerTwoUserNameLabel.setText(gameHandler.getPlayerTwoUserName());
             playerOneScoreLabel.setText(gameHandler.getPlayerOnePoints());
