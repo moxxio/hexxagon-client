@@ -2,6 +2,7 @@ package de.johannesrauch.hexxagon.resource;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Resources {
@@ -15,14 +16,14 @@ public class Resources {
     private final Texture tilePlayerTwoSelected;
     private final Texture tileMoveOne;
     private final Texture tileMoveTwo;
-    private final Texture loading;
     private final Texture background;
+    private final ParticleEffect particleEffect;
 
     public Resources() {
         this("quantum-horizon", "quantum-horizon-ui");
     }
 
-    public Resources(String skinFolder, String skinName) {
+    private Resources(String skinFolder, String skinName) {
         skin = new Skin(Gdx.files.internal(skinFolder + "/skin/" + skinName + ".json"));
         tileFree = new Texture(Gdx.files.internal("TileFree.png"));
         tileBlocked = new Texture(Gdx.files.internal("TileBlocked.png"));
@@ -32,8 +33,9 @@ public class Resources {
         tilePlayerTwoSelected = new Texture(Gdx.files.internal("TilePlayerTwoSelected.png"));
         tileMoveOne = new Texture(Gdx.files.internal("TileMoveOne.png"));
         tileMoveTwo = new Texture(Gdx.files.internal("TileMoveTwo.png"));
-        loading = new Texture(Gdx.files.internal("loading.png"));
         background = new Texture(Gdx.files.internal("background-dark.png"));
+        particleEffect = new ParticleEffect();
+        particleEffect.load(Gdx.files.internal("slowbuzz-purple.p"), Gdx.files.internal(""));
     }
 
     public Skin getSkin() {
@@ -72,11 +74,11 @@ public class Resources {
         return tileMoveTwo;
     }
 
-    public Texture getLoading() {
-        return loading;
-    }
-
     public Texture getBackground() {
         return background;
+    }
+
+    public ParticleEffect getParticleEffect() {
+        return particleEffect;
     }
 }
