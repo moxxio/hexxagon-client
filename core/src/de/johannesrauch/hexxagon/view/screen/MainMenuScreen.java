@@ -85,7 +85,7 @@ public class MainMenuScreen extends BaseScreen {
         mainTable.padTop(100);
         mainTable.add(headingLabel).padBottom(15).minSize(200, 50).colspan(2);
         mainTable.row();
-        mainTable.add(hostNameTextField).minSize(300, 50);
+        mainTable.add(hostNameTextField).minSize(300, 50).padRight(15);
         mainTable.add(portTextField).minSize(100, 50);
         mainTable.row();
         mainTable.add(playButton).padTop(15).padBottom(5).minSize(300, 50).colspan(2);
