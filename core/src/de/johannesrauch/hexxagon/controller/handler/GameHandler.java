@@ -41,7 +41,7 @@ public class GameHandler {
         parent.getMessageEmitter().sendGameMoveMessage(gameId, moveFrom, moveTo);
     }
 
-    public Board getBoard() {
+    private Board getBoard() {
         return gameStatus.getBoard();
     }
 
@@ -50,6 +50,10 @@ public class GameHandler {
         if (userId.equals(gameStatus.getPlayerOne())) return 1;
         if (userId.equals(gameStatus.getPlayerTwo())) return 2;
         return -2;
+    }
+
+    public List<TileEnum> getNeighborsOf(TileEnum tile) {
+        return boardGraph.getNeighborsOf(tile);
     }
 
     public int getPlayerOnePoints() {
@@ -93,9 +97,13 @@ public class GameHandler {
 
     public boolean isGameOver() {
         if (gameStatus == null || gameStatus.getPlayerOne() == null || gameStatus.getPlayerTwo() == null) return false;
-        if (gameStatus.isTie()) return true;
-        return gameStatus.getPlayerOne().equals(gameStatus.getWinner())
-                || gameStatus.getPlayerTwo().equals(gameStatus.getWinner());
+        return gameStatus.isTie()
+                || gameStatus.getPlayerOne().equals(gameStatus.getWinner())
+                || gameStatus.getPlayerTwo().equals(gameStatus.getWinner())
+                || gameStatus.getPlayerOnePoints() == 0
+                || gameStatus.getPlayerTwoPoints() == 0
+                || isPlayerMoveImpossible(1)
+                || isPlayerMoveImpossible(2);
     }
 
     public boolean isGameUpdated() {
@@ -111,9 +119,33 @@ public class GameHandler {
         return userId.equals(gameStatus.getActivePlayer());
     }
 
+    private boolean isPlayerMoveImpossible(int playerNumber) {
+        for (TileEnum tile : TileEnum.values()) {
+            TileStateEnum tileState = getTileState(tile);
+            if (!((playerNumber == 1 && tileState == TileStateEnum.PLAYERONE)
+                    || (playerNumber == 2 && tileState == TileStateEnum.PLAYERTWO))) continue;
+
+            List<TileEnum> neighbors = getNeighborsOf(tile);
+            for (TileEnum otherTile : neighbors) {
+                TileStateEnum otherTileState = getTileState(otherTile);
+                if (otherTileState == TileStateEnum.FREE) return false;
+
+                List<TileEnum> otherNeighbors = getNeighborsOf(otherTile);
+                for (TileEnum anotherTile : otherNeighbors) {
+                    TileStateEnum anotherTileState = getTileState(anotherTile);
+                    if (anotherTileState == TileStateEnum.FREE) return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public boolean isTie() {
         if (gameStatus == null) return false;
-        return gameStatus.isTie();
+        return gameStatus.isTie()
+                || (gameStatus.getPlayerOnePoints() != -1
+                && gameStatus.getPlayerOnePoints() == gameStatus.getPlayerTwoPoints()
+                && isGameOver());
     }
 
     public boolean isTileSelected() {
@@ -122,7 +154,11 @@ public class GameHandler {
 
     public boolean isWinnerMe() {
         if (gameStatus == null || userId == null) return false;
-        return userId.equals(gameStatus.getWinner());
+        return userId.equals(gameStatus.getWinner())
+                || (getMyPlayerNumber() == 1 && getPlayerTwoPoints() == 0)
+                || (getMyPlayerNumber() == 2 && getPlayerOnePoints() == 0)
+                || getMyPlayerNumber() == 1 && isPlayerMoveImpossible(2)
+                || getMyPlayerNumber() == 2 && isPlayerMoveImpossible(1);
     }
 
     public void leaveGame() {
@@ -131,10 +167,6 @@ public class GameHandler {
             parent.getMessageEmitter().sendLeaveGameMessage(gameId);
         } else logger.warn("GameId is null in leaveGame()!");
         reset();
-    }
-
-    public List<TileEnum> getNeighborsOf(TileEnum tile) {
-        return boardGraph.getNeighborsOf(tile);
     }
 
     public void reset() {
