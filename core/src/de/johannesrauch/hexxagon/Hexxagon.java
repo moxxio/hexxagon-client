@@ -14,6 +14,7 @@ import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
 import de.johannesrauch.hexxagon.view.screen.SelectLobbyScreen;
 import org.apache.log4j.BasicConfigurator;
 
+// TODO: Create a class with public static values for the ui
 public class Hexxagon extends Game {
 
     private StateContext context;
