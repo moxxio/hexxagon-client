@@ -32,7 +32,7 @@ public class GameScreen extends BaseScreen {
     private TextFieldStyleLabel playerOneScoreLabel;
     private TextFieldStyleLabel playerTwoScoreLabel;
     private ButtonStyleLabel turnLabel;
-    private Label winnerLabel;
+    private TextFieldStyleLabel winnerLabel;
 
     private TextButton leaveButton;
 
@@ -69,8 +69,9 @@ public class GameScreen extends BaseScreen {
         turnLabel = new ButtonStyleLabel("<WHOSE TURN>", skin);
         turnLabel.setPosition(20, 660);
         turnLabel.setSize(300, 50);
-        winnerLabel = new Label("<WHO WON>", skin);
-        winnerLabel.setPosition(20, 670);
+        winnerLabel = new TextFieldStyleLabel("<WHO WON>", skin);
+        winnerLabel.setPosition(20, 600);
+        winnerLabel.setSize(300, 50);
         winnerLabel.setVisible(false);
 
         leaveButton = new TextButton("LEAVE", skin);
