@@ -14,14 +14,16 @@ import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.state.event.LeaveEvent;
+import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
+import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
 public class LobbyScreen extends BaseScreen {
 
     private Label headingLabel;
-    private Label playerOneLabel;
-    private Label playerTwoLabel;
-    private Label playerOneUserNameLabel;
-    private Label playerTwoUserNameLabel;
+    private ButtonStyleLabel playerOneLabel;
+    private ButtonStyleLabel playerTwoLabel;
+    private TextFieldStyleLabel playerOneUserNameLabel;
+    private TextFieldStyleLabel playerTwoUserNameLabel;
 
     private TextButton startButton;
     private TextButton leaveButton;
@@ -35,10 +37,10 @@ public class LobbyScreen extends BaseScreen {
         Skin skin = parent.getResources().getSkin();
 
         headingLabel = new Label("LOBBY", skin, "title");
-        playerOneLabel = new Label("PLAYER ONE: ", skin);
-        playerTwoLabel = new Label("PLAYER TWO: ", skin);
-        playerOneUserNameLabel = new Label("<PLAYER ONE USER NAME>", skin);
-        playerTwoUserNameLabel = new Label("<PLAYER TWO USER NAME>", skin);
+        playerOneLabel = new ButtonStyleLabel("PLAYER ONE: ", skin);
+        playerTwoLabel = new ButtonStyleLabel("PLAYER TWO: ", skin);
+        playerOneUserNameLabel = new TextFieldStyleLabel("<PLAYER ONE USER NAME>", skin);
+        playerTwoUserNameLabel = new TextFieldStyleLabel("<PLAYER TWO USER NAME>", skin);
 
         startButton = new TextButton("START", skin);
         startButton.addListener(new ClickListener() {
@@ -60,16 +62,16 @@ public class LobbyScreen extends BaseScreen {
         mainTable.align(Align.top | Align.center);
         mainTable.setPosition(0, Gdx.graphics.getHeight());
         mainTable.padTop(100);
-        mainTable.add(headingLabel).padBottom(15).minSize(200, 50).colspan(2);
+        mainTable.add(headingLabel).padBottom(15).minSize(300, 50).colspan(2);
         mainTable.row();
-        mainTable.add(playerOneLabel).padBottom(15).minSize(200, 50);
-        mainTable.add(playerOneUserNameLabel).padBottom(15).minSize(200, 50);
+        mainTable.add(playerOneLabel).padBottom(15).minSize(300, 50);
+        mainTable.add(playerOneUserNameLabel).padBottom(15).minSize(300, 50);
         mainTable.row();
-        mainTable.add(playerTwoLabel).padBottom(15).minSize(200, 50);
-        mainTable.add(playerTwoUserNameLabel).padBottom(15).minSize(200, 50);
+        mainTable.add(playerTwoLabel).padBottom(15).minSize(300, 50);
+        mainTable.add(playerTwoUserNameLabel).padBottom(15).minSize(300, 50);
         mainTable.row();
-        mainTable.add(startButton).padBottom(15).minSize(200, 50).padRight(5);
-        mainTable.add(leaveButton).padBottom(15).minSize(200, 50);
+        mainTable.add(startButton).padBottom(15).minSize(300, 50).padRight(5);
+        mainTable.add(leaveButton).padBottom(15).minSize(300, 50);
 
         stage.addActor(mainTable);
 
@@ -81,6 +83,9 @@ public class LobbyScreen extends BaseScreen {
         Gdx.input.setInputProcessor(stage);
 
         reset();
+
+        parent.getResources().getParticleEffect().setPosition((float) stage.getViewport().getScreenWidth() / 2,
+                (float) stage.getViewport().getScreenHeight() / 2);
     }
 
     @Override

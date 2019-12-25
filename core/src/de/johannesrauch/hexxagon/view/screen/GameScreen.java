@@ -15,21 +15,23 @@ import de.johannesrauch.hexxagon.model.tile.GameScreenTile;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
 import de.johannesrauch.hexxagon.state.event.LeaveEvent;
+import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
+import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GameScreen extends BaseScreen {
 
-    private Label playerOneLabel;
-    private Label playerTwoLabel;
-    private Label playerOneUserNameLabel;
-    private Label playerTwoUserNameLabel;
-    private Label playerOnePointsLabel;
-    private Label playerTwoPointsLabel;
-    private Label playerOneScoreLabel;
-    private Label playerTwoScoreLabel;
-    private Label turnLabel;
+    private ButtonStyleLabel playerOneLabel;
+    private ButtonStyleLabel playerTwoLabel;
+    private TextFieldStyleLabel playerOneUserNameLabel;
+    private TextFieldStyleLabel playerTwoUserNameLabel;
+    // private Label playerOnePointsLabel; // TODO: maybe remove
+    // private Label playerTwoPointsLabel;
+    private TextFieldStyleLabel playerOneScoreLabel;
+    private TextFieldStyleLabel playerTwoScoreLabel;
+    private ButtonStyleLabel turnLabel;
     private Label winnerLabel;
 
     private TextButton leaveButton;
@@ -42,31 +44,38 @@ public class GameScreen extends BaseScreen {
         super(parent);
         Skin skin = parent.getResources().getSkin();
 
-        playerOneLabel = new Label("PLAYER ONE: ", skin);
-        playerOneLabel.setPosition(20, 40);
-        playerTwoLabel = new Label("PLAYER TWO: ", skin);
-        playerTwoLabel.setPosition(760, 40);
-        playerOneUserNameLabel = new Label("<PLAYER ONE USER NAME>", skin);
-        playerOneUserNameLabel.setPosition(205, 40);
-        playerTwoUserNameLabel = new Label("<PLAYER ONE USER NAME>", skin);
-        playerTwoUserNameLabel.setPosition(945, 40);
-        playerOnePointsLabel = new Label("POINTS: ", skin);
-        playerOnePointsLabel.setPosition(20, 20);
-        playerTwoPointsLabel = new Label("POINTS: ", skin);
-        playerTwoPointsLabel.setPosition(760, 20);
-        playerOneScoreLabel = new Label("<SCORE>", skin);
-        playerOneScoreLabel.setPosition(205, 20);
-        playerTwoScoreLabel = new Label("<SCORE>", skin);
-        playerTwoScoreLabel.setPosition(945, 20);
-        turnLabel = new Label("<WHOSE TURN>", skin);
-        turnLabel.setPosition(20, 690);
+        playerOneLabel = new ButtonStyleLabel("PLAYER ONE: ", skin);
+        playerOneLabel.setPosition(20, 80);
+        playerOneLabel.setSize(300, 50);
+        playerTwoLabel = new ButtonStyleLabel("PLAYER TWO: ", skin);
+        playerTwoLabel.setPosition(960, 80);
+        playerTwoLabel.setSize(300, 50);
+        playerOneUserNameLabel = new TextFieldStyleLabel("<PLAYER ONE USER NAME>", skin);
+        playerOneUserNameLabel.setPosition(20, 20);
+        playerOneUserNameLabel.setSize(300, 50);
+        playerTwoUserNameLabel = new TextFieldStyleLabel("<PLAYER ONE USER NAME>", skin);
+        playerTwoUserNameLabel.setPosition(960, 20);
+        playerTwoUserNameLabel.setSize(300, 50);
+        // playerOnePointsLabel = new Label("POINTS: ", skin);
+        // playerOnePointsLabel.setPosition(20, 20);
+        // playerTwoPointsLabel = new Label("POINTS: ", skin);
+        // playerTwoPointsLabel.setPosition(760, 20);
+        playerOneScoreLabel = new TextFieldStyleLabel("<SCORE>", skin);
+        playerOneScoreLabel.setPosition(340, 20);
+        playerOneScoreLabel.setSize(50, 50);
+        playerTwoScoreLabel = new TextFieldStyleLabel("<SCORE>", skin);
+        playerTwoScoreLabel.setPosition(890, 20);
+        playerTwoScoreLabel.setSize(50, 50);
+        turnLabel = new ButtonStyleLabel("<WHOSE TURN>", skin);
+        turnLabel.setPosition(20, 660);
+        turnLabel.setSize(300, 50);
         winnerLabel = new Label("<WHO WON>", skin);
         winnerLabel.setPosition(20, 670);
         winnerLabel.setVisible(false);
 
         leaveButton = new TextButton("LEAVE", skin);
-        leaveButton.setPosition(1115, 660);
-        leaveButton.setSize(150, 50);
+        leaveButton.setPosition(960, 660);
+        leaveButton.setSize(300, 50);
         leaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -99,8 +108,8 @@ public class GameScreen extends BaseScreen {
         stage.addActor(playerTwoLabel);
         stage.addActor(playerOneUserNameLabel);
         stage.addActor(playerTwoUserNameLabel);
-        stage.addActor(playerOnePointsLabel);
-        stage.addActor(playerTwoPointsLabel);
+        // stage.addActor(playerOnePointsLabel);
+        // stage.addActor(playerTwoPointsLabel);
         stage.addActor(playerOneScoreLabel);
         stage.addActor(playerTwoScoreLabel);
         stage.addActor(turnLabel);
@@ -115,6 +124,9 @@ public class GameScreen extends BaseScreen {
         Gdx.input.setInputProcessor(stage);
 
         reset();
+
+        parent.getResources().getParticleEffect().setPosition((float) stage.getViewport().getScreenWidth() / 2,
+                (float) stage.getViewport().getScreenHeight() / 2);
     }
 
     @Override
@@ -127,8 +139,8 @@ public class GameScreen extends BaseScreen {
         if (gameHandler.isGameUpdated()) {
             playerOneUserNameLabel.setText(gameHandler.getPlayerOneUserName());
             playerTwoUserNameLabel.setText(gameHandler.getPlayerTwoUserName());
-            playerOneScoreLabel.setText(gameHandler.getPlayerOnePoints());
-            playerTwoScoreLabel.setText(gameHandler.getPlayerTwoPoints());
+            playerOneScoreLabel.setText("" + gameHandler.getPlayerOnePoints());
+            playerTwoScoreLabel.setText("" + gameHandler.getPlayerTwoPoints());
             turnLabel.setText(gameHandler.getWhoseTurn());
 
             if (gameHandler.isGameOver()) {
@@ -214,7 +226,7 @@ public class GameScreen extends BaseScreen {
         for (int i = 0; i < 61; i++) {
             final int index = i + 1;
             int startPosX = 640;
-            int startPosY = 700;
+            int startPosY = 690;
             int sizeX = 96;
             int sizeY = 64;
             int offsetX = 90;

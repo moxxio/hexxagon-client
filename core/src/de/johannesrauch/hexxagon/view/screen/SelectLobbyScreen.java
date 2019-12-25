@@ -14,7 +14,7 @@ import de.johannesrauch.hexxagon.model.lobby.Lobby;
 import de.johannesrauch.hexxagon.state.event.BackEvent;
 import de.johannesrauch.hexxagon.state.event.JoinLobbyEvent;
 import de.johannesrauch.hexxagon.state.event.LeaveEvent;
-import de.johannesrauch.hexxagon.view.label.ButtonLabel;
+import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ public class SelectLobbyScreen extends BaseScreen {
     private static final Logger logger = LoggerFactory.getLogger(SelectLobbyScreen.class);;
 
     private Label headingLabel;
-    private ButtonLabel userNameLabel;
+    private ButtonStyleLabel userNameLabel;
     private Label joiningLabel;
 
     private TextField userNameTextField;
@@ -59,7 +59,7 @@ public class SelectLobbyScreen extends BaseScreen {
         a32.update(UUID.randomUUID().toString().getBytes());
 
         headingLabel = new Label("CHOOSE LOBBY", skin, "title");
-        userNameLabel = new ButtonLabel("USERNAME: ", skin);
+        userNameLabel = new ButtonStyleLabel("USERNAME: ", skin);
         joiningLabel = new Label("JOINING LOBBY...", skin);
 
         userNameTextField = new TextField("PLAYER" + a32.getValue() / 1000, skin);
@@ -188,6 +188,9 @@ public class SelectLobbyScreen extends BaseScreen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+
+        parent.getResources().getParticleEffect().setPosition((float) stage.getViewport().getScreenWidth() / 2,
+                (float) stage.getViewport().getScreenHeight() / 2);
     }
 
     @Override

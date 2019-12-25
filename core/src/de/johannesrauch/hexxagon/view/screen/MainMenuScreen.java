@@ -13,12 +13,12 @@ import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.state.event.ConnectEvent;
 import de.johannesrauch.hexxagon.state.event.DisconnectEvent;
 import de.johannesrauch.hexxagon.state.event.SearchGameEvent;
-import de.johannesrauch.hexxagon.view.label.ButtonLabel;
+import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 
 public class MainMenuScreen extends BaseScreen {
 
     private Label headingLabel;
-    private ButtonLabel connStatusLabel;
+    private ButtonStyleLabel connStatusLabel;
 
     private TextField hostNameTextField;
     private TextField portTextField;
@@ -37,7 +37,7 @@ public class MainMenuScreen extends BaseScreen {
         Skin skin = parent.getResources().getSkin();
 
         headingLabel = new Label("HEXXAGON", skin, "title");
-        connStatusLabel = new ButtonLabel("DISCONNECTED", skin);
+        connStatusLabel = new ButtonStyleLabel("DISCONNECTED", skin);
 
         hostNameTextField = new TextField("localhost", skin);
         hostNameTextField.setAlignment(Align.center);
@@ -82,7 +82,7 @@ public class MainMenuScreen extends BaseScreen {
         mainTable.align(Align.top | Align.center);
         mainTable.setPosition(0, Gdx.graphics.getHeight());
         mainTable.padTop(100);
-        mainTable.add(headingLabel).padBottom(15).minSize(200, 50).colspan(2);
+        mainTable.add(headingLabel).padBottom(15).minSize(300, 50).colspan(2);
         mainTable.row();
         mainTable.add(hostNameTextField).minSize(300, 50).padRight(15);
         mainTable.add(portTextField).minSize(100, 50);
