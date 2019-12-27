@@ -20,16 +20,6 @@ public class MessageEmitter {
         gson = new Gson();
     }
 
-    private void sendMessage(String jsonMessage) {
-        SimpleClient client = connection.getClient();
-        if (client == null) {
-            logger.warn("Client is null! (Message: " + jsonMessage + ")");
-            return;
-        }
-        logger.info("Sent message: " + jsonMessage);
-        client.send(jsonMessage);
-    }
-
     public void sendGetAvailableLobbiesMessage() {
         UUID userId = connection.getUserId();
         GetAvailableLobbiesMessage getAvailableLobbies = new GetAvailableLobbiesMessage(userId);
@@ -88,7 +78,17 @@ public class MessageEmitter {
 
     private void checkUserId(UUID userId, String jsonMessage) {
         if (userId == null) {
-            logger.warn("UserId is null! (Message" + jsonMessage + ")");
+            logger.warn("UserId is null! (Message: " + jsonMessage + ")");
         }
+    }
+
+    private void sendMessage(String jsonMessage) {
+        SimpleClient client = connection.getClient();
+        if (client == null) {
+            logger.warn("Client is null! (Message: " + jsonMessage + ")");
+            return;
+        }
+        logger.info("Sent message: " + jsonMessage);
+        client.send(jsonMessage);
     }
 }
