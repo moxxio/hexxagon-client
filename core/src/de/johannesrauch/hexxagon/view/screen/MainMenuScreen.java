@@ -19,6 +19,7 @@ public class MainMenuScreen extends BaseScreen {
 
     private Label headingLabel;
     private ButtonStyleLabel connStatusLabel;
+    private ButtonStyleLabel versionLabel;
 
     private TextField hostNameTextField;
     private TextField portTextField;
@@ -38,6 +39,11 @@ public class MainMenuScreen extends BaseScreen {
 
         headingLabel = new Label("HEXXAGON", skin, "title");
         connStatusLabel = new ButtonStyleLabel("DISCONNECTED", skin);
+        connStatusLabel.setPosition(20, 20);
+        connStatusLabel.setSize(300, 50);
+        versionLabel = new ButtonStyleLabel("VERSION " + parent.getVersion(), skin);
+        versionLabel.setPosition(960, 20);
+        versionLabel.setSize(300, 50);
 
         hostNameTextField = new TextField("localhost", skin);
         hostNameTextField.setAlignment(Align.center);
@@ -93,10 +99,10 @@ public class MainMenuScreen extends BaseScreen {
         mainTable.row();
         mainTable.add(disconnectButton).padBottom(5).minSize(300, 50).colspan(2);
         mainTable.row();
-        mainTable.add(connStatusLabel).padBottom(5).minSize(300, 50).colspan(2);
-        mainTable.row();
         mainTable.add(closeButton).padBottom(5).minSize(300, 50).colspan(2);
 
+        stage.addActor(connStatusLabel);
+        stage.addActor(versionLabel);
         stage.addActor(mainTable);
 
         spriteBatch = new SpriteBatch();

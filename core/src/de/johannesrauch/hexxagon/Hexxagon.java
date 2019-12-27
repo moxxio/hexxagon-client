@@ -17,6 +17,8 @@ import org.apache.log4j.BasicConfigurator;
 // TODO: Create a class with public static values for the ui
 public class Hexxagon extends Game {
 
+    private static String version = "1.0";
+
     private StateContext context;
 
     private Resources resources;
@@ -56,6 +58,10 @@ public class Hexxagon extends Game {
     public void dispose() {
         // TODO: free resources
         super.dispose();
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     public StateContext getContext() {
