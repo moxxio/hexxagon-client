@@ -94,26 +94,7 @@ public class TileClickListener extends ClickListener {
 
             gameHandler.setSelectedTile(tile);
         } else { // Otherwise check if it is a valid move
-            List<TileEnum> selectedNeighbors = gameHandler.getNeighborsOf(selectedTile);
-            boolean validMove = false;
-            for (TileEnum otherTile : selectedNeighbors) {
-                if (tile == otherTile) {
-                    validMove = true;
-                    break;
-                }
-            }
-            if (!validMove) {
-                for (TileEnum otherTile : selectedNeighbors) {
-                    List<TileEnum> otherNeighbors = gameHandler.getNeighborsOf(otherTile);
-                    for (TileEnum anotherTile : otherNeighbors) {
-                        if (tile == anotherTile) {
-                            validMove = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (validMove) {
+            if (gameHandler.validMove(selectedTile, tile)) {
                 // System.out.println("FROM " + selectedTile + " TO " + tile); // TODO: delete debug
                 gameHandler.gameMove(selectedTile, tile);
             }

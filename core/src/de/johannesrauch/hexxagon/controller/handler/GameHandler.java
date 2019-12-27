@@ -195,4 +195,17 @@ public class GameHandler {
         selectedTile = null;
         moved = false;
     }
+
+    public boolean validMove(TileEnum from, TileEnum to) {
+        List<TileEnum> fromNeighbors = getNeighborsOf(from);
+        for (TileEnum otherTile : fromNeighbors) {
+            if (to == otherTile) return true;
+
+            List<TileEnum> otherNeighbors = getNeighborsOf(otherTile);
+            for (TileEnum anotherTile : otherNeighbors) {
+                if (to == anotherTile) return true;
+            }
+        }
+        return false;
+    }
 }
