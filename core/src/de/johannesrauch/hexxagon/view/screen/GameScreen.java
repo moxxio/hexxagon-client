@@ -13,7 +13,6 @@ import de.johannesrauch.hexxagon.controller.listener.TileClickListener;
 import de.johannesrauch.hexxagon.model.tile.GameScreenTile;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
-import de.johannesrauch.hexxagon.fsm.event.LeaveEvent;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
@@ -88,7 +87,7 @@ public class GameScreen extends BaseScreen {
                     protected void result(Object object) {
                         boolean result = (boolean) object;
                         if (result) {
-                            parent.getContext().reactOnEvent(new LeaveEvent());
+                            parent.getContext().reactToClickedLeave();
                         }
                     }
                 };

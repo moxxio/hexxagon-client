@@ -10,9 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.fsm.event.ConnectEvent;
-import de.johannesrauch.hexxagon.fsm.event.DisconnectEvent;
-import de.johannesrauch.hexxagon.fsm.event.SearchGameEvent;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 
 public class MainMenuScreen extends BaseScreen {
@@ -56,7 +53,7 @@ public class MainMenuScreen extends BaseScreen {
             public void clicked(InputEvent event, float x, float y) {
                 String hostName = hostNameTextField.getText();
                 String port = portTextField.getText();
-                parent.getContext().reactOnEvent(new ConnectEvent(hostName, port));
+                parent.getContext().reactToClickedConnect(hostName, port);
             }
         });
         disconnectButton = new TextButton("DISCONNECT", skin);
@@ -64,7 +61,7 @@ public class MainMenuScreen extends BaseScreen {
         disconnectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactOnEvent(new DisconnectEvent());
+                parent.getContext().reactToClickedDisconnect();
             }
         });
         playButton = new TextButton("PLAY", skin);
@@ -72,7 +69,7 @@ public class MainMenuScreen extends BaseScreen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactOnEvent(new SearchGameEvent());
+                parent.getContext().reactToClickedPlay();
             }
         });
         closeButton = new TextButton("CLOSE", skin);
@@ -172,7 +169,7 @@ public class MainMenuScreen extends BaseScreen {
         else disconnectButton.setTouchable(Touchable.disabled);
     }
 
-    public void setSearchButtonVisible(boolean visible) {
+    public void setPlayButtonVisible(boolean visible) {
         playButton.setVisible(visible);
     }
 }

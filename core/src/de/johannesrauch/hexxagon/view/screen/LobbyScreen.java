@@ -13,10 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
-import de.johannesrauch.hexxagon.fsm.event.LeaveEvent;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
+// TODO: make progress bar for uninitialized game state
 public class LobbyScreen extends BaseScreen {
 
     private Label headingLabel;
@@ -53,7 +53,7 @@ public class LobbyScreen extends BaseScreen {
         leaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactOnEvent(new LeaveEvent());
+                parent.getContext().reactToClickedLeave();
             }
         });
 

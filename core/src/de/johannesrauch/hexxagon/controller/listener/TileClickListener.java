@@ -5,10 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.GameHandler;
+import de.johannesrauch.hexxagon.fsm.state.InGameMyTurnState;
+import de.johannesrauch.hexxagon.fsm.state.State;
 import de.johannesrauch.hexxagon.model.tile.GameScreenTile;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
-import de.johannesrauch.hexxagon.fsm.context.StateEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,8 @@ public class TileClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         // If it is not my turn, then ignore the click event
-        if (parent.getContext().getState() != StateEnum.InGameMyTurn) return;
+        State state = parent.getContext().getState();
+        if (!(state instanceof InGameMyTurnState)) return;
 
         GameHandler gameHandler = parent.getGameHandler();
 

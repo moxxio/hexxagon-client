@@ -5,7 +5,6 @@ import com.google.gson.JsonSyntaxException;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.network.message.*;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
-import de.johannesrauch.hexxagon.fsm.event.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +47,7 @@ public class MessageReceiver {
 
     private void receivedWelcome(WelcomeMessage message) {
         logger.info("Received welcome message");
-        parent.getContext().reactOnEvent(new WelcomeEvent(message));
+        parent.getContext().reactToReceivedWelcome(message);
     }
 
     private void receivedAvailableLobbies(AvailableLobbiesMessage message) {
@@ -63,22 +62,22 @@ public class MessageReceiver {
 
     private void receivedLobbyJoined(LobbyJoinedMessage message) {
         logger.info("Received joined lobby");
-        parent.getContext().reactOnEvent(new JoinedLobbyEvent(message));
+        parent.getContext().reactToReceivedJoinedLobby(message);
     }
 
     private void receivedLobbyStatus(LobbyStatusMessage message) {
         logger.info("Received lobby status");
-        parent.getContext().reactOnEvent(new LobbyStatusEvent(message));
+        parent.getContext().reactToReceivedLobbyStatus(message);
     }
 
     private void receivedGameStarted(GameStartedMessage message) {
         logger.info("Received start game");
-        parent.getContext().reactOnEvent(new GameStartedEvent(message));
+        parent.getContext().reactToReceivedGameStarted(message);
     }
 
     private void receivedGameStatus(GameStatusMessage message) {
         logger.info("Received game status");
-        parent.getContext().reactOnEvent(new GameStatusEvent(message));
+        parent.getContext().reactToReceivedGameStatus(message);
     }
 
     private void receivedStrike(StrikeMessage message) {

@@ -4,7 +4,6 @@ import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.network.client.MessageReceiver;
 import de.johannesrauch.hexxagon.network.client.SimpleClient;
-import de.johannesrauch.hexxagon.fsm.event.ConnectFailedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +51,7 @@ public class ConnectionHandler {
         }
 
         if (successful) this.client = client;
-        else parent.getContext().reactOnEvent(new ConnectFailedEvent());
+        else parent.getContext().reactToReceivedConnectionError();
     }
 
     public void disconnect() {

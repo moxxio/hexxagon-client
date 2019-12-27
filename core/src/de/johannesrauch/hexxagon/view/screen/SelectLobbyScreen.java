@@ -11,9 +11,6 @@ import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.model.lobby.Lobby;
-import de.johannesrauch.hexxagon.fsm.event.BackEvent;
-import de.johannesrauch.hexxagon.fsm.event.JoinLobbyEvent;
-import de.johannesrauch.hexxagon.fsm.event.LeaveEvent;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +76,7 @@ public class SelectLobbyScreen extends BaseScreen {
 
                 String userName = userNameTextField.getText();
                 if (userName == null) return;
-                parent.getContext().reactOnEvent(new JoinLobbyEvent(lobbyId, userName));
+                parent.getContext().reactToClickedJoinLobby(lobbyId, userName);
             }
         });
         createButton = new TextButton("CREATE", skin);
@@ -122,14 +119,14 @@ public class SelectLobbyScreen extends BaseScreen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactOnEvent(new BackEvent());
+                parent.getContext().reactToClickedBack();
             }
         });
         cancelButton = new TextButton("CANCEL", skin);
         cancelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactOnEvent(new LeaveEvent());
+                parent.getContext().reactToClickedLeave();
             }
         });
 
