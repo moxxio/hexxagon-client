@@ -1,7 +1,7 @@
-package de.johannesrauch.hexxagon.state.context;
+package de.johannesrauch.hexxagon.fsm.context;
 
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.state.event.AbstractEvent;
+import de.johannesrauch.hexxagon.fsm.event.AbstractEvent;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

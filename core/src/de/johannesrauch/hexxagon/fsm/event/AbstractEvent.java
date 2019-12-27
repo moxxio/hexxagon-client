@@ -1,7 +1,7 @@
-package de.johannesrauch.hexxagon.state.event;
+package de.johannesrauch.hexxagon.fsm.event;
 
-import de.johannesrauch.hexxagon.state.context.StateContext;
-import de.johannesrauch.hexxagon.state.context.StateEnum;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import de.johannesrauch.hexxagon.fsm.context.StateEnum;
 
 /**
  * Every class implementing the abstract event interface is an transition event class for the finite-state machine.

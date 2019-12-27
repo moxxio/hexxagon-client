@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.state.event.ConnectEvent;
-import de.johannesrauch.hexxagon.state.event.DisconnectEvent;
-import de.johannesrauch.hexxagon.state.event.SearchGameEvent;
+import de.johannesrauch.hexxagon.fsm.event.ConnectEvent;
+import de.johannesrauch.hexxagon.fsm.event.DisconnectEvent;
+import de.johannesrauch.hexxagon.fsm.event.SearchGameEvent;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 
 public class MainMenuScreen extends BaseScreen {

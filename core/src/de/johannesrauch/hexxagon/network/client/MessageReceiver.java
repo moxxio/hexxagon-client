@@ -5,7 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.network.message.*;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
-import de.johannesrauch.hexxagon.state.event.*;
+import de.johannesrauch.hexxagon.fsm.event.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

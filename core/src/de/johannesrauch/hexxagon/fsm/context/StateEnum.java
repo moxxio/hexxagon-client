@@ -1,4 +1,4 @@
-package de.johannesrauch.hexxagon.state.context;
+package de.johannesrauch.hexxagon.fsm.context;
 
 public enum StateEnum {
     Disconnected,

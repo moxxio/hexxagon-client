@@ -7,7 +7,7 @@ import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.resource.Resources;
-import de.johannesrauch.hexxagon.state.context.StateContext;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.view.screen.GameScreen;
 import de.johannesrauch.hexxagon.view.screen.LobbyScreen;
 import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;

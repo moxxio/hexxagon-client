@@ -8,7 +8,7 @@ import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.model.tile.GameScreenTile;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
-import de.johannesrauch.hexxagon.state.context.StateEnum;
+import de.johannesrauch.hexxagon.fsm.context.StateEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

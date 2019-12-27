@@ -1,10 +1,10 @@
-package de.johannesrauch.hexxagon.state.event;
+package de.johannesrauch.hexxagon.fsm.event;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.network.message.GameStatusMessage;
-import de.johannesrauch.hexxagon.state.context.StateContext;
-import de.johannesrauch.hexxagon.state.context.StateEnum;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import de.johannesrauch.hexxagon.fsm.context.StateEnum;
 
 /**
  * This class represents a received game status event from the server in the game screen.

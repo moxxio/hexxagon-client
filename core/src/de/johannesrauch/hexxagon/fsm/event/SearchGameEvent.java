@@ -1,8 +1,8 @@
-package de.johannesrauch.hexxagon.state.event;
+package de.johannesrauch.hexxagon.fsm.event;
 
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.state.context.StateContext;
-import de.johannesrauch.hexxagon.state.context.StateEnum;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import de.johannesrauch.hexxagon.fsm.context.StateEnum;
 
 /**
  * This class represents a pressed search game event from the search game button in the main menu.
