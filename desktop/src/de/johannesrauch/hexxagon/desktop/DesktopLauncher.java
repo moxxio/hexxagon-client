@@ -5,15 +5,17 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import de.johannesrauch.hexxagon.Hexxagon;
 
 /**
- * TODO: comment
+ * This class launches the hexxagon game application.
+ *
  * @author Dennis Jehle
  * @author Johannes Rauch
  */
 public class DesktopLauncher {
-	
+
 	/**
-	 * TODO: comment
-	 * @param args Kommandozeilenparameter
+	 * This method is the entry point for the game app.
+	 *
+	 * @param args the command line arguments
 	 */
 	public static void main (String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
