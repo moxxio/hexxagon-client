@@ -20,6 +20,7 @@ public class MessageReceiver {
     }
 
     public void handleMessage(String json) {
+        logger.info("Received: " + json);
         try {
             BaseMessage message = gson.fromJson(json, BaseMessage.class);
             MessageType messageType = message.getMessageType();
@@ -46,37 +47,30 @@ public class MessageReceiver {
     }
 
     private void receivedWelcome(WelcomeMessage message) {
-        logger.info("Received welcome message");
         parent.getContext().reactToReceivedWelcome(message);
     }
 
     private void receivedAvailableLobbies(AvailableLobbiesMessage message) {
-        logger.info("Received available lobbies");
         parent.getLobbyHandler().updateLobbies(message.getAvailableLobbies());
     }
 
     private void receivedLobbyCreated(LobbyCreatedMessage message) {
-        logger.info("Received created lobby");
         if (message.getSuccessfullyCreated()) parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
     }
 
     private void receivedLobbyJoined(LobbyJoinedMessage message) {
-        logger.info("Received joined lobby");
         parent.getContext().reactToReceivedJoinedLobby(message);
     }
 
     private void receivedLobbyStatus(LobbyStatusMessage message) {
-        logger.info("Received lobby status");
         parent.getContext().reactToReceivedLobbyStatus(message);
     }
 
     private void receivedGameStarted(GameStartedMessage message) {
-        logger.info("Received start game");
         parent.getContext().reactToReceivedGameStarted(message);
     }
 
     private void receivedGameStatus(GameStatusMessage message) {
-        logger.info("Received game status");
         parent.getContext().reactToReceivedGameStatus(message);
     }
 
