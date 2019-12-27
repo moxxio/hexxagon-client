@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: check for win, tie or lose (since the fucking server does not do it although it should)
-// TODO: move valid game move check here
 public class GameHandler {
 
     private final Hexxagon parent;
