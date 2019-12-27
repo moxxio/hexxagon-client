@@ -25,8 +25,6 @@ public class GameScreen extends BaseScreen {
     private ButtonStyleLabel playerTwoLabel;
     private TextFieldStyleLabel playerOneUserNameLabel;
     private TextFieldStyleLabel playerTwoUserNameLabel;
-    // private Label playerOnePointsLabel; // TODO: maybe remove
-    // private Label playerTwoPointsLabel;
     private TextFieldStyleLabel playerOneScoreLabel;
     private TextFieldStyleLabel playerTwoScoreLabel;
     private ButtonStyleLabel turnLabel;
@@ -54,10 +52,6 @@ public class GameScreen extends BaseScreen {
         playerTwoUserNameLabel = new TextFieldStyleLabel("<PLAYER ONE USER NAME>", skin);
         playerTwoUserNameLabel.setPosition(960, 20);
         playerTwoUserNameLabel.setSize(300, 50);
-        // playerOnePointsLabel = new Label("POINTS: ", skin);
-        // playerOnePointsLabel.setPosition(20, 20);
-        // playerTwoPointsLabel = new Label("POINTS: ", skin);
-        // playerTwoPointsLabel.setPosition(760, 20);
         playerOneScoreLabel = new TextFieldStyleLabel("<SCORE>", skin);
         playerOneScoreLabel.setPosition(340, 20);
         playerOneScoreLabel.setSize(50, 50);
@@ -107,8 +101,6 @@ public class GameScreen extends BaseScreen {
         stage.addActor(playerTwoLabel);
         stage.addActor(playerOneUserNameLabel);
         stage.addActor(playerTwoUserNameLabel);
-        // stage.addActor(playerOnePointsLabel);
-        // stage.addActor(playerTwoPointsLabel);
         stage.addActor(playerOneScoreLabel);
         stage.addActor(playerTwoScoreLabel);
         stage.addActor(turnLabel);
@@ -133,7 +125,7 @@ public class GameScreen extends BaseScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Game board
+        // Draw game board and get player information
         GameHandler gameHandler = parent.getGameHandler();
         if (gameHandler.isGameUpdated()) {
             playerOneUserNameLabel.setText(gameHandler.getPlayerOneUserName());
@@ -149,7 +141,6 @@ public class GameScreen extends BaseScreen {
                 winnerLabel.setVisible(true);
             }
 
-            // TODO: check null pointers
             for (TileEnum tile : TileEnum.values()) {
                 TileStateEnum tileState = gameHandler.getTileState(tile);
                 if (tileState == TileStateEnum.PLAYERONE)
@@ -197,7 +188,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-
+        spriteBatch.dispose();
     }
 
     public Map<TileEnum, GameScreenTile> getGameScreenTiles() {

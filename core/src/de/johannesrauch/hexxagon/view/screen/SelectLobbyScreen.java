@@ -22,7 +22,8 @@ import java.util.zip.Adler32;
 
 public class SelectLobbyScreen extends BaseScreen {
 
-    private static final Logger logger = LoggerFactory.getLogger(SelectLobbyScreen.class);;
+    private static final Logger logger = LoggerFactory.getLogger(SelectLobbyScreen.class);
+    ;
 
     private Label headingLabel;
     private ButtonStyleLabel userNameLabel;
@@ -248,7 +249,7 @@ public class SelectLobbyScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-
+        spriteBatch.dispose();
     }
 
     public void showProgressBar() {

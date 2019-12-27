@@ -51,13 +51,15 @@ public class Hexxagon extends Game {
         gameScreen = new GameScreen(this);
 
         showMainMenuScreen();
-        // showGameScreen(); // TODO: delete debug comment
     }
 
     @Override
     public void dispose() {
-        // TODO: free resources
         super.dispose();
+        mainMenuScreen.dispose();
+        selectLobbyScreen.dispose();
+        lobbyScreen.dispose();
+        gameScreen.dispose();
     }
 
     public String getVersion() {

@@ -134,7 +134,7 @@ public class LobbyScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-
+        spriteBatch.dispose();
     }
 
     private void reset() {

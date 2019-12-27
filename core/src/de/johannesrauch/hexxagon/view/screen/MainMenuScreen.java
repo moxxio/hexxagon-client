@@ -152,7 +152,7 @@ public class MainMenuScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-        // TODO: free resources
+        spriteBatch.dispose();
     }
 
     public void setConnStatusLabel(String text) {
