@@ -97,7 +97,6 @@ public class TileClickListener extends ClickListener {
             gameHandler.setSelectedTile(tile);
         } else { // Otherwise check if it is a valid move
             if (gameHandler.validMove(selectedTile, tile)) {
-                // System.out.println("FROM " + selectedTile + " TO " + tile); // TODO: delete debug
                 gameHandler.gameMove(selectedTile, tile);
             }
         }
