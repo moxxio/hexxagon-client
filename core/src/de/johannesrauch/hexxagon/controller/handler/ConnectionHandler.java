@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class handles the connection to the server. It contains the message emitter and receiver.
@@ -46,28 +45,13 @@ public class ConnectionHandler {
      * @param port     the port of the server to connect to
      */
     public void connect(String hostName, String port) {
-        boolean successful = false;
-
-        SimpleClient client = null;
+        if (client != null) return;
         try {
-            client = new SimpleClient(new URI("ws://" + hostName + ":" + port), messageReceiver);
-            successful = true;
+            client = new SimpleClient(new URI("ws://" + hostName + ":" + port), messageReceiver, context);
+            client.connect();
         } catch (URISyntaxException e) {
+            reset();
             logger.error(e.getMessage());
-        }
-
-        if (successful) {
-            successful = false;
-            try {
-                successful = client.connectBlocking(5, TimeUnit.SECONDS);
-            } catch (InterruptedException ignore) {
-            }
-        }
-
-        if (successful) this.client = client;
-        else {
-            if (context != null) context.reactToReceivedConnectionError();
-            else logger.warn("Received connection error but context is null!");
         }
     }
 

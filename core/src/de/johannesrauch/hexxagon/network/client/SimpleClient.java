@@ -1,5 +1,7 @@
 package de.johannesrauch.hexxagon.network.client;
 
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import de.johannesrauch.hexxagon.fsm.state.State;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ public class SimpleClient extends WebSocketClient {
     private final Logger logger;
 
     private final MessageReceiver messageReceiver;
+    private final StateContext context;
 
     /**
      * This is the standard constructor. With the given URI, it calls the websocket client constructor.
@@ -23,10 +26,11 @@ public class SimpleClient extends WebSocketClient {
      * @param serverUri       the uri to connect to
      * @param messageReceiver the message receiver
      */
-    public SimpleClient(URI serverUri, MessageReceiver messageReceiver) {
+    public SimpleClient(URI serverUri, MessageReceiver messageReceiver, StateContext context) {
         super(serverUri);
         logger = LoggerFactory.getLogger(SimpleClient.class);
         this.messageReceiver = messageReceiver;
+        this.context = context;
     }
 
     /**
@@ -49,8 +53,6 @@ public class SimpleClient extends WebSocketClient {
         messageReceiver.handleMessage(message);
     }
 
-    // TODO: get state context to call react to server disconnect
-
     /**
      * This method gets called when the connection gets closed.
      *
@@ -61,9 +63,8 @@ public class SimpleClient extends WebSocketClient {
     @Override
     public void onClose(int code, String reason, boolean remote) {
         logger.info("Client disconnected from: " + this.getConnection().getRemoteSocketAddress().toString());
+        context.reactToReceivedServerDisconnect();
     }
-
-    // TODO: get state context to call react to connection error
 
     /**
      * This method gets called when a error occurs.
@@ -73,5 +74,6 @@ public class SimpleClient extends WebSocketClient {
     @Override
     public void onError(Exception ex) {
         logger.error("Client error: " + ex.getMessage());
+        context.reactToReceivedConnectionError();
     }
 }
