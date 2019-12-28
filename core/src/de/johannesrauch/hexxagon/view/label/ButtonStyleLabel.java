@@ -4,6 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
+/**
+ * This class represents a label. It extends a text button, to make it a button style label.
+ */
 public class ButtonStyleLabel extends TextButton {
     public ButtonStyleLabel(String text, Skin skin) {
         super(text, skin);
