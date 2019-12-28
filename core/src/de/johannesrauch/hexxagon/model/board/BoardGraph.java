@@ -18,15 +18,30 @@ public class BoardGraph {
 
     private Map<TileEnum, List<TileEnum>> tileMapping;
 
+    /**
+     * This is the standard constructor. It creates the tile board graph.
+     */
     public BoardGraph() {
         tileMapping = new HashMap<>();
         generateTileMapping();
     }
 
+    /**
+     * This method returns the neighbor list of specific tile.
+     *
+     * @param tile the tile you want the neighbors of
+     * @return the neighbor list of the given tile
+     */
     public List<TileEnum> getNeighborsOf(TileEnum tile) {
         return tileMapping.get(tile);
     }
 
+    /**
+     * This method constructs a tile enum list out of integers.
+     *
+     * @param tiles the tile integers
+     * @return the list containing the tile enums
+     */
     private List<TileEnum> assembleTileEnumList(Integer... tiles) {
         List<TileEnum> list = new ArrayList<>();
         if (tiles != null) {
@@ -37,6 +52,9 @@ public class BoardGraph {
         return list;
     }
 
+    /**
+     * This method constructs the actual tile board graph.
+     */
     private void generateTileMapping() {
         int a = -5, b = -4, c = 0, d = 2, e = 6, f = 7;
         for (int t = 1; t <= 61; t++) {
@@ -110,10 +128,21 @@ public class BoardGraph {
                     tileMapping.put(tile, assembleTileEnumList(a, b, c, d, e, f));
                     break;
             }
-            a++; b++; c++; d++; e++; f++;
+            a++;
+            b++;
+            c++;
+            d++;
+            e++;
+            f++;
         }
     }
 
+    /**
+     * This method constructs a tile enum from an integer.
+     *
+     * @param t the integer which specifies the tile enum
+     * @return the tile enum
+     */
     private TileEnum getTileEnumFromInt(int t) {
         return TileEnum.valueOf("TILE_" + t);
     }
