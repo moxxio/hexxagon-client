@@ -112,18 +112,6 @@ public class ConnectedState implements State {
     }
 
     /**
-     * TODO: implement reaction of connected state to connection error
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedConnectionError(StateContext context) {
-        return null;
-    }
-
-    /**
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
@@ -180,18 +168,6 @@ public class ConnectedState implements State {
      */
     @Override
     public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
-        return null;
-    }
-
-    /**
-     * TODO: implement reaction of connected state to server disconnect
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedServerDisconnect(StateContext context) {
         return null;
     }
 }

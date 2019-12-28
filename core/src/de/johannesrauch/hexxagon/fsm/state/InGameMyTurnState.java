@@ -101,18 +101,6 @@ public class InGameMyTurnState implements State {
     }
 
     /**
-     * TODO: implement in game my turn state reaction to connection error
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedConnectionError(StateContext context) {
-        return null;
-    }
-
-    /**
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
@@ -183,17 +171,5 @@ public class InGameMyTurnState implements State {
         }
         if (gameHandler.isMyTurn()) return StateContext.getInGameMyTurnState();
         return StateContext.getInGameOpponentsTurnState();
-    }
-
-    /**
-     * TODO: implement in game my turn state reaction to server disconnect
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedServerDisconnect(StateContext context) {
-        return null;
     }
 }

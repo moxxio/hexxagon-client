@@ -1,7 +1,6 @@
 package de.johannesrauch.hexxagon.fsm.state;
 
 import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.message.*;
 
@@ -101,18 +100,6 @@ public class InGameOpponentsTurnState implements State {
     }
 
     /**
-     * TODO: implement in game my turn state reaction to connection error
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedConnectionError(StateContext context) {
-        return null;
-    }
-
-    /**
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
@@ -171,29 +158,6 @@ public class InGameOpponentsTurnState implements State {
      */
     @Override
     public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
-        Hexxagon parent = context.getParent();
-        GameHandler gameHandler = parent.getGameHandler();
-
-        gameHandler.updateGame(message);
-
-        if (gameHandler.isGameOver()) {
-            if (gameHandler.isTie()) return StateContext.getTieState();
-            if (gameHandler.isWinnerMe()) return StateContext.getWinnerState();
-            return StateContext.getLoserState();
-        }
-        if (gameHandler.isMyTurn()) return StateContext.getInGameMyTurnState();
-        return StateContext.getInGameOpponentsTurnState();
-    }
-
-    /**
-     * TODO: implement in game my turn state reaction to server disconnect
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedServerDisconnect(StateContext context) {
-        return null;
+        return StateContext.getInGameMyTurnState().reactToReceivedGameStatus(context, message);
     }
 }

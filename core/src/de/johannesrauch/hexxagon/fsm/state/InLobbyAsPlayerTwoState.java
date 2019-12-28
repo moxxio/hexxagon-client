@@ -101,18 +101,6 @@ public class InLobbyAsPlayerTwoState implements State {
     }
 
     /**
-     * TODO: implement in lobby as player two state reaction to connection error
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedConnectionError(StateContext context) {
-        return null;
-    }
-
-    /**
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
@@ -196,18 +184,6 @@ public class InLobbyAsPlayerTwoState implements State {
      */
     @Override
     public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedServerDisconnect(StateContext context) {
         return null;
     }
 }

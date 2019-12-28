@@ -107,18 +107,6 @@ public class InFullLobbyAsPlayerOneState implements State {
     }
 
     /**
-     * TODO: implement in full lobby as player one state reaction to connection error
-     *
-     * @param context the context in which this state is used
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedConnectionError(StateContext context) {
-        return null;
-    }
-
-    /**
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
@@ -203,18 +191,6 @@ public class InFullLobbyAsPlayerOneState implements State {
      */
     @Override
     public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
-        return null;
-    }
-
-    /**
-     * TODO: implement in full lobby as player one state reaction to server disconnect
-     *
-     * @param context the context in which this state is used
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedServerDisconnect(StateContext context) {
         return null;
     }
 }

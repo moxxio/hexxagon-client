@@ -102,18 +102,6 @@ public class UninitializedGameState implements State {
     }
 
     /**
-     * TODO: implement uninitialized game state reaction to connection error
-     *
-     * @param context the context in which this state is used
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedConnectionError(StateContext context) {
-        return null;
-    }
-
-    /**
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
@@ -188,17 +176,5 @@ public class UninitializedGameState implements State {
 
         if (gameHandler.isMyTurn()) return StateContext.getInGameMyTurnState();
         return StateContext.getInGameOpponentsTurnState();
-    }
-
-    /**
-     * TODO: implement reaction of uninitialized game state reaction to server disconnect
-     *
-     * @param context the context in which this state is used
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedServerDisconnect(StateContext context) {
-        return null;
     }
 }

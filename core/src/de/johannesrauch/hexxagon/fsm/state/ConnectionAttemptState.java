@@ -94,26 +94,6 @@ public class ConnectionAttemptState implements State {
     }
 
     /**
-     * When in connection attempt state and a connection error occurs, then transition to the disconnected state.
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedConnectionError(StateContext context) {
-        Hexxagon parent = context.getParent();
-        MainMenuScreen mainMenuScreen = parent.getMainMenuScreen();
-
-        mainMenuScreen.setConnStatusLabel("DISCONNECTED");
-        mainMenuScreen.setConnectButtonTouchable(true);
-        mainMenuScreen.setPlayButtonVisible(false);
-        mainMenuScreen.setDisconnectButtonTouchable(false);
-
-        return StateContext.getDisconnectedState();
-    }
-
-    /**
      * When you receive a welcome message in the connection attempt state, then the client is connected and
      * authenticated by the server.
      *
@@ -179,18 +159,6 @@ public class ConnectionAttemptState implements State {
      */
     @Override
     public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedServerDisconnect(StateContext context) {
         return null;
     }
 }
