@@ -12,6 +12,9 @@ import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 
+/**
+ * This class is the main menu screen.
+ */
 public class MainMenuScreen extends BaseScreen {
 
     private Label headingLabel;
@@ -30,6 +33,11 @@ public class MainMenuScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    /**
+     * This standard constructor sets everything up.
+     *
+     * @param parent the parent
+     */
     public MainMenuScreen(Hexxagon parent) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
@@ -105,6 +113,9 @@ public class MainMenuScreen extends BaseScreen {
         spriteBatch = new SpriteBatch();
     }
 
+    /**
+     * This method gets called when the scene is set.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -113,6 +124,11 @@ public class MainMenuScreen extends BaseScreen {
                 (float) stage.getViewport().getScreenHeight() / 2);
     }
 
+    /**
+     * This method gets called in the while loop of the game.
+     *
+     * @param delta the time since the last render call
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -130,6 +146,12 @@ public class MainMenuScreen extends BaseScreen {
         stage.draw();
     }
 
+    /**
+     * This method gets called whenever the window gets resized.
+     *
+     * @param width  the new width
+     * @param height the new height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().setScreenSize(width, height);
@@ -150,25 +172,48 @@ public class MainMenuScreen extends BaseScreen {
 
     }
 
+    /**
+     * This method gets called before the object gets destroyed.
+     */
     @Override
     public void dispose() {
         spriteBatch.dispose();
     }
 
+    /**
+     * This method sets the connection label text.
+     *
+     * @param text the text to be set
+     */
     public void setConnStatusLabel(String text) {
         connStatusLabel.setText(text);
     }
 
+    /**
+     * This method sets the connect button to enabled or disabled.
+     *
+     * @param touchable true, if the connect button should be touchable, false otherwise
+     */
     public void setConnectButtonTouchable(boolean touchable) {
         if (touchable) connectButton.setTouchable(Touchable.enabled);
         else connectButton.setTouchable(Touchable.disabled);
     }
 
+    /**
+     * This method sets the disconnect button to enabled or disabled.
+     *
+     * @param touchable true, if the disconnect button should be touchable, false otherwise
+     */
     public void setDisconnectButtonTouchable(boolean touchable) {
         if (touchable) disconnectButton.setTouchable(Touchable.enabled);
         else disconnectButton.setTouchable(Touchable.disabled);
     }
 
+    /**
+     * This method sets the play button to visible or invisible.
+     *
+     * @param visible true, if the disconnect button should be visible, false otherwise
+     */
     public void setPlayButtonVisible(boolean visible) {
         playButton.setVisible(visible);
     }

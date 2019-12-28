@@ -19,6 +19,9 @@ import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class is the game screen.
+ */
 public class GameScreen extends BaseScreen {
 
     private ButtonStyleLabel playerOneLabel;
@@ -36,6 +39,11 @@ public class GameScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    /**
+     * This constructor sets everything up.
+     *
+     * @param parent the parent
+     */
     public GameScreen(Hexxagon parent) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
@@ -110,6 +118,9 @@ public class GameScreen extends BaseScreen {
         spriteBatch = new SpriteBatch();
     }
 
+    /**
+     * This method gets called when the scene is set.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -120,6 +131,11 @@ public class GameScreen extends BaseScreen {
                 (float) stage.getViewport().getScreenHeight() / 2);
     }
 
+    /**
+     * This method gets called in the while loop of the game.
+     *
+     * @param delta the time since the last render call
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -166,6 +182,12 @@ public class GameScreen extends BaseScreen {
         stage.draw();
     }
 
+    /**
+     * This method gets called whenever the window gets resized.
+     *
+     * @param width  the new width
+     * @param height the new height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().setScreenSize(width, height);
@@ -186,19 +208,36 @@ public class GameScreen extends BaseScreen {
 
     }
 
+    /**
+     * This method gets called before the object gets destroyed.
+     */
     @Override
     public void dispose() {
         spriteBatch.dispose();
     }
 
+    /**
+     * This method returns the game screen tile map.
+     *
+     * @return the game screen tile map
+     */
     public Map<TileEnum, GameScreenTile> getGameScreenTiles() {
         return gameScreenTiles;
     }
 
+    /**
+     * This method constructs a tile enum from integer.
+     *
+     * @param i the integer from which the tile gets constructed
+     * @return the tile enum
+     */
     private TileEnum getTileEnumFromInt(int i) {
         return TileEnum.valueOf("TILE_" + i);
     }
 
+    /**
+     * This methods resets the tile textures, the label names and the winner label.
+     */
     private void reset() {
         for (TileEnum tile : TileEnum.values()) {
             gameScreenTiles.get(tile).setTexture(parent.getResources().getTileFree());
@@ -212,6 +251,9 @@ public class GameScreen extends BaseScreen {
         winnerLabel.setVisible(false);
     }
 
+    /**
+     * This method sets up the positions for all tiles.
+     */
     private void setupTiles() {
         for (int i = 0; i < 61; i++) {
             final int index = i + 1;

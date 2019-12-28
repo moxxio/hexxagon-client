@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.zip.Adler32;
 
+/**
+ * This class represents the select lobby screen.
+ */
 public class SelectLobbyScreen extends BaseScreen {
 
     private static final Logger logger = LoggerFactory.getLogger(SelectLobbyScreen.class);
@@ -50,6 +53,11 @@ public class SelectLobbyScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    /**
+     * This constructor sets everything up.
+     *
+     * @param parent the parent
+     */
     public SelectLobbyScreen(Hexxagon parent) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
@@ -183,6 +191,9 @@ public class SelectLobbyScreen extends BaseScreen {
         spriteBatch = new SpriteBatch();
     }
 
+    /**
+     * This method gets called when the scene is set.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -191,6 +202,11 @@ public class SelectLobbyScreen extends BaseScreen {
                 (float) stage.getViewport().getScreenHeight() / 2);
     }
 
+    /**
+     * This method gets called in the while loop of the game.
+     *
+     * @param delta the time since the last render call
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -227,6 +243,12 @@ public class SelectLobbyScreen extends BaseScreen {
         stage.draw();
     }
 
+    /**
+     * This method gets called whenever the window gets resized.
+     *
+     * @param width  the new width
+     * @param height the new height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().setScreenSize(width, height);
@@ -247,11 +269,17 @@ public class SelectLobbyScreen extends BaseScreen {
 
     }
 
+    /**
+     * This method gets called before the object gets destroyed.
+     */
     @Override
     public void dispose() {
         spriteBatch.dispose();
     }
 
+    /**
+     * This method shows the progress bar and hides the main table.
+     */
     public void showProgressBar() {
         mainTable.setVisible(false);
         joiningTable.setVisible(true);
@@ -259,6 +287,11 @@ public class SelectLobbyScreen extends BaseScreen {
         progressBar.setValue(1.0f);
     }
 
+    /**
+     * This method waits the in millis specified time and then calls hide progress bar.
+     *
+     * @param millis the time this methods waits in millis
+     */
     public void hideProgressBar(int millis) { // TODO: necessary?
         try {
             Thread.sleep(millis);
@@ -268,6 +301,9 @@ public class SelectLobbyScreen extends BaseScreen {
         }
     }
 
+    /**
+     * This method hides the progress bar.
+     */
     public void hideProgressBar() {
         joiningTable.setVisible(false);
         mainTable.setVisible(true);

@@ -17,6 +17,10 @@ import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
 // TODO: make progress bar for uninitialized game state
+
+/**
+ * This class is the lobby screen.
+ */
 public class LobbyScreen extends BaseScreen {
 
     private Label headingLabel;
@@ -32,6 +36,11 @@ public class LobbyScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    /**
+     * This constructor sets everything up.
+     *
+     * @param parent the parent
+     */
     public LobbyScreen(Hexxagon parent) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
@@ -78,6 +87,9 @@ public class LobbyScreen extends BaseScreen {
         spriteBatch = new SpriteBatch();
     }
 
+    /**
+     * This method gets called when the scene is set.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -88,6 +100,11 @@ public class LobbyScreen extends BaseScreen {
                 (float) stage.getViewport().getScreenHeight() / 2);
     }
 
+    /**
+     * This method gets called in the while loop of the game.
+     *
+     * @param delta the time since the last render call
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -112,6 +129,12 @@ public class LobbyScreen extends BaseScreen {
         stage.draw();
     }
 
+    /**
+     * This method gets called whenever the window gets resized.
+     *
+     * @param width  the new width
+     * @param height the new height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().setScreenSize(width, height);
@@ -132,11 +155,17 @@ public class LobbyScreen extends BaseScreen {
 
     }
 
+    /**
+     * This method gets called before the object gets destroyed.
+     */
     @Override
     public void dispose() {
         spriteBatch.dispose();
     }
 
+    /**
+     * This method resets the labels.
+     */
     private void reset() {
         startButton.setVisible(false);
         playerOneUserNameLabel.setText("<PLAYER ONE USER NAME>");

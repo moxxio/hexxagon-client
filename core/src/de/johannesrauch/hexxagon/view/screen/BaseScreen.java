@@ -7,6 +7,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import de.johannesrauch.hexxagon.Hexxagon;
 
+/**
+ * This is the base screen. It sets up the camera, the viewport and the stage.
+ */
 public abstract class BaseScreen implements Screen {
 
     protected Hexxagon parent;
@@ -16,6 +19,11 @@ public abstract class BaseScreen implements Screen {
     protected ScreenViewport viewport;
     protected Stage stage;
 
+    /**
+     * This constructor sets everything up.
+     *
+     * @param parent the parent
+     */
     public BaseScreen(Hexxagon parent) {
         this.parent = parent;
 
