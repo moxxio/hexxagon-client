@@ -1,5 +1,8 @@
 package de.johannesrauch.hexxagon.model.tile;
 
+/**
+ * This class represents the different tiles like specified in the requirement specification.
+ */
 public enum TileEnum {
 	TILE_1,
 	TILE_2,
