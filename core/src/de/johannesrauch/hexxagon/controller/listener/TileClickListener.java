@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class implements the reaction to a click of the user on a game board tile.
+ */
 public class TileClickListener extends ClickListener {
 
     private final Hexxagon parent;
@@ -25,6 +28,14 @@ public class TileClickListener extends ClickListener {
     private TileEnum tile;
     private GameScreenTile gameScreenTile;
 
+    /**
+     * TODO: remove parent and set the actual stuff this class needs
+     * This is the standard constructor. It sets the parent and the tile and the game screen tile this listener listens to.
+     *
+     * @param parent         the parent
+     * @param tile           the tile which is listened to
+     * @param gameScreenTile the game screen tile which is listened to
+     */
     public TileClickListener(Hexxagon parent, TileEnum tile, GameScreenTile gameScreenTile) {
         this.parent = parent;
         logger = LoggerFactory.getLogger(TileClickListener.class);
@@ -32,6 +43,13 @@ public class TileClickListener extends ClickListener {
         this.gameScreenTile = gameScreenTile;
     }
 
+    /**
+     * This method determines the reaction to the user clicking a tile of the playing board.
+     *
+     * @param event the input event
+     * @param x     the x coordinate of the click
+     * @param y     the y coordinate of the click
+     */
     @Override
     public void clicked(InputEvent event, float x, float y) {
         // If it is not my turn, then ignore the click event
