@@ -38,12 +38,16 @@ public class Hexxagon extends Game {
         BasicConfigurator.configure();
 
         context = new StateContext(this);
-
         resources = new Resources();
+        connectionHandler = new ConnectionHandler();
+        lobbyHandler = new LobbyHandler();
+        gameHandler = new GameHandler();
 
-        connectionHandler = new ConnectionHandler(this);
-        lobbyHandler = new LobbyHandler(this);
-        gameHandler = new GameHandler(this);
+        connectionHandler.setContext(context);
+        connectionHandler.setLobbyHandler(lobbyHandler);
+        connectionHandler.setGameHandler(gameHandler);
+        lobbyHandler.setMessageEmitter(connectionHandler.getMessageEmitter());
+        gameHandler.setMessageEmitter(connectionHandler.getMessageEmitter());
 
         mainMenuScreen = new MainMenuScreen(this);
         selectLobbyScreen = new SelectLobbyScreen(this);
