@@ -52,14 +52,10 @@ public class TileClickListener extends ClickListener {
      */
     @Override
     public void clicked(InputEvent event, float x, float y) {
-        // If it is not my turn, then ignore the click event
-        State state = parent.getContext().getState();
-        if (!(state instanceof InGameMyTurnState)) return;
-
         GameHandler gameHandler = parent.getGameHandler();
 
-        // If player has moved in this round, ignore the click event
-        if (gameHandler.hasMoved()) return;
+        // If it is not the player's turn or the player has moved in this round, ignore the click event
+        if (!gameHandler.isMyTurn() || gameHandler.hasMoved()) return;
 
         // If something is wrong with the player number, then ignore the click event
         int playerNumber = gameHandler.getMyPlayerNumber();
