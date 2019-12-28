@@ -2,6 +2,9 @@ package de.johannesrauch.hexxagon.view.shape;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+/**
+ * This class extends a shape renderer. It draws a rounded rectangle.
+ */
 public class RoundedRectangleRenderer extends ShapeRenderer {
 
     public RoundedRectangleRenderer() {
