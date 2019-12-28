@@ -38,7 +38,7 @@ public class MainMenuScreen extends BaseScreen {
         connStatusLabel = new ButtonStyleLabel("DISCONNECTED", skin);
         connStatusLabel.setPosition(20, 20);
         connStatusLabel.setSize(300, 50);
-        versionLabel = new ButtonStyleLabel("VERSION " + parent.getVersion(), skin);
+        versionLabel = new ButtonStyleLabel("VERSION " + Hexxagon.getVersion(), skin);
         versionLabel.setPosition(960, 20);
         versionLabel.setSize(300, 50);
 

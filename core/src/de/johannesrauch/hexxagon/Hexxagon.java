@@ -66,7 +66,7 @@ public class Hexxagon extends Game {
         gameScreen.dispose();
     }
 
-    public String getVersion() {
+    public static String getVersion() {
         return version;
     }
 
