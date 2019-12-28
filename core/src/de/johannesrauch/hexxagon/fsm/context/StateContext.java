@@ -8,6 +8,9 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * This method provides a context for the states of the client's finite-state machine.
+ */
 public class StateContext {
 
     private final Hexxagon parent;
@@ -31,32 +34,59 @@ public class StateContext {
     private static final TieState tieState = new TieState();
     private static final LoserState loserState = new LoserState();
 
+    /**
+     * TODO: remove parent and set the actual stuff this class needs
+     * This is the standard constructor. It sets the parent, creates the executor service and sets the initial state.
+     *
+     * @param parent the parent
+     */
     public StateContext(Hexxagon parent) {
         this.parent = parent;
         executorService = Executors.newFixedThreadPool(1);
         state = disconnectedState;
     }
 
+    /**
+     * This method returns the parent.
+     *
+     * @return the parent
+     */
     public Hexxagon getParent() {
         return parent;
     }
 
+    /**
+     * This method returns the executor service.
+     *
+     * @return the executor service
+     */
     public ExecutorService getExecutorService() {
         return executorService;
     }
 
-    public State getState() {
-        return state;
-    }
-
+    /**
+     * This method returns the static disconnected state object.
+     *
+     * @return the static disconnected state object
+     */
     public static DisconnectedState getDisconnectedState() {
         return disconnectedState;
     }
 
+    /**
+     * This method returns the static connection attempt state object.
+     *
+     * @return the static connection attempt state object
+     */
     public static ConnectionAttemptState getConnectionAttemptState() {
         return connectionAttemptState;
     }
 
+    /**
+     * This method returns the static connected state object.
+     *
+     * @return the static connected state object
+     */
     public static ConnectedState getConnectedState() {
         return connectedState;
     }
@@ -65,46 +95,97 @@ public class StateContext {
         return selectLobbyState;
     }
 
+    /**
+     * This method returns the static joining lobby state object.
+     *
+     * @return the static joining lobby state object
+     */
     public static JoiningLobbyState getJoiningLobbyState() {
         return joiningLobbyState;
     }
 
+    /**
+     * This method returns the static in lobby as player one state object.
+     *
+     * @return the static in lobby as player one state object
+     */
     public static InLobbyAsPlayerOneState getInLobbyAsPlayerOneState() {
         return inLobbyAsPlayerOneState;
     }
 
+    /**
+     * This method returns the static in lobby as player two state object.
+     *
+     * @return the static in lobby as player two state object
+     */
     public static InLobbyAsPlayerTwoState getInLobbyAsPlayerTwoState() {
         return inLobbyAsPlayerTwoState;
     }
 
+    /**
+     * This method returns the static in full lobby as player one state object.
+     *
+     * @return the static in full lobby as player one state object
+     */
     public static InFullLobbyAsPlayerOneState getInFullLobbyAsPlayerOneState() {
         return inFullLobbyAsPlayerOneState;
     }
 
+    /**
+     * This method returns the static in uninitialized game object.
+     *
+     * @return the static in uninitialized game object
+     */
     public static UninitializedGameState getUninitializedGameState() {
         return uninitializedGameState;
     }
 
+    /**
+     * This method returns the static in game my turn object.
+     *
+     * @return the static in game my turn object
+     */
     public static InGameMyTurnState getInGameMyTurnState() {
         return inGameMyTurnState;
     }
 
+    /**
+     * This method returns the static in game opponent's turn object.
+     *
+     * @return the static in game opponent's turn object
+     */
     public static InGameOpponentsTurnState getInGameOpponentsTurnState() {
         return inGameOpponentsTurnState;
     }
 
+    /**
+     * This method returns the static winner state object.
+     *
+     * @return the static winner state object
+     */
     public static WinnerState getWinnerState() {
         return winnerState;
     }
 
+    /**
+     * This method returns the static tie state object.
+     *
+     * @return the static winner state object
+     */
     public static TieState getTieState() {
         return tieState;
     }
 
+    /**
+     * This method returns the static loser state object.
+     *
+     * @return the static loser state object
+     */
     public static LoserState getLoserState() {
         return loserState;
     }
 
+    // TODO: comment react to methods
     public void reactToClickedConnect(String hostName, String port) {
         setState(state.reactToClickedConnect(this, hostName, port));
     }
