@@ -7,33 +7,69 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
+/**
+ * This class extends a websocket client.
+ */
 public class SimpleClient extends WebSocketClient {
 
     private final Logger logger;
 
     private final MessageReceiver messageReceiver;
 
+    /**
+     * This is the standard constructor. With the given URI, it calls the websocket client constructor.
+     * It also sets the message receiver.
+     *
+     * @param serverUri       the uri to connect to
+     * @param messageReceiver the message receiver
+     */
     public SimpleClient(URI serverUri, MessageReceiver messageReceiver) {
         super(serverUri);
         logger = LoggerFactory.getLogger(SimpleClient.class);
         this.messageReceiver = messageReceiver;
     }
 
+    /**
+     * This method gets called when the connection gets opened.
+     *
+     * @param handshake the handshake data
+     */
     @Override
     public void onOpen(ServerHandshake handshake) {
         logger.info("Client connected to: " + getConnection().getRemoteSocketAddress().toString());
     }
 
+    /**
+     * This method gets called when a message is received.
+     *
+     * @param message the received string message
+     */
     @Override
     public void onMessage(String message) {
         messageReceiver.handleMessage(message);
     }
 
+    // TODO: get state context to call react to server disconnect
+
+    /**
+     * This method gets called when the connection gets closed.
+     *
+     * @param code   the close code
+     * @param reason the close reason
+     * @param remote the remote
+     */
     @Override
     public void onClose(int code, String reason, boolean remote) {
         logger.info("Client disconnected from: " + this.getConnection().getRemoteSocketAddress().toString());
     }
 
+    // TODO: get state context to call react to connection error
+
+    /**
+     * This method gets called when a error occurs.
+     *
+     * @param ex the exception
+     */
     @Override
     public void onError(Exception ex) {
         logger.error("Client error: " + ex.getMessage());
