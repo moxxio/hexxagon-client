@@ -152,7 +152,7 @@ public class MessageEmitter {
      * @param jsonMessage the message to be sent
      */
     private void sendMessage(String jsonMessage) {
-        SimpleClient client = connection.getClient();
+        Client client = connection.getClient();
         if (client == null) {
             logger.warn("Client is null! Message to be sent: " + jsonMessage);
             return;

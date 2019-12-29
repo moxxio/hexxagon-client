@@ -1,7 +1,6 @@
 package de.johannesrauch.hexxagon.network.client;
 
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
-import de.johannesrauch.hexxagon.fsm.state.State;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
@@ -12,7 +11,7 @@ import java.net.URI;
 /**
  * This class extends a websocket client.
  */
-public class SimpleClient extends WebSocketClient {
+public class Client extends WebSocketClient {
 
     private final Logger logger;
 
@@ -26,9 +25,9 @@ public class SimpleClient extends WebSocketClient {
      * @param serverUri       the uri to connect to
      * @param messageReceiver the message receiver
      */
-    public SimpleClient(URI serverUri, MessageReceiver messageReceiver, StateContext context) {
+    public Client(URI serverUri, MessageReceiver messageReceiver, StateContext context) {
         super(serverUri);
-        logger = LoggerFactory.getLogger(SimpleClient.class);
+        logger = LoggerFactory.getLogger(Client.class);
         this.messageReceiver = messageReceiver;
         this.context = context;
     }

@@ -3,7 +3,7 @@ package de.johannesrauch.hexxagon.controller.handler;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.network.client.MessageReceiver;
-import de.johannesrauch.hexxagon.network.client.SimpleClient;
+import de.johannesrauch.hexxagon.network.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ public class ConnectionHandler {
 
     private MessageReceiver messageReceiver;
     private MessageEmitter messageEmitter;
-    private SimpleClient client;
+    private Client client;
 
     private UUID userId;
 
@@ -47,7 +47,7 @@ public class ConnectionHandler {
     public void connect(String hostName, String port) {
         if (client != null) return;
         try {
-            client = new SimpleClient(new URI("ws://" + hostName + ":" + port), messageReceiver, context);
+            client = new Client(new URI("ws://" + hostName + ":" + port), messageReceiver, context);
             client.connect();
         } catch (URISyntaxException e) {
             reset();
@@ -69,9 +69,9 @@ public class ConnectionHandler {
     /**
      * This method returns the websocket client.
      *
-     * @return the simple websocket client
+     * @return the websocket client
      */
-    public SimpleClient getClient() {
+    public Client getClient() {
         return client;
     }
 
