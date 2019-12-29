@@ -4,6 +4,8 @@ import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.network.client.MessageReceiver;
 import de.johannesrauch.hexxagon.network.client.Client;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.server.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,7 @@ public class ConnectionHandler {
 
     private MessageReceiver messageReceiver;
     private MessageEmitter messageEmitter;
-    private Client client;
+    private WebSocketClient client;
 
     private UUID userId;
 
@@ -71,7 +73,7 @@ public class ConnectionHandler {
      *
      * @return the websocket client
      */
-    public Client getClient() {
+    public WebSocketClient getClient() {
         return client;
     }
 
@@ -91,6 +93,15 @@ public class ConnectionHandler {
      */
     public UUID getUserId() {
         return userId;
+    }
+
+    /**
+     * This methods sets the websocket client.
+     *
+     * @param client the websocket client
+     */
+    public void setClient(WebSocketClient client) {
+        this.client = client;
     }
 
     /**

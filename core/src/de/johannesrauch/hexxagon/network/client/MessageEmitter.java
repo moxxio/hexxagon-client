@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.network.message.*;
+import org.java_websocket.client.WebSocketClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,7 +153,7 @@ public class MessageEmitter {
      * @param jsonMessage the message to be sent
      */
     private void sendMessage(String jsonMessage) {
-        Client client = connection.getClient();
+        WebSocketClient client = connection.getClient();
         if (client == null) {
             logger.warn("Client is null! Message to be sent: " + jsonMessage);
             return;
