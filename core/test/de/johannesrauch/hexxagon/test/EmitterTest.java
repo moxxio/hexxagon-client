@@ -61,8 +61,6 @@ public class EmitterTest {
         }
     }
 
-    // TODO: implement tests
-
     /**
      * This method tests whether the get available lobbies message is well formed.
      *
