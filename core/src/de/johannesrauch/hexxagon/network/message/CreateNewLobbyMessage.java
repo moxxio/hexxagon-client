@@ -30,4 +30,23 @@ public class CreateNewLobbyMessage extends AbstractMessage {
     public String getLobbyName() {
         return lobbyName;
     }
+
+    /**
+     * This method defines whether the given object is equal to this. It is null-pointer proof.
+     *
+     * @param obj the compared object
+     * @return true, if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof CreateNewLobbyMessage)) return false;
+
+        CreateNewLobbyMessage message = (CreateNewLobbyMessage) obj;
+        boolean equal = super.equals(obj);
+
+        if (lobbyName == null) equal &= message.lobbyName == null;
+        else equal &= lobbyName.equals(message.lobbyName);
+
+        return equal;
+    }
 }

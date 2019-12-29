@@ -40,4 +40,26 @@ public abstract class AbstractMessage {
     public UUID getUserId() {
         return userId;
     }
+
+    /**
+     * TODO: maybe override equals in all messages, not just the sent ones
+     * This method defines whether the given object is equal to this. It is null-pointer proof.
+     *
+     * @param obj the compared object
+     * @return true, if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof AbstractMessage)) return false;
+
+        boolean equal;
+        AbstractMessage message = (AbstractMessage) obj;
+
+        if (messageType == null) equal = message.messageType == null;
+        else equal = messageType.equals(message.messageType);
+        if (userId == null) equal &= message.userId == null;
+        else equal &= userId.equals(message.userId);
+
+        return equal;
+    }
 }

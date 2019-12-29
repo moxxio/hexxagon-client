@@ -17,4 +17,17 @@ public class GetAvailableLobbiesMessage extends AbstractMessage {
     public GetAvailableLobbiesMessage(UUID userId) {
         super(MessageType.GetAvailableLobbies, userId);
     }
+
+    /**
+     * This method defines whether the given object is equal to this. It is null-pointer proof.
+     *
+     * @param obj the compared object
+     * @return true, if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof GetAvailableLobbiesMessage)) return false;
+
+        return super.equals(obj);
+    }
 }

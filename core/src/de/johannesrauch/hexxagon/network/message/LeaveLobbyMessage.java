@@ -30,4 +30,23 @@ public class LeaveLobbyMessage extends AbstractMessage {
     public UUID getLobbyId() {
         return lobbyId;
     }
+
+    /**
+     * This method defines whether the given object is equal to this. It is null-pointer proof.
+     *
+     * @param obj the compared object
+     * @return true, if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LeaveLobbyMessage)) return false;
+
+        LeaveLobbyMessage message = (LeaveLobbyMessage) obj;
+        boolean equal = super.equals(obj);
+
+        if (lobbyId == null) equal &= message.lobbyId == null;
+        else equal &= lobbyId.equals(message.lobbyId);
+
+        return equal;
+    }
 }
