@@ -14,7 +14,7 @@ import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
 import de.johannesrauch.hexxagon.view.screen.SelectLobbyScreen;
 import org.apache.log4j.BasicConfigurator;
 
-// TODO: Create a class with public static values for the ui
+// TODO: create a class with public static values for the ui
 // TODO: dialog window at server disconnect or connection error
 public class Hexxagon extends Game {
 

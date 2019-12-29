@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * TODO: the states should not make buttons invisible, edit labels etc. -> screens task
  * This method provides a context for the states of the client's finite-state machine.
  */
 public class StateContext {
