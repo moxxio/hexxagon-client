@@ -35,6 +35,8 @@ public class StateContext {
     private static final TieState tieState = new TieState();
     private static final LoserState loserState = new LoserState();
 
+    private boolean stateUpdated;
+
     /**
      * TODO: remove parent and set the actual stuff this class needs
      * This is the standard constructor. It sets the parent, creates the executor service and sets the initial state.
@@ -44,7 +46,7 @@ public class StateContext {
     public StateContext(Hexxagon parent) {
         this.parent = parent;
         executorService = Executors.newFixedThreadPool(1);
-        state = disconnectedState;
+        setState(disconnectedState);
     }
 
     /**
@@ -178,6 +180,19 @@ public class StateContext {
     }
 
     /**
+     * This method returns whether the state has been updated since the last check. It resets the state updated flag.
+     *
+     * @return true, if the state has been updated, false otherwise
+     */
+    public boolean hasStateUpdated() {
+        if (stateUpdated) {
+            stateUpdated = false;
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * This method returns the static loser state object.
      *
      * @return the static loser state object
@@ -252,6 +267,7 @@ public class StateContext {
     private synchronized void setState(State nextState) {
         if (nextState != null) {
             state = nextState;
+            stateUpdated = true;
         }
     }
 }
