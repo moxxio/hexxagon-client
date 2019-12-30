@@ -36,14 +36,17 @@ public class LobbyScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    private final LobbyHandler lobbyHandler;
+
     /**
      * This constructor sets everything up.
      *
      * @param parent the parent
      */
-    public LobbyScreen(Hexxagon parent) {
+    public LobbyScreen(Hexxagon parent, LobbyHandler lobbyHandler) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
+        this.lobbyHandler = lobbyHandler;
 
         headingLabel = new Label("LOBBY", skin, "title");
         playerOneLabel = new ButtonStyleLabel("PLAYER ONE: ", skin);
@@ -55,7 +58,7 @@ public class LobbyScreen extends BaseScreen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getLobbyHandler().startGame();
+                lobbyHandler.startGame();
             }
         });
         leaveButton = new TextButton("LEAVE", skin);
@@ -110,7 +113,6 @@ public class LobbyScreen extends BaseScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
         if (lobbyHandler.isLobbyUpdated()) {
             startButton.setVisible(lobbyHandler.isClientPlayerOne() && lobbyHandler.isLobbyReady());
             playerOneUserNameLabel.setText(lobbyHandler.getPlayerOneUserName());

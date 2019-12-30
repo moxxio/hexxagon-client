@@ -77,16 +77,7 @@ public class WinnerState implements State {
      */
     @Override
     public State reactToClickedLeave(StateContext context) {
-        Hexxagon parent = context.getParent();
-
-        context.getExecutorService().submit(() -> {
-            parent.getLobbyHandler().leaveLobby();
-            parent.getGameHandler().leaveGame();
-            parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
-        });
-        parent.showSelectLobbyScreen();
-
-        return StateContext.getSelectLobbyState();
+        return StateContext.getInGameMyTurnState().reactToClickedLeave(context);
     }
 
     /**

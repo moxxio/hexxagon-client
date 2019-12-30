@@ -112,24 +112,13 @@ public class InLobbyAsPlayerTwoState implements State {
      * then update the lobby.
      *
      * @param context the context in which this state is used
+     * @param message the received message
      * @return the next state or null, if state does not change
      * @author Johannes Rauch
      */
     @Override
     public State reactToReceivedLobbyJoined(StateContext context, LobbyJoinedMessage message) {
-        Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
-
-        if (message.getSuccessfullyJoined()) {
-            lobbyHandler.joinedLobby(message.getUserId(), message.getLobbyId());
-
-            return null;
-        } else {
-            lobbyHandler.leaveLobby();
-            parent.showSelectLobbyScreen();
-
-            return StateContext.getSelectLobbyState();
-        }
+        return StateContext.getJoiningLobbyState().reactToReceivedLobbyJoined(context, message);
     }
 
     /**
@@ -142,8 +131,7 @@ public class InLobbyAsPlayerTwoState implements State {
      */
     @Override
     public State reactToReceivedLobbyStatus(StateContext context, LobbyStatusMessage message) {
-        Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
+        LobbyHandler lobbyHandler = context.getLobbyHandler();
 
         lobbyHandler.updateLobby(message.getLobby());
 
@@ -161,13 +149,7 @@ public class InLobbyAsPlayerTwoState implements State {
      */
     @Override
     public State reactToReceivedGameStarted(StateContext context, GameStartedMessage message) {
-        Hexxagon parent = context.getParent();
-        GameHandler gameHandler = parent.getGameHandler();
-
-        gameHandler.startedGame(message.getUserId(), message.getGameId());
-        parent.showGameScreen();
-
-        return StateContext.getUninitializedGameState();
+        return StateContext.getInFullLobbyAsPlayerOneState().reactToReceivedGameStarted(context, message);
     }
 
     /**

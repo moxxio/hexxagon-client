@@ -117,12 +117,14 @@ public class JoiningLobbyState implements State {
     @Override
     public State reactToReceivedLobbyJoined(StateContext context, LobbyJoinedMessage message) {
         Hexxagon parent = context.getParent();
+        LobbyHandler lobbyHandler = context.getLobbyHandler();
 
         if (message.getSuccessfullyJoined()) {
-            parent.getLobbyHandler().joinedLobby(message.getUserId(), message.getLobbyId());
+            lobbyHandler.joinedLobby(message.getUserId(), message.getLobbyId());
 
             return null;
         } else {
+            lobbyHandler.leaveLobby();
             parent.showSelectLobbyScreen();
 
             return StateContext.getSelectLobbyState();
@@ -141,7 +143,7 @@ public class JoiningLobbyState implements State {
     @Override
     public State reactToReceivedLobbyStatus(StateContext context, LobbyStatusMessage message) {
         Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
+        LobbyHandler lobbyHandler = context.getLobbyHandler();
 
         lobbyHandler.updateLobby(message.getLobby());
         parent.showLobbyScreen();

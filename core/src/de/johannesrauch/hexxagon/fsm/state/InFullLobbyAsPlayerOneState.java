@@ -93,8 +93,7 @@ public class InFullLobbyAsPlayerOneState implements State {
      */
     @Override
     public State reactToClickedStart(StateContext context) {
-        Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
+        LobbyHandler lobbyHandler = context.getLobbyHandler();
 
         context.getExecutorService().submit(lobbyHandler::startGame);
 
@@ -124,7 +123,7 @@ public class InFullLobbyAsPlayerOneState implements State {
     @Override
     public State reactToReceivedLobbyJoined(StateContext context, LobbyJoinedMessage message) {
         Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
+        LobbyHandler lobbyHandler = context.getLobbyHandler();
 
         if (message.getSuccessfullyJoined()) {
             lobbyHandler.joinedLobby(message.getUserId(), message.getLobbyId());
@@ -148,8 +147,7 @@ public class InFullLobbyAsPlayerOneState implements State {
      */
     @Override
     public State reactToReceivedLobbyStatus(StateContext context, LobbyStatusMessage message) {
-        Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
+        LobbyHandler lobbyHandler = context.getLobbyHandler();
 
         lobbyHandler.updateLobby(message.getLobby());
 
@@ -169,7 +167,7 @@ public class InFullLobbyAsPlayerOneState implements State {
     @Override
     public State reactToReceivedGameStarted(StateContext context, GameStartedMessage message) {
         Hexxagon parent = context.getParent();
-        GameHandler gameHandler = parent.getGameHandler();
+        GameHandler gameHandler = context.getGameHandler();
 
         gameHandler.startedGame(message.getUserId(), message.getGameId());
         parent.showGameScreen();

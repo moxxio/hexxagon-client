@@ -81,7 +81,7 @@ public class InLobbyAsPlayerOneState implements State {
     public State reactToClickedLeave(StateContext context) {
         Hexxagon parent = context.getParent();
 
-        context.getExecutorService().submit(() -> parent.getLobbyHandler().leaveLobby());
+        context.getExecutorService().submit(() -> context.getLobbyHandler().leaveLobby());
         parent.showSelectLobbyScreen();
 
         return StateContext.getSelectLobbyState();
@@ -121,19 +121,7 @@ public class InLobbyAsPlayerOneState implements State {
      */
     @Override
     public State reactToReceivedLobbyJoined(StateContext context, LobbyJoinedMessage message) {
-        Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
-
-        if (message.getSuccessfullyJoined()) {
-            lobbyHandler.joinedLobby(message.getUserId(), message.getLobbyId());
-
-            return null;
-        } else {
-            lobbyHandler.leaveLobby();
-            parent.showSelectLobbyScreen();
-
-            return StateContext.getSelectLobbyState();
-        }
+        return StateContext.getJoiningLobbyState().reactToReceivedLobbyJoined(context, message);
     }
 
     /**
@@ -146,10 +134,10 @@ public class InLobbyAsPlayerOneState implements State {
      */
     @Override
     public State reactToReceivedLobbyStatus(StateContext context, LobbyStatusMessage message) {
-        Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
+        LobbyHandler lobbyHandler = context.getLobbyHandler();
 
         lobbyHandler.updateLobby(message.getLobby());
+
         if (lobbyHandler.isLobbyReady()) return StateContext.getInFullLobbyAsPlayerOneState();
         return null;
     }

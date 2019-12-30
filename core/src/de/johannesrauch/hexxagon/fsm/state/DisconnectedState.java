@@ -22,7 +22,7 @@ public class DisconnectedState implements State {
         Hexxagon parent = context.getParent();
 
         context.getExecutorService().submit(() -> {
-            parent.getConnectionHandler().connect(hostName, port);
+            context.getConnectionHandler().connect(hostName, port);
         });
 
         return StateContext.getConnectionAttemptState();

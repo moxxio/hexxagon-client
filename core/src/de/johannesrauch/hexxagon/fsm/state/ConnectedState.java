@@ -31,10 +31,8 @@ public class ConnectedState implements State {
      */
     @Override
     public State reactToClickedDisconnect(StateContext context) {
-        Hexxagon parent = context.getParent();
-
         context.getExecutorService().submit(() -> {
-            parent.getConnectionHandler().disconnect();
+            context.getConnectionHandler().disconnect();
         });
 
         return StateContext.getDisconnectedState();
@@ -52,7 +50,7 @@ public class ConnectedState implements State {
     public State reactToClickedPlay(StateContext context) {
         Hexxagon parent = context.getParent();
 
-        parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
+        context.getMessageEmitter().sendGetAvailableLobbiesMessage();
         parent.showSelectLobbyScreen();
 
         return StateContext.getSelectLobbyState();

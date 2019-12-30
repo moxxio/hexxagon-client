@@ -81,9 +81,9 @@ public class UninitializedGameState implements State {
     public State reactToClickedLeave(StateContext context) {
         Hexxagon parent = context.getParent();
 
-        parent.getLobbyHandler().leaveLobby();
-        parent.getGameHandler().leaveGame();
-        parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
+        context.getLobbyHandler().leaveLobby();
+        context.getGameHandler().leaveGame();
+        context.getMessageEmitter().sendGetAvailableLobbiesMessage();
         parent.showSelectLobbyScreen();
 
         return StateContext.getSelectLobbyState();
@@ -149,7 +149,7 @@ public class UninitializedGameState implements State {
     @Override
     public State reactToReceivedGameStarted(StateContext context, GameStartedMessage message) {
         Hexxagon parent = context.getParent();
-        GameHandler gameHandler = parent.getGameHandler();
+        GameHandler gameHandler = context.getGameHandler();
 
         gameHandler.startedGame(message.getUserId(), message.getGameId());
         parent.showGameScreen();
@@ -168,7 +168,7 @@ public class UninitializedGameState implements State {
     @Override
     public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
         Hexxagon parent = context.getParent();
-        GameHandler gameHandler = parent.getGameHandler();
+        GameHandler gameHandler = context.getGameHandler();
 
         gameHandler.startedGame(message.getUserId(), message.getGameId());
         gameHandler.updateGame(message);

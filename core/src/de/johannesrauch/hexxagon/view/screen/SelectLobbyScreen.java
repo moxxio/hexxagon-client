@@ -9,8 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import de.johannesrauch.hexxagon.fsm.state.State;
 import de.johannesrauch.hexxagon.model.lobby.Lobby;
+import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +30,6 @@ import java.util.zip.Adler32;
 public class SelectLobbyScreen extends BaseScreen {
 
     private static final Logger logger = LoggerFactory.getLogger(SelectLobbyScreen.class);
-    ;
 
     private Label headingLabel;
     private ButtonStyleLabel userNameLabel;
@@ -53,16 +56,20 @@ public class SelectLobbyScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    private final LobbyHandler lobbyHandler;
+
     /**
      * This constructor sets everything up.
      *
      * @param parent the parent
      */
-    public SelectLobbyScreen(Hexxagon parent) {
+    public SelectLobbyScreen(Hexxagon parent, ConnectionHandler connectionHandler, LobbyHandler lobbyHandler) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
         Adler32 a32 = new Adler32();
         a32.update(UUID.randomUUID().toString().getBytes());
+        MessageEmitter messageEmitter = connectionHandler.getMessageEmitter();
+        this.lobbyHandler = lobbyHandler;
 
         headingLabel = new Label("CHOOSE LOBBY", skin, "title");
         userNameLabel = new ButtonStyleLabel("USERNAME: ", skin);
@@ -105,7 +112,7 @@ public class SelectLobbyScreen extends BaseScreen {
                     protected void result(Object object) {
                         boolean result = (boolean) object;
                         if (result) {
-                            parent.getMessageEmitter().sendCreateNewLobbyMessage(lobbyNameTextField.getText());
+                            messageEmitter.sendCreateNewLobbyMessage(lobbyNameTextField.getText());
                         }
                     }
                 };
@@ -121,7 +128,7 @@ public class SelectLobbyScreen extends BaseScreen {
         refreshButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
+                messageEmitter.sendGetAvailableLobbiesMessage();
             }
         });
         backButton = new TextButton("BACK", skin);
@@ -212,7 +219,7 @@ public class SelectLobbyScreen extends BaseScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        LobbyHandler lobbyHandler = parent.getLobbyHandler();
+        // Update lobby list if lobbies have been updated
         if (lobbyHandler.areLobbiesUpdated()) {
             lobbyIds.clear();
             lobbyList.clearItems();
@@ -229,6 +236,16 @@ public class SelectLobbyScreen extends BaseScreen {
             });
 
             lobbyList.setItems(tmp.toArray(new String[0]));
+        }
+
+        StateContext context = parent.getContext();
+        if (context.hasStateUpdated()) {
+            State state = context.getState();
+            if (state == StateContext.getJoiningLobbyState()) {
+                showProgressBar();
+            } else if (state == StateContext.getSelectLobbyState()) {
+                hideProgressBar();
+            }
         }
 
         // Draw background and particle effect
@@ -292,7 +309,7 @@ public class SelectLobbyScreen extends BaseScreen {
      *
      * @param millis the time this methods waits in millis
      */
-    public void hideProgressBar(int millis) { // TODO: necessary?
+    public void hideProgressBar(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ignored) {

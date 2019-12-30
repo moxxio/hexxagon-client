@@ -77,7 +77,7 @@ public class LoserState implements State {
      */
     @Override
     public State reactToClickedLeave(StateContext context) {
-        return StateContext.getWinnerState().reactToClickedLeave(context);
+        return StateContext.getInGameMyTurnState().reactToClickedLeave(context);
     }
 
     /**

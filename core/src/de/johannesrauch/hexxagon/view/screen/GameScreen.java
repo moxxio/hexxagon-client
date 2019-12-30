@@ -1,5 +1,6 @@
 package de.johannesrauch.hexxagon.view.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -39,14 +40,17 @@ public class GameScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    private final GameHandler gameHandler;
+
     /**
      * This constructor sets everything up.
      *
      * @param parent the parent
      */
-    public GameScreen(Hexxagon parent) {
+    public GameScreen(Hexxagon parent, GameHandler gameHandler) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
+        this.gameHandler = gameHandler;
 
         playerOneLabel = new ButtonStyleLabel("PLAYER ONE: ", skin);
         playerOneLabel.setPosition(20, 80);
@@ -142,7 +146,6 @@ public class GameScreen extends BaseScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Draw game board and get player information
-        GameHandler gameHandler = parent.getGameHandler();
         if (gameHandler.isGameUpdated()) {
             playerOneUserNameLabel.setText(gameHandler.getPlayerOneUserName());
             playerTwoUserNameLabel.setText(gameHandler.getPlayerTwoUserName());
@@ -291,17 +294,16 @@ public class GameScreen extends BaseScreen {
             } else if (i < 56) {
                 posX = startPosX + offsetX * 3;
                 posY = startPosY - sizeY - sizeY / 2 - (i - 50) * sizeY - 3 * offsetY / 2 - (i - 50) * offsetY;
-                ;
             } else {
                 posX = startPosX + offsetX * 4;
                 posY = startPosY - 2 * sizeY - (i - 56) * sizeY - 2 * offsetY - (i - 56) * offsetY;
             }
 
-            TileEnum tile = getTileEnumFromInt(i + 1);
+            TileEnum tile = getTileEnumFromInt(index);
             GameScreenTile gameScreenTile = new GameScreenTile(parent.getResources().getTileFree());
             gameScreenTile.setPosition(posX, posY);
             gameScreenTile.setSize(sizeX, sizeY);
-            gameScreenTile.addListener(new TileClickListener(parent, tile, gameScreenTile));
+            gameScreenTile.addListener(new TileClickListener(parent, this, gameHandler, tile, gameScreenTile));
 
             gameScreenTiles.put(tile, gameScreenTile);
             stage.addActor(gameScreenTile);

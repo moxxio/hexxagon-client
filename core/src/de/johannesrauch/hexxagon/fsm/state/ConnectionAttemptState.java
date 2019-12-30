@@ -105,7 +105,7 @@ public class ConnectionAttemptState implements State {
     public State reactToReceivedWelcome(StateContext context, WelcomeMessage message) {
         Hexxagon parent = context.getParent();
 
-        parent.getConnectionHandler().setUserId(message.getUserId());
+        context.getConnectionHandler().setUserId(message.getUserId());
         parent.showMainMenuScreen();
 
         return StateContext.getConnectedState();

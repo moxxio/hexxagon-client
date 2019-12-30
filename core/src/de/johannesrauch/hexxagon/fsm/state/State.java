@@ -44,7 +44,7 @@ public interface State {
     default State reactToReceivedConnectionError(StateContext context) {
         Hexxagon parent = context.getParent();
 
-        parent.getConnectionHandler().disconnect();
+        context.getConnectionHandler().disconnect();
         parent.showMainMenuScreen();
 
         return StateContext.getDisconnectedState();

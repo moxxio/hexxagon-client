@@ -1,7 +1,12 @@
 package de.johannesrauch.hexxagon.fsm.context;
 
+import com.badlogic.gdx.Game;
 import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
+import de.johannesrauch.hexxagon.controller.handler.GameHandler;
+import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.fsm.state.*;
+import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.network.message.*;
 
 import java.util.UUID;
@@ -14,8 +19,11 @@ import java.util.concurrent.Executors;
 public class StateContext {
 
     private final Hexxagon parent;
-
     private final ExecutorService executorService;
+
+    private ConnectionHandler connectionHandler;
+    private LobbyHandler lobbyHandler;
+    private GameHandler gameHandler;
 
     private State state;
 
@@ -37,7 +45,6 @@ public class StateContext {
     private boolean stateUpdated;
 
     /**
-     * TODO: remove parent and set the actual stuff this class needs
      * This is the standard constructor. It sets the parent, creates the executor service and sets the initial state.
      *
      * @param parent the parent
@@ -67,12 +74,89 @@ public class StateContext {
     }
 
     /**
+     * This method returns the connection handler.
+     *
+     * @return the connection handler
+     */
+    public ConnectionHandler getConnectionHandler() {
+        return connectionHandler;
+    }
+
+    /**
+     * This method returns the lobby handler.
+     *
+     * @return the lobby handler
+     */
+    public LobbyHandler getLobbyHandler() {
+        return lobbyHandler;
+    }
+
+    /**
+     * This method returns the game handler.
+     *
+     * @return the game handler
+     */
+    public GameHandler getGameHandler() {
+        return gameHandler;
+    }
+
+    /**
+     * This method returns the message emitter. If the connection handler is null, return null.
+     *
+     * @return the message emitter or null, if the connection handler is null
+     */
+    public MessageEmitter getMessageEmitter() {
+        if (connectionHandler != null) return connectionHandler.getMessageEmitter();
+        return null;
+    }
+
+    /**
      * This method returns the executor service.
      *
      * @return the executor service
      */
     public ExecutorService getExecutorService() {
         return executorService;
+    }
+
+    /**
+     * This method returns whether the state has been updated since the last check. It resets the state updated flag.
+     *
+     * @return true, if the state has been updated, false otherwise
+     */
+    public boolean hasStateUpdated() {
+        if (stateUpdated) {
+            stateUpdated = false;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method sets the connection handler of the context.
+     *
+     * @param connectionHandler the connection handler
+     */
+    public void setConnectionHandler(ConnectionHandler connectionHandler) {
+        this.connectionHandler = connectionHandler;
+    }
+
+    /**
+     * This method sets the lobby handler of the context.
+     *
+     * @param lobbyHandler the lobby handler
+     */
+    public void setLobbyHandler(LobbyHandler lobbyHandler) {
+        this.lobbyHandler = lobbyHandler;
+    }
+
+    /**
+     * This method sets the game handler of the context.
+     *
+     * @param gameHandler the game handler
+     */
+    public void setGameHandler(GameHandler gameHandler) {
+        this.gameHandler = gameHandler;
     }
 
     /**
@@ -185,19 +269,6 @@ public class StateContext {
      */
     public static TieState getTieState() {
         return tieState;
-    }
-
-    /**
-     * This method returns whether the state has been updated since the last check. It resets the state updated flag.
-     *
-     * @return true, if the state has been updated, false otherwise
-     */
-    public boolean hasStateUpdated() {
-        if (stateUpdated) {
-            stateUpdated = false;
-            return true;
-        }
-        return false;
     }
 
     /**

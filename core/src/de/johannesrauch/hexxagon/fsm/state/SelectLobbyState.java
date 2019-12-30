@@ -71,10 +71,7 @@ public class SelectLobbyState implements State {
      */
     @Override
     public State reactToClickedJoinLobby(StateContext context, UUID lobbyId, String userName) {
-        Hexxagon parent = context.getParent();
-
-        parent.getMessageEmitter().sendJoinLobbyMessage(lobbyId, userName);
-        parent.getSelectLobbyScreen().showProgressBar();
+        context.getMessageEmitter().sendJoinLobbyMessage(lobbyId, userName);
 
         return StateContext.getJoiningLobbyState();
     }

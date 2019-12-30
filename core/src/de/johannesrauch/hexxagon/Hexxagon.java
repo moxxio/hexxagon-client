@@ -44,6 +44,9 @@ public class Hexxagon extends Game {
         lobbyHandler = new LobbyHandler();
         gameHandler = new GameHandler();
 
+        context.setConnectionHandler(connectionHandler);
+        context.setLobbyHandler(lobbyHandler);
+        context.setGameHandler(gameHandler);
         connectionHandler.setContext(context);
         connectionHandler.setLobbyHandler(lobbyHandler);
         connectionHandler.setGameHandler(gameHandler);
@@ -51,9 +54,9 @@ public class Hexxagon extends Game {
         gameHandler.setMessageEmitter(connectionHandler.getMessageEmitter());
 
         mainMenuScreen = new MainMenuScreen(this);
-        selectLobbyScreen = new SelectLobbyScreen(this);
-        lobbyScreen = new LobbyScreen(this);
-        gameScreen = new GameScreen(this);
+        selectLobbyScreen = new SelectLobbyScreen(this, connectionHandler, lobbyHandler);
+        lobbyScreen = new LobbyScreen(this, lobbyHandler);
+        gameScreen = new GameScreen(this, gameHandler);
 
         showMainMenuScreen();
     }
@@ -77,38 +80,6 @@ public class Hexxagon extends Game {
 
     public Resources getResources() {
         return resources;
-    }
-
-    public ConnectionHandler getConnectionHandler() {
-        return connectionHandler;
-    }
-
-    public LobbyHandler getLobbyHandler() {
-        return lobbyHandler;
-    }
-
-    public GameHandler getGameHandler() {
-        return gameHandler;
-    }
-
-    public MessageEmitter getMessageEmitter() {
-        return connectionHandler.getMessageEmitter();
-    }
-
-    public MainMenuScreen getMainMenuScreen() {
-        return mainMenuScreen;
-    }
-
-    public SelectLobbyScreen getSelectLobbyScreen() {
-        return selectLobbyScreen;
-    }
-
-    public LobbyScreen getLobbyScreen() {
-        return lobbyScreen;
-    }
-
-    public GameScreen getGameScreen() {
-        return gameScreen;
     }
 
     public void showMainMenuScreen() {

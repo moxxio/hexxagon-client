@@ -81,9 +81,9 @@ public class InGameMyTurnState implements State {
         Hexxagon parent = context.getParent();
 
         context.getExecutorService().submit(() -> {
-            parent.getLobbyHandler().leaveLobby();
-            parent.getGameHandler().leaveGame();
-            parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
+            context.getLobbyHandler().leaveLobby();
+            context.getGameHandler().leaveGame();
+            context.getMessageEmitter().sendGetAvailableLobbiesMessage();
         });
         parent.showSelectLobbyScreen();
 
@@ -161,8 +161,7 @@ public class InGameMyTurnState implements State {
      */
     @Override
     public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
-        Hexxagon parent = context.getParent();
-        GameHandler gameHandler = parent.getGameHandler();
+        GameHandler gameHandler = context.getGameHandler();
 
         gameHandler.updateGame(message);
 
