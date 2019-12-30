@@ -19,11 +19,7 @@ public class DisconnectedState implements State {
      */
     @Override
     public State reactToClickedConnect(StateContext context, String hostName, String port) {
-        Hexxagon parent = context.getParent();
-
-        context.getExecutorService().submit(() -> {
-            context.getConnectionHandler().connect(hostName, port);
-        });
+        context.getConnectionHandler().connect(hostName, port);
 
         return StateContext.getConnectionAttemptState();
     }

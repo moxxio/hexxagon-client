@@ -80,11 +80,9 @@ public class InGameMyTurnState implements State {
     public State reactToClickedLeave(StateContext context) {
         Hexxagon parent = context.getParent();
 
-        context.getExecutorService().submit(() -> {
-            context.getLobbyHandler().leaveLobby();
-            context.getGameHandler().leaveGame();
-            context.getMessageEmitter().sendGetAvailableLobbiesMessage();
-        });
+        context.getLobbyHandler().leaveLobby();
+        context.getGameHandler().leaveGame();
+        context.getMessageEmitter().sendGetAvailableLobbiesMessage();
         parent.showSelectLobbyScreen();
 
         return StateContext.getSelectLobbyState();

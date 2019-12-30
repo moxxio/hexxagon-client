@@ -111,15 +111,6 @@ public class StateContext {
     }
 
     /**
-     * This method returns the executor service.
-     *
-     * @return the executor service
-     */
-    public ExecutorService getExecutorService() {
-        return executorService;
-    }
-
-    /**
      * This method returns whether the state has been updated since the last check. It resets the state updated flag.
      *
      * @return true, if the state has been updated, false otherwise
@@ -280,61 +271,132 @@ public class StateContext {
         return loserState;
     }
 
-    // TODO: comment react to methods
+    /**
+     * This method reacts to a clicked connect user input. It submits this task to a executor service
+     * such that the io does not get blocked.
+     *
+     * @param hostName the host to connect to
+     * @param port     the port to connect to
+     */
     public void reactToClickedConnect(String hostName, String port) {
-        setState(state.reactToClickedConnect(this, hostName, port));
+        executorService.submit(() -> setState(state.reactToClickedConnect(this, hostName, port)));
     }
 
+    /**
+     * This method reacts to a clicked disconnect user input. It submits this task to a executor service
+     * such that the io does not get blocked.
+     */
     public void reactToClickedDisconnect() {
-        setState(state.reactToClickedDisconnect(this));
+        executorService.submit(() -> setState(state.reactToClickedDisconnect(this)));
     }
 
+    /**
+     * This method reacts to a clicked play user input. It submits this task to a executor service
+     * such that the io does not get blocked.
+     */
     public void reactToClickedPlay() {
-        setState(state.reactToClickedPlay(this));
+        executorService.submit(() -> setState(state.reactToClickedPlay(this)));
     }
 
+    /**
+     * This method reacts to a clicked back user input. It submits this task to a executor service
+     * such that the io does not get blocked.
+     */
     public void reactToClickedBack() {
-        setState(state.reactToClickedBack(this));
+        executorService.submit(() -> setState(state.reactToClickedBack(this)));
     }
 
+    /**
+     * This method reacts to a clicked join lobby user input. It submits this task to a executor service
+     * such that the io does not get blocked.
+     *
+     * @param lobbyId  the lobby uuid to join
+     * @param userName the username of the user
+     */
     public void reactToClickedJoinLobby(UUID lobbyId, String userName) {
-        setState(state.reactToClickedJoinLobby(this, lobbyId, userName));
+        executorService.submit(() -> setState(state.reactToClickedJoinLobby(this, lobbyId, userName)));
     }
 
+    /**
+     * This method reacts to a clicked leave user input. It submits this task to a executor service
+     * such that the io does not get blocked.
+     */
     public void reactToClickedLeave() {
-        setState(state.reactToClickedLeave(this));
+        executorService.submit(() -> setState(state.reactToClickedLeave(this)));
     }
 
+    /**
+     * This method reacts to a clicked start user input. It submits this task to a executor service
+     * such that the io does not get blocked.
+     */
     public void reactToClickedStart() {
-        setState(state.reactToClickedStart(this));
+        executorService.submit(() -> setState(state.reactToClickedStart(this)));
     }
 
+    /**
+     * This method reacts to a received connection error. It submits this task to a executor service
+     * such that the io does not get blocked.
+     */
     public void reactToReceivedConnectionError() {
-        setState(state.reactToReceivedConnectionError(this));
+        executorService.submit(() -> setState(state.reactToReceivedConnectionError(this)));
     }
 
+    /**
+     * This method reacts to a received welcome message. It submits this task to a executor service
+     * such that the io does not get blocked.
+     *
+     * @param message the received welcome message
+     */
     public void reactToReceivedWelcome(WelcomeMessage message) {
-        setState(state.reactToReceivedWelcome(this, message));
+        executorService.submit(() -> setState(state.reactToReceivedWelcome(this, message)));
     }
 
-    public void reactToReceivedJoinedLobby(LobbyJoinedMessage message) {
-        setState(state.reactToReceivedLobbyJoined(this, message));
+    /**
+     * This method reacts to a received lobby joined message. It submits this task to a executor service
+     * such that the io does not get blocked.
+     *
+     * @param message the received lobby joined message
+     */
+    public void reactToReceivedLobbyJoined(LobbyJoinedMessage message) {
+        executorService.submit(() -> setState(state.reactToReceivedLobbyJoined(this, message)));
     }
 
+    /**
+     * This method reacts to a received lobby status message. It submits this task to a executor service
+     * such that the io does not get blocked.
+     *
+     * @param message the received lobby status message
+     */
     public void reactToReceivedLobbyStatus(LobbyStatusMessage message) {
-        setState(state.reactToReceivedLobbyStatus(this, message));
+        executorService.submit(() -> setState(state.reactToReceivedLobbyStatus(this, message)));
     }
 
+    /**
+     * This method reacts to a received game started message. It submits this task to a executor service
+     * such that the io does not get blocked.
+     *
+     * @param message the received game started message
+     */
     public void reactToReceivedGameStarted(GameStartedMessage message) {
-        setState(state.reactToReceivedGameStarted(this, message));
+        executorService.submit(() -> setState(state.reactToReceivedGameStarted(this, message)));
     }
 
+    /**
+     * This method reacts to a received game status message. It submits this task to a executor service
+     * such that the io does not get blocked.
+     *
+     * @param message the received game status message
+     */
     public void reactToReceivedGameStatus(GameStatusMessage message) {
-        setState(state.reactToReceivedGameStatus(this, message));
+        executorService.submit(() -> setState(state.reactToReceivedGameStatus(this, message)));
     }
 
+    /**
+     * This method reacts to a received server disconnect. It submits this task to a executor service
+     * such that the io does not get blocked.
+     */
     public void reactToReceivedServerDisconnect() {
-        setState(state.reactToReceivedServerDisconnect(this));
+        executorService.submit(() -> setState(state.reactToReceivedServerDisconnect(this)));
     }
 
     /**

@@ -31,9 +31,7 @@ public class ConnectedState implements State {
      */
     @Override
     public State reactToClickedDisconnect(StateContext context) {
-        context.getExecutorService().submit(() -> {
-            context.getConnectionHandler().disconnect();
-        });
+        context.getConnectionHandler().disconnect();
 
         return StateContext.getDisconnectedState();
     }

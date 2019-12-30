@@ -95,7 +95,7 @@ public class InFullLobbyAsPlayerOneState implements State {
     public State reactToClickedStart(StateContext context) {
         LobbyHandler lobbyHandler = context.getLobbyHandler();
 
-        context.getExecutorService().submit(lobbyHandler::startGame);
+        lobbyHandler.startGame();
 
         return StateContext.getUninitializedGameState();
     }
@@ -130,7 +130,7 @@ public class InFullLobbyAsPlayerOneState implements State {
 
             return null;
         } else {
-            context.getExecutorService().submit(lobbyHandler::leaveLobby);
+            lobbyHandler.leaveLobby();
             parent.showSelectLobbyScreen();
 
             return StateContext.getSelectLobbyState();

@@ -125,7 +125,7 @@ public class MessageReceiver {
      * @param message the lobby joined message
      */
     private void receivedLobbyJoined(LobbyJoinedMessage message) {
-        if (context != null) context.reactToReceivedJoinedLobby(message);
+        if (context != null) context.reactToReceivedLobbyJoined(message);
         else logger.warn("Received lobby joined but context is null!");
     }
 
