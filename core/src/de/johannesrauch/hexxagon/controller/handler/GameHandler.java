@@ -158,6 +158,18 @@ public class GameHandler {
     }
 
     /**
+     * This method returns whose turn it is, player one's or player two's.
+     *
+     * @return 1, if it is player one's turn, 2 if it is player two's, -1, if game status or active player is null, -2 if the active player is neither one or two
+     */
+    public int getWhoseTurn() {
+        if (gameStatus == null || gameStatus.getActivePlayer() == null) return -1;
+        if (gameStatus.getActivePlayer().equals(gameStatus.getPlayerOne())) return 1;
+        if (gameStatus.getActivePlayer().equals(gameStatus.getPlayerTwo())) return 2;
+        return -2;
+    }
+
+    /**
      * This method returns whether the user has already moved in his turn.
      *
      * @return true, if the user has moved, false otherwise
@@ -167,7 +179,6 @@ public class GameHandler {
     }
 
     /**
-     * TODO: this method should check whose turn it is when it checks whether a player can move
      * This method determines, if the game is over. It checks the game status message for a tie or
      * a specified winner. Furthermore, it checks if the score of one player is equal to zero or if
      * one player cannot move anymore.
@@ -181,8 +192,8 @@ public class GameHandler {
                 || gameStatus.getPlayerTwo().equals(gameStatus.getWinner())
                 || gameStatus.getPlayerOnePoints() == 0
                 || gameStatus.getPlayerTwoPoints() == 0
-                || isPlayerMoveImpossible(1)
-                || isPlayerMoveImpossible(2);
+                || (getWhoseTurn() == 1 && isPlayerMoveImpossible(1))
+                || (getWhoseTurn() == 2 && isPlayerMoveImpossible(2));
     }
 
     /**
@@ -271,8 +282,8 @@ public class GameHandler {
         return userId.equals(gameStatus.getWinner())
                 || (getMyPlayerNumber() == 1 && getPlayerTwoPoints() == 0)
                 || (getMyPlayerNumber() == 2 && getPlayerOnePoints() == 0)
-                || getMyPlayerNumber() == 1 && isPlayerMoveImpossible(2)
-                || getMyPlayerNumber() == 2 && isPlayerMoveImpossible(1);
+                || getMyPlayerNumber() == 1 && getPlayerOnePoints() > getPlayerTwoPoints()
+                || getMyPlayerNumber() == 2 && getPlayerOnePoints() < getPlayerTwoPoints();
     }
 
     /**
