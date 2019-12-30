@@ -1,6 +1,7 @@
 package de.johannesrauch.hexxagon.fsm.state;
 
 import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.message.*;
 import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
@@ -105,7 +106,8 @@ public class ConnectionAttemptState implements State {
     public State reactToReceivedWelcome(StateContext context, WelcomeMessage message) {
         Hexxagon parent = context.getParent();
 
-        context.getConnectionHandler().setUserId(message.getUserId());
+        ConnectionHandler connectionHandler = context.getConnectionHandler();
+        if (connectionHandler != null) connectionHandler.setUserId(message.getUserId());
         parent.showMainMenuScreen();
 
         return StateContext.getConnectedState();
