@@ -59,7 +59,8 @@ public class ConnectionHandler {
             reset();
             logger.error(e.getMessage());
         }
-        executorService.submit(new AwaitingWelcome(context));
+        awaitingWelcome = new AwaitingWelcome(context);
+        executorService.submit(awaitingWelcome);
     }
 
     /**
