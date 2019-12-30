@@ -1,6 +1,5 @@
 package de.johannesrauch.hexxagon.view.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -151,7 +150,7 @@ public class GameScreen extends BaseScreen {
             playerTwoUserNameLabel.setText(gameHandler.getPlayerTwoUserName());
             playerOneScoreLabel.setText("" + gameHandler.getPlayerOnePoints());
             playerTwoScoreLabel.setText("" + gameHandler.getPlayerTwoPoints());
-            turnLabel.setText(gameHandler.getWhoseTurn());
+            turnLabel.setText(gameHandler.getWhoseTurnDesc());
 
             if (gameHandler.isGameOver()) {
                 if (gameHandler.isTie()) winnerLabel.setText("TIE");

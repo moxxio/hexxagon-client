@@ -152,7 +152,7 @@ public class GameHandler {
      *
      * @return MY TURN, if it is the user's turn, OPPONENT'S TURN, if it is the opponent's turn, "", if game status or user uuid is null
      */
-    public String getWhoseTurn() {
+    public String getWhoseTurnDesc() {
         if (gameStatus == null || userId == null) return "";
         return userId.equals(gameStatus.getActivePlayer()) ? "MY TURN" : "OPPONENT'S TURN";
     }
