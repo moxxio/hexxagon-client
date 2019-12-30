@@ -43,13 +43,8 @@ public interface State {
      */
     default State reactToReceivedConnectionError(StateContext context) {
         Hexxagon parent = context.getParent();
-        MainMenuScreen mainMenuScreen = parent.getMainMenuScreen();
-        parent.getConnectionHandler().disconnect();
 
-        mainMenuScreen.setConnStatusLabel("DISCONNECTED");
-        mainMenuScreen.setConnectButtonTouchable(true);
-        mainMenuScreen.setPlayButtonVisible(false);
-        mainMenuScreen.setDisconnectButtonTouchable(false);
+        parent.getConnectionHandler().disconnect();
         parent.showMainMenuScreen();
 
         return StateContext.getDisconnectedState();

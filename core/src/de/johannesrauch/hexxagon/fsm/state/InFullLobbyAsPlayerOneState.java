@@ -80,12 +80,7 @@ public class InFullLobbyAsPlayerOneState implements State {
      */
     @Override
     public State reactToClickedLeave(StateContext context) {
-        Hexxagon parent = context.getParent();
-
-        parent.getLobbyHandler().leaveLobby();
-        parent.showSelectLobbyScreen();
-
-        return StateContext.getSelectLobbyState();
+        return StateContext.getInGameMyTurnState().reactToClickedLeave(context);
     }
 
     /**
@@ -101,7 +96,7 @@ public class InFullLobbyAsPlayerOneState implements State {
         Hexxagon parent = context.getParent();
         LobbyHandler lobbyHandler = parent.getLobbyHandler();
 
-        lobbyHandler.startGame();
+        context.getExecutorService().submit(lobbyHandler::startGame);
 
         return StateContext.getUninitializedGameState();
     }
@@ -136,7 +131,7 @@ public class InFullLobbyAsPlayerOneState implements State {
 
             return null;
         } else {
-            lobbyHandler.leaveLobby();
+            context.getExecutorService().submit(lobbyHandler::leaveLobby);
             parent.showSelectLobbyScreen();
 
             return StateContext.getSelectLobbyState();

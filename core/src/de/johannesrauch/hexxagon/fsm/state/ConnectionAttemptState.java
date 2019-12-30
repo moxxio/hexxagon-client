@@ -104,12 +104,9 @@ public class ConnectionAttemptState implements State {
     @Override
     public State reactToReceivedWelcome(StateContext context, WelcomeMessage message) {
         Hexxagon parent = context.getParent();
-        MainMenuScreen mainMenuScreen = parent.getMainMenuScreen();
 
         parent.getConnectionHandler().setUserId(message.getUserId());
-        mainMenuScreen.setConnStatusLabel("CONNECTED");
-        mainMenuScreen.setDisconnectButtonTouchable(true);
-        mainMenuScreen.setPlayButtonVisible(true);
+        parent.showMainMenuScreen();
 
         return StateContext.getConnectedState();
     }

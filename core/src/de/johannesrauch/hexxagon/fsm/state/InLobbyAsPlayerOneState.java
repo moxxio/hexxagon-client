@@ -81,7 +81,7 @@ public class InLobbyAsPlayerOneState implements State {
     public State reactToClickedLeave(StateContext context) {
         Hexxagon parent = context.getParent();
 
-        parent.getLobbyHandler().leaveLobby();
+        context.getExecutorService().submit(() -> parent.getLobbyHandler().leaveLobby());
         parent.showSelectLobbyScreen();
 
         return StateContext.getSelectLobbyState();

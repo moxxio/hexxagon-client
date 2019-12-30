@@ -59,6 +59,15 @@ public class StateContext {
     }
 
     /**
+     * This method returns the current state.
+     *
+     * @return the current state
+     */
+    public State getState() {
+        return state;
+    }
+
+    /**
      * This method returns the executor service.
      *
      * @return the executor service

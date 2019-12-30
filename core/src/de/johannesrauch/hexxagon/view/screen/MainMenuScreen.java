@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import de.johannesrauch.hexxagon.fsm.state.State;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 
 /**
@@ -134,6 +136,28 @@ public class MainMenuScreen extends BaseScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Set label texts, button touchable and button visible according to the current state
+        StateContext context = parent.getContext();
+        if (context.hasStateUpdated()) {
+            State state = context.getState();
+            if (state == StateContext.getDisconnectedState()) {
+                connStatusLabel.setText("DISCONNECTED");
+                connectButton.setTouchable(Touchable.enabled);
+                disconnectButton.setTouchable(Touchable.disabled);
+                playButton.setVisible(false);
+            } else if (state == StateContext.getConnectionAttemptState()) {
+                connStatusLabel.setText("CONNECTING...");
+                connectButton.setTouchable(Touchable.disabled);
+                disconnectButton.setTouchable(Touchable.disabled);
+                playButton.setVisible(false);
+            } else if (state == StateContext.getConnectedState()) {
+                connStatusLabel.setText("CONNECTED");
+                connectButton.setTouchable(Touchable.disabled);
+                disconnectButton.setTouchable(Touchable.enabled);
+                playButton.setVisible(true);
+            }
+        }
+
         // Draw background and particle effect
         spriteBatch.begin();
         spriteBatch.draw(parent.getResources().getBackground(), 0, 0, 1280, 720);
@@ -178,43 +202,5 @@ public class MainMenuScreen extends BaseScreen {
     @Override
     public void dispose() {
         spriteBatch.dispose();
-    }
-
-    /**
-     * This method sets the connection label text.
-     *
-     * @param text the text to be set
-     */
-    public void setConnStatusLabel(String text) {
-        connStatusLabel.setText(text);
-    }
-
-    /**
-     * This method sets the connect button to enabled or disabled.
-     *
-     * @param touchable true, if the connect button should be touchable, false otherwise
-     */
-    public void setConnectButtonTouchable(boolean touchable) {
-        if (touchable) connectButton.setTouchable(Touchable.enabled);
-        else connectButton.setTouchable(Touchable.disabled);
-    }
-
-    /**
-     * This method sets the disconnect button to enabled or disabled.
-     *
-     * @param touchable true, if the disconnect button should be touchable, false otherwise
-     */
-    public void setDisconnectButtonTouchable(boolean touchable) {
-        if (touchable) disconnectButton.setTouchable(Touchable.enabled);
-        else disconnectButton.setTouchable(Touchable.disabled);
-    }
-
-    /**
-     * This method sets the play button to visible or invisible.
-     *
-     * @param visible true, if the disconnect button should be visible, false otherwise
-     */
-    public void setPlayButtonVisible(boolean visible) {
-        playButton.setVisible(visible);
     }
 }

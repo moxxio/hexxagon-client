@@ -77,14 +77,7 @@ public class LoserState implements State {
      */
     @Override
     public State reactToClickedLeave(StateContext context) {
-        Hexxagon parent = context.getParent();
-
-        parent.getLobbyHandler().leaveLobby();
-        parent.getGameHandler().leaveGame();
-        parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
-        parent.showSelectLobbyScreen();
-
-        return StateContext.getSelectLobbyState();
+        return StateContext.getWinnerState().reactToClickedLeave(context);
     }
 
     /**

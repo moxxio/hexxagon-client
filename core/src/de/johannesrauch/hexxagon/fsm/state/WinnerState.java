@@ -79,9 +79,11 @@ public class WinnerState implements State {
     public State reactToClickedLeave(StateContext context) {
         Hexxagon parent = context.getParent();
 
-        parent.getLobbyHandler().leaveLobby();
-        parent.getGameHandler().leaveGame();
-        parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
+        context.getExecutorService().submit(() -> {
+            parent.getLobbyHandler().leaveLobby();
+            parent.getGameHandler().leaveGame();
+            parent.getMessageEmitter().sendGetAvailableLobbiesMessage();
+        });
         parent.showSelectLobbyScreen();
 
         return StateContext.getSelectLobbyState();

@@ -32,12 +32,7 @@ public class ConnectedState implements State {
     @Override
     public State reactToClickedDisconnect(StateContext context) {
         Hexxagon parent = context.getParent();
-        MainMenuScreen mainMenuScreen = parent.getMainMenuScreen();
 
-        mainMenuScreen.setConnStatusLabel("DISCONNECTED");
-        mainMenuScreen.setConnectButtonTouchable(true);
-        mainMenuScreen.setPlayButtonVisible(false);
-        mainMenuScreen.setDisconnectButtonTouchable(false);
         context.getExecutorService().submit(() -> {
             parent.getConnectionHandler().disconnect();
         });

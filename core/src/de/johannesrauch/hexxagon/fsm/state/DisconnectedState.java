@@ -20,10 +20,7 @@ public class DisconnectedState implements State {
     @Override
     public State reactToClickedConnect(StateContext context, String hostName, String port) {
         Hexxagon parent = context.getParent();
-        MainMenuScreen mainMenuScreen = parent.getMainMenuScreen();
 
-        mainMenuScreen.setConnStatusLabel("CONNECTING...");
-        mainMenuScreen.setConnectButtonTouchable(false);
         context.getExecutorService().submit(() -> {
             parent.getConnectionHandler().connect(hostName, port);
         });

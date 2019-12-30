@@ -80,12 +80,7 @@ public class InLobbyAsPlayerTwoState implements State {
      */
     @Override
     public State reactToClickedLeave(StateContext context) {
-        Hexxagon parent = context.getParent();
-
-        parent.getLobbyHandler().leaveLobby();
-        parent.showSelectLobbyScreen();
-
-        return StateContext.getSelectLobbyState();
+        return StateContext.getInLobbyAsPlayerOneState().reactToClickedLeave(context);
     }
 
     /**
