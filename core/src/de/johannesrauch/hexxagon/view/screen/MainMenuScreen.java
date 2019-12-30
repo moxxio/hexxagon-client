@@ -35,14 +35,17 @@ public class MainMenuScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    private final StateContext context;
+
     /**
      * This standard constructor sets everything up.
      *
      * @param parent the parent
      */
-    public MainMenuScreen(Hexxagon parent) {
+    public MainMenuScreen(Hexxagon parent, StateContext context) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
+        this.context = context;
 
         headingLabel = new Label("HEXXAGON", skin, "title");
         connStatusLabel = new ButtonStyleLabel("DISCONNECTED", skin);
@@ -63,7 +66,7 @@ public class MainMenuScreen extends BaseScreen {
             public void clicked(InputEvent event, float x, float y) {
                 String hostName = hostNameTextField.getText();
                 String port = portTextField.getText();
-                parent.getContext().reactToClickedConnect(hostName, port);
+                context.reactToClickedConnect(hostName, port);
             }
         });
         disconnectButton = new TextButton("DISCONNECT", skin);
@@ -71,7 +74,7 @@ public class MainMenuScreen extends BaseScreen {
         disconnectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactToClickedDisconnect();
+                context.reactToClickedDisconnect();
             }
         });
         playButton = new TextButton("PLAY", skin);
@@ -79,7 +82,7 @@ public class MainMenuScreen extends BaseScreen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactToClickedPlay();
+                context.reactToClickedPlay();
             }
         });
         closeButton = new TextButton("CLOSE", skin);
@@ -137,7 +140,6 @@ public class MainMenuScreen extends BaseScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Set label texts, button touchable and button visible according to the current state
-        StateContext context = parent.getContext();
         if (context.hasStateUpdated()) {
             State state = context.getState();
             if (state == StateContext.getDisconnectedState()) {

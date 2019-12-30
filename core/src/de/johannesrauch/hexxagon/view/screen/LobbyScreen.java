@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
@@ -36,6 +37,7 @@ public class LobbyScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    private final StateContext context;
     private final LobbyHandler lobbyHandler;
 
     /**
@@ -43,9 +45,10 @@ public class LobbyScreen extends BaseScreen {
      *
      * @param parent the parent
      */
-    public LobbyScreen(Hexxagon parent, LobbyHandler lobbyHandler) {
+    public LobbyScreen(Hexxagon parent, StateContext context, LobbyHandler lobbyHandler) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
+        this.context = context;
         this.lobbyHandler = lobbyHandler;
 
         headingLabel = new Label("LOBBY", skin, "title");
@@ -65,7 +68,7 @@ public class LobbyScreen extends BaseScreen {
         leaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactToClickedLeave();
+                context.reactToClickedLeave();
             }
         });
 

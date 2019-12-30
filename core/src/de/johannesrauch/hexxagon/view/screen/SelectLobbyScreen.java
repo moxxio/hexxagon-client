@@ -56,6 +56,7 @@ public class SelectLobbyScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    private final StateContext context;
     private final LobbyHandler lobbyHandler;
 
     /**
@@ -63,12 +64,13 @@ public class SelectLobbyScreen extends BaseScreen {
      *
      * @param parent the parent
      */
-    public SelectLobbyScreen(Hexxagon parent, ConnectionHandler connectionHandler, LobbyHandler lobbyHandler) {
+    public SelectLobbyScreen(Hexxagon parent, StateContext context, ConnectionHandler connectionHandler, LobbyHandler lobbyHandler) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
         Adler32 a32 = new Adler32();
         a32.update(UUID.randomUUID().toString().getBytes());
         MessageEmitter messageEmitter = connectionHandler.getMessageEmitter();
+        this.context = context;
         this.lobbyHandler = lobbyHandler;
 
         headingLabel = new Label("CHOOSE LOBBY", skin, "title");
@@ -92,7 +94,7 @@ public class SelectLobbyScreen extends BaseScreen {
 
                 String userName = userNameTextField.getText();
                 if (userName == null) return;
-                parent.getContext().reactToClickedJoinLobby(lobbyId, userName);
+                context.reactToClickedJoinLobby(lobbyId, userName);
             }
         });
         createButton = new TextButton("CREATE", skin);
@@ -135,14 +137,14 @@ public class SelectLobbyScreen extends BaseScreen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactToClickedBack();
+                context.reactToClickedBack();
             }
         });
         cancelButton = new TextButton("CANCEL", skin);
         cancelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                parent.getContext().reactToClickedLeave();
+                context.reactToClickedLeave();
             }
         });
 
@@ -238,7 +240,6 @@ public class SelectLobbyScreen extends BaseScreen {
             lobbyList.setItems(tmp.toArray(new String[0]));
         }
 
-        StateContext context = parent.getContext();
         if (context.hasStateUpdated()) {
             State state = context.getState();
             if (state == StateContext.getJoiningLobbyState()) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.controller.listener.TileClickListener;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.model.tile.GameScreenTile;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
@@ -39,6 +40,7 @@ public class GameScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
+    private final StateContext context;
     private final GameHandler gameHandler;
 
     /**
@@ -46,9 +48,10 @@ public class GameScreen extends BaseScreen {
      *
      * @param parent the parent
      */
-    public GameScreen(Hexxagon parent, GameHandler gameHandler) {
+    public GameScreen(Hexxagon parent, StateContext context, GameHandler gameHandler) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
+        this.context = context;
         this.gameHandler = gameHandler;
 
         playerOneLabel = new ButtonStyleLabel("PLAYER ONE: ", skin);
@@ -92,7 +95,7 @@ public class GameScreen extends BaseScreen {
                     protected void result(Object object) {
                         boolean result = (boolean) object;
                         if (result) {
-                            parent.getContext().reactToClickedLeave();
+                            context.reactToClickedLeave();
                         }
                     }
                 };

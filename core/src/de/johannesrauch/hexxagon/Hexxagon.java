@@ -53,10 +53,10 @@ public class Hexxagon extends Game {
         lobbyHandler.setMessageEmitter(connectionHandler.getMessageEmitter());
         gameHandler.setMessageEmitter(connectionHandler.getMessageEmitter());
 
-        mainMenuScreen = new MainMenuScreen(this);
-        selectLobbyScreen = new SelectLobbyScreen(this, connectionHandler, lobbyHandler);
-        lobbyScreen = new LobbyScreen(this, lobbyHandler);
-        gameScreen = new GameScreen(this, gameHandler);
+        mainMenuScreen = new MainMenuScreen(this, context);
+        selectLobbyScreen = new SelectLobbyScreen(this, context, connectionHandler, lobbyHandler);
+        lobbyScreen = new LobbyScreen(this, context, lobbyHandler);
+        gameScreen = new GameScreen(this, context, gameHandler);
 
         showMainMenuScreen();
     }
@@ -72,10 +72,6 @@ public class Hexxagon extends Game {
 
     public static String getVersion() {
         return version;
-    }
-
-    public StateContext getContext() {
-        return context;
     }
 
     public Resources getResources() {
