@@ -94,6 +94,15 @@ public class ConnectionHandler {
     }
 
     /**
+     * This method returns the message receiver of the connection handler.
+     *
+     * @return the message receiver of the connection handler
+     */
+    public MessageReceiver getMessageReceiver() {
+        return messageReceiver;
+    }
+
+    /**
      * This method returns the user uuid the server assigned to the client.
      *
      * @return the user uuid
