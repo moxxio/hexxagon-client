@@ -1,6 +1,5 @@
 package de.johannesrauch.hexxagon.fsm.context;
 
-import com.badlogic.gdx.Game;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.controller.handler.GameHandler;
