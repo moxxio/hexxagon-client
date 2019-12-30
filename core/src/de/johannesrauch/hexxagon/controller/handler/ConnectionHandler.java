@@ -5,13 +5,14 @@ import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.network.client.MessageReceiver;
 import de.johannesrauch.hexxagon.network.client.Client;
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.server.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This class handles the connection to the server. It contains the message emitter and receiver.
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class ConnectionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(ConnectionHandler.class);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     private MessageReceiver messageReceiver;
     private MessageEmitter messageEmitter;
@@ -29,6 +31,8 @@ public class ConnectionHandler {
     private StateContext context;
     private LobbyHandler lobbyHandler;
     private GameHandler gameHandler;
+
+    private AwaitingWelcome awaitingWelcome;
 
     /**
      * This is the standard constructor that creates the message emitter and receiver and resets the connection.
@@ -55,6 +59,7 @@ public class ConnectionHandler {
             reset();
             logger.error(e.getMessage());
         }
+        executorService.submit(new AwaitingWelcome(context));
     }
 
     /**
@@ -65,6 +70,7 @@ public class ConnectionHandler {
         if (client != null) client.close();
         if (lobbyHandler != null) lobbyHandler.reset();
         if (gameHandler != null) gameHandler.reset();
+        if (awaitingWelcome != null) awaitingWelcome.setCanceled(true);
         reset();
     }
 
@@ -134,12 +140,15 @@ public class ConnectionHandler {
     }
 
     /**
-     * This method sets the user uuid.
+     * This method sets the user uuid and it informs the awaiting welcome thread about the welcome message.
+     * It then sets the awaiting welcome object null.
      *
      * @param userId the user uuid
      */
     public void setUserId(UUID userId) {
         this.userId = userId;
+        if (awaitingWelcome != null) awaitingWelcome.setWelcomed(true);
+        awaitingWelcome = null;
     }
 
     /**
@@ -148,5 +157,6 @@ public class ConnectionHandler {
     private void reset() {
         client = null;
         userId = null;
+        awaitingWelcome = null;
     }
 }
