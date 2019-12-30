@@ -405,7 +405,7 @@ public class StateContext {
      *
      * @param nextState the next state, if not null
      */
-    private synchronized void setState(State nextState) {
+    public synchronized void setState(State nextState) {
         if (nextState != null) {
             state = nextState;
             stateUpdated = true;
