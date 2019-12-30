@@ -43,6 +43,7 @@ public class StateContext {
     private static final LoserState loserState = new LoserState();
 
     private boolean stateUpdated;
+    private boolean concurrent;
 
     /**
      * This is the standard constructor. It sets the parent, creates the executor service and sets the initial state.
@@ -53,6 +54,7 @@ public class StateContext {
         this.parent = parent;
         executorService = Executors.newFixedThreadPool(1);
         setState(disconnectedState);
+        concurrent = true;
     }
 
     /**
@@ -148,6 +150,10 @@ public class StateContext {
      */
     public void setGameHandler(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
+    }
+
+    public void setConcurrent(boolean concurrent) {
+        this.concurrent = concurrent;
     }
 
     /**
@@ -272,131 +278,159 @@ public class StateContext {
     }
 
     /**
-     * This method reacts to a clicked connect user input. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a clicked connect user input.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      *
      * @param hostName the host to connect to
      * @param port     the port to connect to
      */
     public void reactToClickedConnect(String hostName, String port) {
-        executorService.submit(() -> setState(state.reactToClickedConnect(this, hostName, port)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToClickedConnect(this, hostName, port)));
+        else setState(state.reactToClickedConnect(this, hostName, port));
     }
 
     /**
-     * This method reacts to a clicked disconnect user input. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a clicked disconnect user input.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedDisconnect() {
-        executorService.submit(() -> setState(state.reactToClickedDisconnect(this)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToClickedDisconnect(this)));
+        else setState(state.reactToClickedDisconnect(this));
     }
 
     /**
-     * This method reacts to a clicked play user input. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a clicked play user input.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedPlay() {
-        executorService.submit(() -> setState(state.reactToClickedPlay(this)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToClickedPlay(this)));
+        else setState(state.reactToClickedPlay(this));
     }
 
     /**
-     * This method reacts to a clicked back user input. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a clicked back user input.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedBack() {
-        executorService.submit(() -> setState(state.reactToClickedBack(this)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToClickedBack(this)));
+        else setState(state.reactToClickedBack(this));
     }
 
     /**
-     * This method reacts to a clicked join lobby user input. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a clicked join lobby user input.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      *
      * @param lobbyId  the lobby uuid to join
      * @param userName the username of the user
      */
     public void reactToClickedJoinLobby(UUID lobbyId, String userName) {
-        executorService.submit(() -> setState(state.reactToClickedJoinLobby(this, lobbyId, userName)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToClickedJoinLobby(this, lobbyId, userName)));
+        else setState(state.reactToClickedJoinLobby(this, lobbyId, userName));
     }
 
     /**
-     * This method reacts to a clicked leave user input. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a clicked leave user input.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedLeave() {
-        executorService.submit(() -> setState(state.reactToClickedLeave(this)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToClickedLeave(this)));
+        else setState(state.reactToClickedLeave(this));
     }
 
     /**
-     * This method reacts to a clicked start user input. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a clicked start user input.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedStart() {
-        executorService.submit(() -> setState(state.reactToClickedStart(this)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToClickedStart(this)));
+        else setState(state.reactToClickedStart(this));
     }
 
     /**
-     * This method reacts to a received connection error. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a received connection error.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToReceivedConnectionError() {
-        executorService.submit(() -> setState(state.reactToReceivedConnectionError(this)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedConnectionError(this)));
+        else setState(state.reactToReceivedConnectionError(this));
     }
 
     /**
-     * This method reacts to a received welcome message. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a received welcome message.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      *
      * @param message the received welcome message
      */
     public void reactToReceivedWelcome(WelcomeMessage message) {
-        executorService.submit(() -> setState(state.reactToReceivedWelcome(this, message)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedWelcome(this, message)));
+        else setState(state.reactToReceivedWelcome(this, message));
     }
 
     /**
-     * This method reacts to a received lobby joined message. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a received lobby joined message.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      *
      * @param message the received lobby joined message
      */
     public void reactToReceivedLobbyJoined(LobbyJoinedMessage message) {
-        executorService.submit(() -> setState(state.reactToReceivedLobbyJoined(this, message)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedLobbyJoined(this, message)));
+        else setState(state.reactToReceivedLobbyJoined(this, message));
     }
 
     /**
-     * This method reacts to a received lobby status message. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a received lobby status message.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      *
      * @param message the received lobby status message
      */
     public void reactToReceivedLobbyStatus(LobbyStatusMessage message) {
-        executorService.submit(() -> setState(state.reactToReceivedLobbyStatus(this, message)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedLobbyStatus(this, message)));
+        else setState(state.reactToReceivedLobbyStatus(this, message));
     }
 
     /**
-     * This method reacts to a received game started message. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a received game started message.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      *
      * @param message the received game started message
      */
     public void reactToReceivedGameStarted(GameStartedMessage message) {
-        executorService.submit(() -> setState(state.reactToReceivedGameStarted(this, message)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedGameStarted(this, message)));
+        else setState(state.reactToReceivedGameStarted(this, message));
     }
 
     /**
-     * This method reacts to a received game status message. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a received game status message.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      *
      * @param message the received game status message
      */
     public void reactToReceivedGameStatus(GameStatusMessage message) {
-        executorService.submit(() -> setState(state.reactToReceivedGameStatus(this, message)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedGameStatus(this, message)));
+        else setState(state.reactToReceivedGameStatus(this, message));
     }
 
     /**
-     * This method reacts to a received server disconnect. It submits this task to a executor service
-     * such that the io does not get blocked.
+     * This method reacts to a received server disconnect.
+     * It submits this task to a executor service such that the io does not get blocked.
+     * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToReceivedServerDisconnect() {
-        executorService.submit(() -> setState(state.reactToReceivedServerDisconnect(this)));
+        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedServerDisconnect(this)));
+        else setState(state.reactToReceivedServerDisconnect(this));
     }
 
     /**
