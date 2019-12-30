@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * This class tests the validity of the messages sent by the message emitter.
  */
-public class EmitterTest {
+public class SentMessagesText {
 
     @Before
     public void setUp() throws Exception {
