@@ -285,8 +285,10 @@ public class StateContext {
      * @param port     the port to connect to
      */
     public void reactToClickedConnect(String hostName, String port) {
-        if (concurrent) executorService.submit(() -> setState(state.reactToClickedConnect(this, hostName, port)));
-        else setState(state.reactToClickedConnect(this, hostName, port));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToClickedConnect(this, hostName, port)));
+            else setState(state.reactToClickedConnect(this, hostName, port));
+        }
     }
 
     /**
@@ -295,8 +297,10 @@ public class StateContext {
      * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedDisconnect() {
-        if (concurrent) executorService.submit(() -> setState(state.reactToClickedDisconnect(this)));
-        else setState(state.reactToClickedDisconnect(this));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToClickedDisconnect(this)));
+            else setState(state.reactToClickedDisconnect(this));
+        }
     }
 
     /**
@@ -305,8 +309,10 @@ public class StateContext {
      * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedPlay() {
-        if (concurrent) executorService.submit(() -> setState(state.reactToClickedPlay(this)));
-        else setState(state.reactToClickedPlay(this));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToClickedPlay(this)));
+            else setState(state.reactToClickedPlay(this));
+        }
     }
 
     /**
@@ -315,8 +321,10 @@ public class StateContext {
      * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedBack() {
-        if (concurrent) executorService.submit(() -> setState(state.reactToClickedBack(this)));
-        else setState(state.reactToClickedBack(this));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToClickedBack(this)));
+            else setState(state.reactToClickedBack(this));
+        }
     }
 
     /**
@@ -328,8 +336,11 @@ public class StateContext {
      * @param userName the username of the user
      */
     public void reactToClickedJoinLobby(UUID lobbyId, String userName) {
-        if (concurrent) executorService.submit(() -> setState(state.reactToClickedJoinLobby(this, lobbyId, userName)));
-        else setState(state.reactToClickedJoinLobby(this, lobbyId, userName));
+        if (isInitialized()) {
+            if (concurrent)
+                executorService.submit(() -> setState(state.reactToClickedJoinLobby(this, lobbyId, userName)));
+            else setState(state.reactToClickedJoinLobby(this, lobbyId, userName));
+        }
     }
 
     /**
@@ -338,8 +349,10 @@ public class StateContext {
      * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedLeave() {
-        if (concurrent) executorService.submit(() -> setState(state.reactToClickedLeave(this)));
-        else setState(state.reactToClickedLeave(this));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToClickedLeave(this)));
+            else setState(state.reactToClickedLeave(this));
+        }
     }
 
     /**
@@ -348,8 +361,10 @@ public class StateContext {
      * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToClickedStart() {
-        if (concurrent) executorService.submit(() -> setState(state.reactToClickedStart(this)));
-        else setState(state.reactToClickedStart(this));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToClickedStart(this)));
+            else setState(state.reactToClickedStart(this));
+        }
     }
 
     /**
@@ -358,8 +373,10 @@ public class StateContext {
      * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToReceivedConnectionError() {
-        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedConnectionError(this)));
-        else setState(state.reactToReceivedConnectionError(this));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToReceivedConnectionError(this)));
+            else setState(state.reactToReceivedConnectionError(this));
+        }
     }
 
     /**
@@ -370,8 +387,10 @@ public class StateContext {
      * @param message the received welcome message
      */
     public void reactToReceivedWelcome(WelcomeMessage message) {
-        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedWelcome(this, message)));
-        else setState(state.reactToReceivedWelcome(this, message));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToReceivedWelcome(this, message)));
+            else setState(state.reactToReceivedWelcome(this, message));
+        }
     }
 
     /**
@@ -382,8 +401,10 @@ public class StateContext {
      * @param message the received lobby joined message
      */
     public void reactToReceivedLobbyJoined(LobbyJoinedMessage message) {
-        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedLobbyJoined(this, message)));
-        else setState(state.reactToReceivedLobbyJoined(this, message));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToReceivedLobbyJoined(this, message)));
+            else setState(state.reactToReceivedLobbyJoined(this, message));
+        }
     }
 
     /**
@@ -394,8 +415,10 @@ public class StateContext {
      * @param message the received lobby status message
      */
     public void reactToReceivedLobbyStatus(LobbyStatusMessage message) {
-        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedLobbyStatus(this, message)));
-        else setState(state.reactToReceivedLobbyStatus(this, message));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToReceivedLobbyStatus(this, message)));
+            else setState(state.reactToReceivedLobbyStatus(this, message));
+        }
     }
 
     /**
@@ -406,8 +429,10 @@ public class StateContext {
      * @param message the received game started message
      */
     public void reactToReceivedGameStarted(GameStartedMessage message) {
-        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedGameStarted(this, message)));
-        else setState(state.reactToReceivedGameStarted(this, message));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToReceivedGameStarted(this, message)));
+            else setState(state.reactToReceivedGameStarted(this, message));
+        }
     }
 
     /**
@@ -418,8 +443,10 @@ public class StateContext {
      * @param message the received game status message
      */
     public void reactToReceivedGameStatus(GameStatusMessage message) {
-        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedGameStatus(this, message)));
-        else setState(state.reactToReceivedGameStatus(this, message));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToReceivedGameStatus(this, message)));
+            else setState(state.reactToReceivedGameStatus(this, message));
+        }
     }
 
     /**
@@ -428,8 +455,10 @@ public class StateContext {
      * (You can disable concurrency by setting the concurrent flag to false. But this is originally for testing.)
      */
     public void reactToReceivedServerDisconnect() {
-        if (concurrent) executorService.submit(() -> setState(state.reactToReceivedServerDisconnect(this)));
-        else setState(state.reactToReceivedServerDisconnect(this));
+        if (isInitialized()) {
+            if (concurrent) executorService.submit(() -> setState(state.reactToReceivedServerDisconnect(this)));
+            else setState(state.reactToReceivedServerDisconnect(this));
+        }
     }
 
     /**
@@ -443,5 +472,16 @@ public class StateContext {
             state = nextState;
             stateUpdated = true;
         }
+    }
+
+    /**
+     * This method returns whether the state context is initialized. If the parent, the connection handler,
+     * the lobby handler and the game handler are not null, then the context is initialized.
+     * If the context is not initialized, it may throws null-pointer exceptions.
+     *
+     * @return true, if the context is initialized, false otherwise
+     */
+    private boolean isInitialized() {
+        return parent != null && connectionHandler != null && lobbyHandler != null && gameHandler != null;
     }
 }

@@ -107,7 +107,7 @@ public class ConnectionAttemptState implements State {
         Hexxagon parent = context.getParent();
 
         ConnectionHandler connectionHandler = context.getConnectionHandler();
-        if (connectionHandler != null) connectionHandler.setUserId(message.getUserId());
+        connectionHandler.setUserId(message.getUserId());
         parent.showMainMenuScreen();
 
         return StateContext.getConnectedState();
