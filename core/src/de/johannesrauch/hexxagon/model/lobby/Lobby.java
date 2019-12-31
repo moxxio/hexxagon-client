@@ -18,6 +18,29 @@ public class Lobby {
     private Boolean isClosed;
 
     /**
+     * This is the standard constructor. It sets all the attributes.
+     *
+     * @param lobbyId           the lobby uuid
+     * @param lobbyName         the lobby name
+     * @param playerOne         the player one uuid
+     * @param playerTwo         the player two uuid
+     * @param playerOneUserName the player one username
+     * @param playerTwoUserName the player two username
+     * @param creationDate      the creation date
+     * @param isClosed          true, if the lobby is closed, false otherwise
+     */
+    public Lobby(UUID lobbyId, String lobbyName, UUID playerOne, UUID playerTwo, String playerOneUserName, String playerTwoUserName, Date creationDate, Boolean isClosed) {
+        this.lobbyId = lobbyId;
+        this.lobbyName = lobbyName;
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+        this.playerOneUserName = playerOneUserName;
+        this.playerTwoUserName = playerTwoUserName;
+        this.creationDate = creationDate;
+        this.isClosed = isClosed;
+    }
+
+    /**
      * This method returns the lobby uuid.
      *
      * @return the lobby uuid
