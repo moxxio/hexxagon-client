@@ -259,7 +259,8 @@ public class GameHandler {
         return gameStatus.isTie()
                 || (gameStatus.getPlayerOnePoints() != -1
                 && gameStatus.getPlayerOnePoints() == gameStatus.getPlayerTwoPoints()
-                && isGameOver());
+                && isGameOver()
+                && gameStatus.getWinner() == null);
     }
 
     /**
