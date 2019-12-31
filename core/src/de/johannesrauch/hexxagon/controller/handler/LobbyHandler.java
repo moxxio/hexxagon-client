@@ -122,6 +122,8 @@ public class LobbyHandler {
     public void joinedLobby(UUID userId, UUID lobbyId) {
         logger.info("Joined lobby: " + lobbyId.toString());
         this.userId = userId;
+
+        if (this.lobbyId != null && !this.lobbyId.equals(lobbyId)) logger.warn("Inconsistent lobby uuids!");
         this.lobbyId = lobbyId;
     }
 
@@ -157,6 +159,9 @@ public class LobbyHandler {
     public void updateLobby(Lobby lobby) {
         this.lobby = lobby;
         lobbyUpdated = true;
+
+        if (!lobbyId.equals(lobby.getLobbyId())) logger.warn("Inconsistent lobby uuids!");
+        if (lobbyId == null) lobbyId = lobby.getLobbyId();
     }
 
     /**
