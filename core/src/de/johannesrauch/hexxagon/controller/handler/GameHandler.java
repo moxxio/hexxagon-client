@@ -30,7 +30,7 @@ public class GameHandler {
     private TileEnum selectedTile;
     private boolean moved;
 
-    private MessageEmitter messageEmitter;
+    private ConnectionHandler connectionHandler;
 
     /**
      * This is the standard constructor. It constructs the board graph and resets the game handler.
@@ -48,7 +48,8 @@ public class GameHandler {
      * @param moveTo   the tile where move from gets moved
      */
     public void gameMove(TileEnum moveFrom, TileEnum moveTo) {
-        if (messageEmitter != null) messageEmitter.sendGameMoveMessage(gameId, moveFrom, moveTo);
+        if (connectionHandler != null)
+            connectionHandler.getMessageEmitter().sendGameMoveMessage(gameId, moveFrom, moveTo);
         else logger.warn("MessageEmitter is null in gameMove(...)!");
     }
 
@@ -293,7 +294,7 @@ public class GameHandler {
     public void leaveGame() {
         if (gameId != null) {
             logger.info("Left game: " + gameId.toString());
-            if (messageEmitter != null) messageEmitter.sendLeaveGameMessage(gameId);
+            if (connectionHandler != null) connectionHandler.getMessageEmitter().sendLeaveGameMessage(gameId);
             else logger.warn("MessageEmitter is null in leaveGame()!");
         } else logger.warn("GameId is null in leaveGame()!");
         reset();
@@ -313,12 +314,12 @@ public class GameHandler {
     }
 
     /**
-     * This method sets the message emitter.
+     * This method sets the connection handler.
      *
-     * @param messageEmitter the message emitter
+     * @param connectionHandler the connection handler
      */
-    public void setMessageEmitter(MessageEmitter messageEmitter) {
-        this.messageEmitter = messageEmitter;
+    public void setConnectionHandler(ConnectionHandler connectionHandler) {
+        this.connectionHandler = connectionHandler;
     }
 
     /**

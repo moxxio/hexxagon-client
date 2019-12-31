@@ -23,7 +23,7 @@ public class LobbyHandler {
     private UUID userId;
     private UUID lobbyId;
 
-    private MessageEmitter messageEmitter;
+    private ConnectionHandler connectionHandler;
 
     /**
      * This is the standard constructor. It creates the list for the lobbies and resets the lobby handler.
@@ -134,7 +134,7 @@ public class LobbyHandler {
     public void leaveLobby() {
         if (lobbyId != null) {
             logger.info("Left lobby: " + lobbyId.toString());
-            if (messageEmitter != null) messageEmitter.sendLeaveLobbyMessage(lobbyId);
+            if (connectionHandler != null) connectionHandler.getMessageEmitter().sendLeaveLobbyMessage(lobbyId);
             else logger.warn("MessageEmitter is null in leaveLobby()!");
         } else logger.warn("LobbyId is null in leaveLobby()!");
         reset();
@@ -165,12 +165,12 @@ public class LobbyHandler {
     }
 
     /**
-     * This method sets the message emitter of the lobby handler.
+     * This method sets the connection handler.
      *
-     * @param messageEmitter the message emitter
+     * @param connectionHandler the connection handler
      */
-    public void setMessageEmitter(MessageEmitter messageEmitter) {
-        this.messageEmitter = messageEmitter;
+    public void setConnectionHandler(ConnectionHandler connectionHandler) {
+        this.connectionHandler = connectionHandler;
     }
 
     /**
@@ -179,7 +179,7 @@ public class LobbyHandler {
      */
     public void startGame() {
         if (isClientPlayerOne() && isLobbyReady()) {
-            if (messageEmitter != null) messageEmitter.sendStartGameMessage(lobbyId);
+            if (connectionHandler != null) connectionHandler.getMessageEmitter().sendStartGameMessage(lobbyId);
             else logger.warn("MessageEmitter is null in startGame()!");
         }
     }
