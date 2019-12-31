@@ -18,11 +18,6 @@ import java.util.UUID;
  */
 public class SentMessagesTest {
 
-    @Before
-    public void setUp() throws Exception {
-        BasicConfigurator.configure(); // Otherwise logger complains
-    }
-
     /**
      * This websocket client instantiation is used to test the send messages.
      * You should override the send method in order to check the validity of the messages.
@@ -39,7 +34,7 @@ public class SentMessagesTest {
             this.message = message;
         }
 
-        // We do not need this methods. We just override send.
+        // Dummy methods
         @Override
         public void onOpen(ServerHandshake handshake) {
 
@@ -59,6 +54,11 @@ public class SentMessagesTest {
         public void onError(Exception ex) {
 
         }
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        BasicConfigurator.configure(); // Otherwise logger complains
     }
 
     /**
