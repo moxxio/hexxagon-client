@@ -155,7 +155,7 @@ public class ReceivedMessagesTest {
         UUID lobbyId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
         kit.lobbyHandler.joinedLobby(userId, lobbyId);
-        Lobby lobby = new Lobby(lobbyId,
+        Lobby lobby1 = new Lobby(lobbyId,
                 "example lobby name",
                 userId,
                 UUID.randomUUID(),
@@ -163,6 +163,22 @@ public class ReceivedMessagesTest {
                 "example player two username",
                 new Date(),
                 false);
-        LobbyStatusMessage message = new LobbyStatusMessage(userId, lobbyId, lobby);
+        LobbyStatusMessage message1 = new LobbyStatusMessage(userId, lobbyId, lobby1);
+        receiver.handleMessage(kit.gson.toJson(message1, LobbyStatusMessage.class));
+        Assert.assertEquals(StateContext.getInFullLobbyAsPlayerOneState(), kit.context.getState());
+
+        // The fsm is in full lobby as player one state and receives a lobby status message indicating the second player has left.
+        // It should transition back to in lobby as player one state.
+        Lobby lobby2 = new Lobby(lobbyId,
+                "example lobby name",
+                userId,
+                null,
+                "example player one username",
+                null,
+                new Date(),
+                false);
+        LobbyStatusMessage message2 = new LobbyStatusMessage(userId, lobbyId, lobby2);
+        receiver.handleMessage(kit.gson.toJson(message2, LobbyStatusMessage.class));
+        Assert.assertEquals(StateContext.getInLobbyAsPlayerOneState(), kit.context.getState());
     }
 }
