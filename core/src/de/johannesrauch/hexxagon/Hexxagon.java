@@ -2,165 +2,96 @@ package de.johannesrauch.hexxagon;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
+import de.johannesrauch.hexxagon.controller.handler.GameHandler;
+import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
+import de.johannesrauch.hexxagon.network.client.MessageEmitter;
+import de.johannesrauch.hexxagon.resource.Resources;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import de.johannesrauch.hexxagon.view.screen.GameScreen;
+import de.johannesrauch.hexxagon.view.screen.LobbyScreen;
+import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
+import de.johannesrauch.hexxagon.view.screen.SelectLobbyScreen;
+import org.apache.log4j.BasicConfigurator;
 
-import de.johannesrauch.hexxagon.automaton.context.StateContext;
-import de.johannesrauch.hexxagon.controller.*;
-import de.johannesrauch.hexxagon.network.clients.MessageEmitter;
-import de.johannesrauch.hexxagon.network.clients.MessageReceiver;
-import de.johannesrauch.hexxagon.view.GameScreen;
-import de.johannesrauch.hexxagon.view.LobbyJoinedScreen;
-import de.johannesrauch.hexxagon.view.LobbySelectScreen;
-import de.johannesrauch.hexxagon.view.MainMenuScreen;
-
-/**
- * Sources of background images:
- * https://wallpaperaccess.com/real-hd-space
- * https://wallpaperaccess.com/deep-space-hd
- * 
- * @version 0.3.1.0
- * @author Dennis Jehle
- * @author Johannes Rauch
- */
+// TODO: create a class with public static values for the ui
+// TODO: dialog window at server disconnect or connection error
 public class Hexxagon extends Game {
 
-	public final static String versionNumber = "0.3.1.0";
+    private static String version = "1.0";
 
-	private final StateContext stateContext;
-	
-	private ConnectionHandler connectionHandler;
-	private MessageEmitter messageEmitter;
-	private MessageReceiver messageReceiver;
-	private LobbyHandler lobbyHandler;
-	private GameHandler gameHandler;
+    private StateContext context;
 
-	private MainMenuScreen mainMenuScreen;
-	private LobbySelectScreen lobbySelectScreen;
-	private LobbyJoinedScreen lobbyJoinedScreen;
-	private GameScreen gameScreen;
+    private Resources resources;
 
-	public SpriteBatch spriteBatch;
+    private ConnectionHandler connectionHandler;
+    private LobbyHandler lobbyHandler;
+    private GameHandler gameHandler;
 
-	public Texture space;
-	public Texture tileFree, tileBlocked, tilePlayerOne, tilePlayerTwo,
-			tileMoveOne, tileMoveTwo, tilePlayerOneSelected, tilePlayerTwoSelected;
-	public Texture loading;
-	public Skin skin;
-	public ParticleEffect particleEffect;
+    private MainMenuScreen mainMenuScreen;
+    private SelectLobbyScreen selectLobbyScreen;
+    private LobbyScreen lobbyScreen;
+    private GameScreen gameScreen;
 
-	public Hexxagon() {
-		stateContext = new StateContext(this);
-	}
+    @Override
+    public void create() {
+        Gdx.graphics.setTitle("Hexxagon");
+        BasicConfigurator.configure();
 
-	/**
-	 * @author Dennis Jehle
-	 * @author Johannes Rauch
-	 */
-	@Override
-	public void create () {
-		Gdx.graphics.setTitle("Hexxagon");
+        context = new StateContext(this);
+        resources = new Resources();
+        connectionHandler = new ConnectionHandler();
+        lobbyHandler = new LobbyHandler();
+        gameHandler = new GameHandler();
 
-		space = new Texture("space.jpg");
-		skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
-		tileFree = new Texture(Gdx.files.internal("TileFree.png"));
-		tileBlocked = new Texture(Gdx.files.internal("TileBlocked.png"));
-		tilePlayerOne = new Texture(Gdx.files.internal("TilePlayerOne.png"));
-		tilePlayerTwo = new Texture(Gdx.files.internal("TilePlayerTwo.png"));
-		tilePlayerOneSelected = new Texture(Gdx.files.internal("TilePlayerOneSelected.png"));
-		tilePlayerTwoSelected = new Texture(Gdx.files.internal("TilePlayerTwoSelected.png"));
-		tileMoveOne = new Texture(Gdx.files.internal("TileMoveOne.png"));
-		tileMoveTwo = new Texture(Gdx.files.internal("TileMoveTwo.png"));
-		loading = new Texture(Gdx.files.internal("loading.png"));
-		loading.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        context.setConnectionHandler(connectionHandler);
+        context.setLobbyHandler(lobbyHandler);
+        context.setGameHandler(gameHandler);
+        connectionHandler.setContext(context);
+        connectionHandler.setLobbyHandler(lobbyHandler);
+        connectionHandler.setGameHandler(gameHandler);
+        lobbyHandler.setConnectionHandler(connectionHandler);
+        gameHandler.setConnectionHandler(connectionHandler);
 
-		spriteBatch = new SpriteBatch();
+        mainMenuScreen = new MainMenuScreen(this, context);
+        selectLobbyScreen = new SelectLobbyScreen(this, context, connectionHandler, lobbyHandler);
+        lobbyScreen = new LobbyScreen(this, context, lobbyHandler);
+        gameScreen = new GameScreen(this, context, gameHandler);
 
-		particleEffect = new ParticleEffect();
-    	particleEffect.load(Gdx.files.internal("slowbuzz.p"), Gdx.files.internal(""));
+        showMainMenuScreen();
+    }
 
-		connectionHandler = new ConnectionHandler();
-		messageReceiver = new MessageReceiver(this);
-		lobbyHandler = new LobbyHandler(this);
-		gameHandler = new GameHandler(this);
-		messageEmitter = new MessageEmitter(this);
+    @Override
+    public void dispose() {
+        super.dispose();
+        mainMenuScreen.dispose();
+        selectLobbyScreen.dispose();
+        lobbyScreen.dispose();
+        gameScreen.dispose();
+    }
 
-		mainMenuScreen = new MainMenuScreen(this);
-		lobbySelectScreen = new LobbySelectScreen(this);
-		lobbyJoinedScreen = new LobbyJoinedScreen(this, lobbyHandler);
-		gameScreen = new GameScreen(this);
+    public static String getVersion() {
+        return version;
+    }
 
-		messageReceiver.setLobbySelectScreen(lobbySelectScreen);
+    public Resources getResources() {
+        return resources;
+    }
 
-		this.showMainMenuScreen();
-	}
+    public void showMainMenuScreen() {
+        setScreen(mainMenuScreen);
+    }
 
-	@Override
-	public void render () {
-		super.render();
-	}
+    public void showSelectLobbyScreen() {
+        selectLobbyScreen.hideProgressBar();
+        setScreen(selectLobbyScreen);
+    }
 
-	@Override
-	public void dispose () {
-		// TODO: free resources
-	}
+    public void showLobbyScreen() {
+        setScreen(lobbyScreen);
+    }
 
-	public StateContext getStateContext() {
-		return stateContext;
-	}
-
-	public ConnectionHandler getConnectionHandler() {
-		return connectionHandler;
-	}
-
-	public MessageEmitter getMessageEmitter() {
-		return messageEmitter;
-	}
-
-	public MessageReceiver getMessageReceiver() {
-		return messageReceiver;
-	}
-
-	public LobbyHandler getLobbyHandler() {
-		return lobbyHandler;
-	}
-
-	public GameHandler getGameHandler() {
-		return gameHandler;
-	}
-
-	public MainMenuScreen getMainMenuScreen() {
-		return mainMenuScreen;
-	}
-
-	public LobbySelectScreen getLobbySelectScreen() {
-		return lobbySelectScreen;
-	}
-
-	public LobbyJoinedScreen getLobbyJoinedScreen() {
-		return lobbyJoinedScreen;
-	}
-
-	public GameScreen getGameScreen() {
-		return gameScreen;
-	}
-
-	public void showMainMenuScreen() {
-		this.setScreen(mainMenuScreen);
-	}
-
-	public void showLobbySelectScreen() {
-		this.setScreen(lobbySelectScreen);
-	}
-
-	public void showLobbyJoinedScreen() {
-		this.setScreen(lobbyJoinedScreen);
-	}
-
-	public void showGameScreen() {
-		this.setScreen(gameScreen);
-	}
+    public void showGameScreen() {
+        setScreen(gameScreen);
+    }
 }

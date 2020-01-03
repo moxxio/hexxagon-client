@@ -1,5 +1,8 @@
 package de.johannesrauch.hexxagon.network.messagetype;
 
+/**
+ * This enum represents the different message types.
+ */
 public enum MessageType {
     Welcome,
     GetAvailableLobbies,
