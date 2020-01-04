@@ -23,15 +23,22 @@ public class SentMessagesTest {
      * You should override the send method in order to check the validity of the messages.
      * This trick is used to "catch" the messages before they will be sent over the socket.
      */
-    class TestClient extends WebSocketClient {
+    static class TestClient extends WebSocketClient {
 
         protected final Gson gson = new Gson();
 
         protected AbstractMessage message;
 
+        protected boolean sent;
+
         public TestClient(AbstractMessage message) throws URISyntaxException {
             super(new URI("ws://localhost:4444"));
             this.message = message;
+            sent = false;
+        }
+
+        public boolean hasSent() {
+            return sent;
         }
 
         // Dummy methods
@@ -76,9 +83,11 @@ public class SentMessagesTest {
             public void send(String text) {
                 GetAvailableLobbiesMessage message = gson.fromJson(text, GetAvailableLobbiesMessage.class);
                 Assert.assertEquals(this.message, message);
+                sent = true;
             }
         });
         connectionHandler.getMessageEmitter().sendGetAvailableLobbiesMessage();
+        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -97,9 +106,11 @@ public class SentMessagesTest {
             public void send(String text) {
                 CreateNewLobbyMessage message = gson.fromJson(text, CreateNewLobbyMessage.class);
                 Assert.assertEquals(this.message, message);
+                sent = true;
             }
         });
         connectionHandler.getMessageEmitter().sendCreateNewLobbyMessage(lobbyName);
+        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -119,9 +130,11 @@ public class SentMessagesTest {
             public void send(String text) {
                 JoinLobbyMessage message = gson.fromJson(text, JoinLobbyMessage.class);
                 Assert.assertEquals(this.message, message);
+                sent = true;
             }
         });
         connectionHandler.getMessageEmitter().sendJoinLobbyMessage(lobbyId, userName);
+        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -140,9 +153,11 @@ public class SentMessagesTest {
             public void send(String text) {
                 LeaveLobbyMessage message = gson.fromJson(text, LeaveLobbyMessage.class);
                 Assert.assertEquals(this.message, message);
+                sent = true;
             }
         });
         connectionHandler.getMessageEmitter().sendLeaveLobbyMessage(lobbyId);
+        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -161,9 +176,11 @@ public class SentMessagesTest {
             public void send(String text) {
                 StartGameMessage message = gson.fromJson(text, StartGameMessage.class);
                 Assert.assertEquals(this.message, message);
+                sent = true;
             }
         });
         connectionHandler.getMessageEmitter().sendStartGameMessage(lobbyId);
+        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -182,9 +199,11 @@ public class SentMessagesTest {
             public void send(String text) {
                 GameMoveMessage message = gson.fromJson(text, GameMoveMessage.class);
                 Assert.assertEquals(this.message, message);
+                sent = true;
             }
         });
         connectionHandler.getMessageEmitter().sendGameMoveMessage(gameId, TileEnum.TILE_1, TileEnum.TILE_2);
+        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -203,8 +222,10 @@ public class SentMessagesTest {
             public void send(String text) {
                 LeaveGameMessage message = gson.fromJson(text, LeaveGameMessage.class);
                 Assert.assertEquals(this.message, message);
+                sent = true;
             }
         });
         connectionHandler.getMessageEmitter().sendLeaveGameMessage(gameId);
+        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
     }
 }
