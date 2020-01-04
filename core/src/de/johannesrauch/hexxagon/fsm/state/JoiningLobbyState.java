@@ -130,7 +130,7 @@ public class JoiningLobbyState implements State {
             return null;
         } else {
             lobbyHandler.leaveLobby();
-            parent.showSelectLobbyScreen();
+            parent.showSelectLobbyScreen(false);
 
             return StateContext.getSelectLobbyState();
         }

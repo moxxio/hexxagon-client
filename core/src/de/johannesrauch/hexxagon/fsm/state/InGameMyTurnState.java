@@ -87,7 +87,7 @@ public class InGameMyTurnState implements State {
         context.getLobbyHandler().leaveLobby();
         context.getGameHandler().leaveGame();
         context.getMessageEmitter().sendGetAvailableLobbiesMessage();
-        parent.showSelectLobbyScreen();
+        parent.showSelectLobbyScreen(false);
 
         return StateContext.getSelectLobbyState();
     }

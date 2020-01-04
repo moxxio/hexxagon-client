@@ -82,8 +82,10 @@ public class Hexxagon extends Game {
         setScreen(mainMenuScreen);
     }
 
-    public void showSelectLobbyScreen() {
-        selectLobbyScreen.hideProgressBar();
+    // TODO: use progress bar
+    public void showSelectLobbyScreen(boolean showProgressBar) {
+        if (showProgressBar) selectLobbyScreen.showProgressBar();
+        else selectLobbyScreen.hideProgressBar();
         setScreen(selectLobbyScreen);
     }
 
