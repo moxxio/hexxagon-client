@@ -3,11 +3,11 @@ package de.johannesrauch.hexxagon.fsm.state;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.message.*;
-import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
 
 import java.util.UUID;
 
 /**
+ * TODO: more default methods to prevent code duplication
  * The state interface implements methods for scenarios, the state have to be able to react to.
  */
 public interface State {
