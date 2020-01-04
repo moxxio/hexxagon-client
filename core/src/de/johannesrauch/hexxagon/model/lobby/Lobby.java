@@ -111,4 +111,37 @@ public class Lobby {
     public Boolean isClosed() {
         return isClosed;
     }
+
+    /**
+     * This method defines whether the given object is equal to this. It is null-pointer proof.
+     *
+     * @param obj the compared object
+     * @return true, if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Lobby)) return false;
+
+        Lobby lobby = (Lobby) obj;
+        boolean equal;
+
+        if (lobbyId == null) equal = lobby.lobbyId == null;
+        else equal = lobbyId.equals(lobby.lobbyId);
+        if (lobbyName == null) equal &= lobby.lobbyName == null;
+        else equal &= lobbyName.equals(lobby.lobbyName);
+        if (playerOne == null) equal &= lobby.playerOne == null;
+        else equal &= playerOne.equals(lobby.playerOne);
+        if (playerTwo == null) equal &= lobby.playerTwo == null;
+        else equal &= playerTwo.equals(lobby.playerTwo);
+        if (playerOneUserName == null) equal &= lobby.playerOneUserName == null;
+        else equal &= playerOneUserName.equals(lobby.playerOneUserName);
+        if (playerTwoUserName == null) equal &= lobby.playerTwoUserName == null;
+        else equal &= playerTwoUserName.equals(lobby.playerTwoUserName);
+        // if (creationDate == null) equal &= lobby.creationDate == null; // Buggy, when date is serialized
+        // else equal &= creationDate.equals(lobby.creationDate);
+        if (isClosed == null) equal &= lobby.isClosed == null;
+        else equal &= isClosed.equals(lobby.isClosed);
+
+        return equal;
+    }
 }
