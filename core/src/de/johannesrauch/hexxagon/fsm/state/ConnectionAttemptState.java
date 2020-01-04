@@ -13,7 +13,9 @@ public class ConnectionAttemptState implements State {
     /**
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
-     * @param context the context in which this state is used
+     * @param context  the context in which this state is used
+     * @param hostName the hostname of the server
+     * @param port     the port of the server
      * @return the next state
      * @author Johannes Rauch
      */
@@ -62,6 +64,8 @@ public class ConnectionAttemptState implements State {
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
+     * @param lobbyId the lobby uuid
+     * @param userName the username string
      * @return the next state
      * @author Johannes Rauch
      */
@@ -99,6 +103,7 @@ public class ConnectionAttemptState implements State {
      * authenticated by the server.
      *
      * @param context the context in which this state is used
+     * @param message the received welcome message
      * @return the next state
      * @author Johannes Rauch
      */
@@ -117,6 +122,7 @@ public class ConnectionAttemptState implements State {
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
+     * @param message the received lobby joined message
      * @return the next state
      * @author Johannes Rauch
      */
@@ -129,6 +135,7 @@ public class ConnectionAttemptState implements State {
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
+     * @param message the received lobby status message
      * @return the next state
      * @author Johannes Rauch
      */
@@ -141,6 +148,7 @@ public class ConnectionAttemptState implements State {
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
+     * @param message the received game started message
      * @return the next state
      * @author Johannes Rauch
      */
@@ -153,6 +161,7 @@ public class ConnectionAttemptState implements State {
      * This case should not occur, if it unexpectedly does, then do nothing.
      *
      * @param context the context in which this state is used
+     * @param message the received game status message
      * @return the next state
      * @author Johannes Rauch
      */
