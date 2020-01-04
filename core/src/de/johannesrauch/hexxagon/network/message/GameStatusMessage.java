@@ -35,10 +35,34 @@ public class GameStatusMessage extends AbstractMessage {
     /**
      * This is the standard constructor which calls super.
      *
-     * @param userId the user uuid
+     * @param userId          the user uuid
+     * @param gameId          the game uuid
+     * @param playerOne       the player one uuid
+     * @param playerTwo       the player two uuid
+     * @param playerOnePoints the points of player one
+     * @param playerTwoPoints the points of player two
+     * @param board           the game board state
+     * @param activePlayer    the player whose turn it is
+     * @param tie             whether the game is a tie or not
+     * @param winner          the winner uuid or null, if no winner
      */
-    public GameStatusMessage(UUID userId) {
+    public GameStatusMessage(UUID userId, UUID gameId,
+                             UUID playerOne, UUID playerTwo,
+                             int playerOnePoints, int playerTwoPoints,
+                             Board board,
+                             UUID activePlayer,
+                             boolean tie,
+                             UUID winner) {
         super(MessageType.GameStatus, userId);
+        this.gameId = gameId;
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+        this.playerOnePoints = playerOnePoints;
+        this.playerTwoPoints = playerTwoPoints;
+        this.board = board;
+        this.activePlayer = activePlayer;
+        this.tie = tie;
+        this.winner = winner;
     }
 
     /**
