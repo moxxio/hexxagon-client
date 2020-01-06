@@ -1,15 +1,12 @@
 package de.johannesrauch.hexxagon.test;
 
-import com.google.gson.Gson;
 import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.network.message.*;
+import de.johannesrauch.hexxagon.test.Tools.ClientDummy;
 import org.apache.log4j.BasicConfigurator;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
 import org.junit.*;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
@@ -18,53 +15,8 @@ import java.util.UUID;
  */
 public class SentMessagesTest {
 
-    /**
-     * This websocket client instantiation is used to test the send messages.
-     * You should override the send method in order to check the validity of the messages.
-     * This trick is used to "catch" the messages before they will be sent over the socket.
-     */
-    static class TestClient extends WebSocketClient {
-
-        protected final Gson gson = new Gson();
-
-        protected AbstractMessage message;
-
-        protected boolean sent;
-
-        public TestClient(AbstractMessage message) throws URISyntaxException {
-            super(new URI("ws://localhost:4444"));
-            this.message = message;
-            sent = false;
-        }
-
-        public boolean hasSent() {
-            return sent;
-        }
-
-        // Dummy methods
-        @Override
-        public void onOpen(ServerHandshake handshake) {
-
-        }
-
-        @Override
-        public void onMessage(String message) {
-
-        }
-
-        @Override
-        public void onClose(int code, String reason, boolean remote) {
-
-        }
-
-        @Override
-        public void onError(Exception ex) {
-
-        }
-    }
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         BasicConfigurator.configure(); // Otherwise logger complains
     }
 
@@ -78,7 +30,7 @@ public class SentMessagesTest {
         UUID userId = UUID.randomUUID();
         ConnectionHandler connectionHandler = new ConnectionHandler();
         connectionHandler.setUserId(userId);
-        connectionHandler.setClient(new TestClient(new GetAvailableLobbiesMessage(userId)) {
+        connectionHandler.setClient(new ClientDummy(new GetAvailableLobbiesMessage(userId)) {
             @Override
             public void send(String text) {
                 GetAvailableLobbiesMessage message = gson.fromJson(text, GetAvailableLobbiesMessage.class);
@@ -87,7 +39,7 @@ public class SentMessagesTest {
             }
         });
         connectionHandler.getMessageEmitter().sendGetAvailableLobbiesMessage();
-        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
+        Assert.assertTrue(((ClientDummy) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -101,7 +53,7 @@ public class SentMessagesTest {
         String lobbyName = "example lobby name";
         ConnectionHandler connectionHandler = new ConnectionHandler();
         connectionHandler.setUserId(userId);
-        connectionHandler.setClient(new TestClient(new CreateNewLobbyMessage(userId, lobbyName)) {
+        connectionHandler.setClient(new ClientDummy(new CreateNewLobbyMessage(userId, lobbyName)) {
             @Override
             public void send(String text) {
                 CreateNewLobbyMessage message = gson.fromJson(text, CreateNewLobbyMessage.class);
@@ -110,7 +62,7 @@ public class SentMessagesTest {
             }
         });
         connectionHandler.getMessageEmitter().sendCreateNewLobbyMessage(lobbyName);
-        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
+        Assert.assertTrue(((ClientDummy) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -125,7 +77,7 @@ public class SentMessagesTest {
         String userName = "example user name";
         ConnectionHandler connectionHandler = new ConnectionHandler();
         connectionHandler.setUserId(userId);
-        connectionHandler.setClient(new TestClient(new JoinLobbyMessage(userId, lobbyId, userName)) {
+        connectionHandler.setClient(new ClientDummy(new JoinLobbyMessage(userId, lobbyId, userName)) {
             @Override
             public void send(String text) {
                 JoinLobbyMessage message = gson.fromJson(text, JoinLobbyMessage.class);
@@ -134,7 +86,7 @@ public class SentMessagesTest {
             }
         });
         connectionHandler.getMessageEmitter().sendJoinLobbyMessage(lobbyId, userName);
-        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
+        Assert.assertTrue(((ClientDummy) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -148,7 +100,7 @@ public class SentMessagesTest {
         UUID lobbyId = UUID.randomUUID();
         ConnectionHandler connectionHandler = new ConnectionHandler();
         connectionHandler.setUserId(userId);
-        connectionHandler.setClient(new TestClient(new LeaveLobbyMessage(userId, lobbyId)) {
+        connectionHandler.setClient(new ClientDummy(new LeaveLobbyMessage(userId, lobbyId)) {
             @Override
             public void send(String text) {
                 LeaveLobbyMessage message = gson.fromJson(text, LeaveLobbyMessage.class);
@@ -157,7 +109,7 @@ public class SentMessagesTest {
             }
         });
         connectionHandler.getMessageEmitter().sendLeaveLobbyMessage(lobbyId);
-        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
+        Assert.assertTrue(((ClientDummy) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -171,7 +123,7 @@ public class SentMessagesTest {
         UUID lobbyId = UUID.randomUUID();
         ConnectionHandler connectionHandler = new ConnectionHandler();
         connectionHandler.setUserId(userId);
-        connectionHandler.setClient(new TestClient(new StartGameMessage(userId, lobbyId)) {
+        connectionHandler.setClient(new ClientDummy(new StartGameMessage(userId, lobbyId)) {
             @Override
             public void send(String text) {
                 StartGameMessage message = gson.fromJson(text, StartGameMessage.class);
@@ -180,7 +132,7 @@ public class SentMessagesTest {
             }
         });
         connectionHandler.getMessageEmitter().sendStartGameMessage(lobbyId);
-        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
+        Assert.assertTrue(((ClientDummy) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -194,7 +146,7 @@ public class SentMessagesTest {
         UUID gameId = UUID.randomUUID();
         ConnectionHandler connectionHandler = new ConnectionHandler();
         connectionHandler.setUserId(userId);
-        connectionHandler.setClient(new TestClient(new GameMoveMessage(userId, gameId, TileEnum.TILE_1, TileEnum.TILE_2)) {
+        connectionHandler.setClient(new ClientDummy(new GameMoveMessage(userId, gameId, TileEnum.TILE_1, TileEnum.TILE_2)) {
             @Override
             public void send(String text) {
                 GameMoveMessage message = gson.fromJson(text, GameMoveMessage.class);
@@ -203,7 +155,7 @@ public class SentMessagesTest {
             }
         });
         connectionHandler.getMessageEmitter().sendGameMoveMessage(gameId, TileEnum.TILE_1, TileEnum.TILE_2);
-        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
+        Assert.assertTrue(((ClientDummy) connectionHandler.getClient()).hasSent());
     }
 
     /**
@@ -217,7 +169,7 @@ public class SentMessagesTest {
         UUID gameId = UUID.randomUUID();
         ConnectionHandler connectionHandler = new ConnectionHandler();
         connectionHandler.setUserId(userId);
-        connectionHandler.setClient(new TestClient(new LeaveGameMessage(userId, gameId)) {
+        connectionHandler.setClient(new ClientDummy(new LeaveGameMessage(userId, gameId)) {
             @Override
             public void send(String text) {
                 LeaveGameMessage message = gson.fromJson(text, LeaveGameMessage.class);
@@ -226,6 +178,6 @@ public class SentMessagesTest {
             }
         });
         connectionHandler.getMessageEmitter().sendLeaveGameMessage(gameId);
-        Assert.assertTrue(((TestClient) connectionHandler.getClient()).hasSent());
+        Assert.assertTrue(((ClientDummy) connectionHandler.getClient()).hasSent());
     }
 }

@@ -1,18 +1,13 @@
 package de.johannesrauch.hexxagon.test;
 
-import com.google.gson.Gson;
-import de.johannesrauch.hexxagon.Hexxagon;
-import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
-import de.johannesrauch.hexxagon.controller.handler.GameHandler;
-import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
-import de.johannesrauch.hexxagon.fsm.state.State;
 import de.johannesrauch.hexxagon.model.board.Board;
 import de.johannesrauch.hexxagon.model.lobby.Lobby;
 import de.johannesrauch.hexxagon.network.client.MessageReceiver;
 import de.johannesrauch.hexxagon.network.message.*;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
-import de.johannesrauch.hexxagon.resource.Resources;
+import de.johannesrauch.hexxagon.test.Tools.ClientDummy;
+import de.johannesrauch.hexxagon.test.Tools.TestKit;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,75 +26,8 @@ import java.util.UUID;
  */
 public class ReceivedMessagesTest {
 
-    /**
-     * This class provides a hexxagon dummy with overridden methods.
-     */
-    static class TestHexxagon extends Hexxagon {
-
-        // Dummy methods
-        public TestHexxagon() {
-        }
-
-        @Override
-        public void create() {
-        }
-
-        @Override
-        public void dispose() {
-        }
-
-        @Override
-        public Resources getResources() {
-            return null;
-        }
-
-        @Override
-        public void showMainMenuScreen() {
-        }
-
-        @Override
-        public void showSelectLobbyScreen(boolean showProgressBar) {
-        }
-
-        @Override
-        public void showLobbyScreen() {
-        }
-
-        @Override
-        public void showGameScreen() {
-        }
-    }
-
-    /**
-     * This class sets up objects to test received message behaviour.
-     */
-    static class TestKit {
-        TestHexxagon hexxagon;
-        StateContext context;
-        ConnectionHandler connectionHandler;
-        LobbyHandler lobbyHandler;
-        GameHandler gameHandler;
-        Gson gson;
-
-        public TestKit(State initialState) {
-            hexxagon = new TestHexxagon();
-            context = new StateContext(hexxagon);
-            connectionHandler = new ConnectionHandler();
-            lobbyHandler = new LobbyHandler();
-            gameHandler = new GameHandler();
-            gson = new Gson();
-
-            context.setState(initialState);
-            context.setConcurrent(false);
-            context.setConnectionHandler(connectionHandler);
-            context.setLobbyHandler(lobbyHandler);
-            context.setGameHandler(gameHandler);
-            connectionHandler.setContext(context);
-        }
-    }
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         BasicConfigurator.configure(); // Otherwise logger complains
     }
 
@@ -151,7 +79,7 @@ public class ReceivedMessagesTest {
         MessageReceiver receiver = kit.connectionHandler.getMessageReceiver();
         UUID userId = UUID.randomUUID();
         kit.connectionHandler.setUserId(userId);
-        kit.connectionHandler.setClient(new SentMessagesTest.TestClient(null) {
+        kit.connectionHandler.setClient(new ClientDummy(null) {
             @Override
             public void send(String text) {
                 BaseMessage message = gson.fromJson(text, BaseMessage.class);
@@ -161,7 +89,7 @@ public class ReceivedMessagesTest {
         });
         LobbyCreatedMessage message = new LobbyCreatedMessage(userId, UUID.randomUUID(), true);
         receiver.handleMessage(kit.gson.toJson(message, LobbyCreatedMessage.class));
-        Assert.assertTrue(((SentMessagesTest.TestClient) kit.connectionHandler.getClient()).hasSent());
+        Assert.assertTrue(((ClientDummy) kit.connectionHandler.getClient()).hasSent());
     }
 
     /**
