@@ -15,7 +15,6 @@ public abstract class BaseScreen implements Screen {
     protected Hexxagon parent;
 
     protected OrthographicCamera camera;
-    // protected StretchViewport viewport; // TODO: inform about and choose right viewport
     protected ScreenViewport viewport;
     protected Stage stage;
 
@@ -28,7 +27,6 @@ public abstract class BaseScreen implements Screen {
         this.parent = parent;
 
         camera = new OrthographicCamera(1280, 720);
-        // viewport = new StretchViewport(1280, 720, camera);
         viewport = new ScreenViewport(camera);
         stage = new Stage();
     }
