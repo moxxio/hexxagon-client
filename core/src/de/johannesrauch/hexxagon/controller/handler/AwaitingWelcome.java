@@ -10,16 +10,29 @@ import de.johannesrauch.hexxagon.fsm.context.StateContext;
 public class AwaitingWelcome implements Runnable {
 
     private final StateContext context;
+    private final int sleepTime;
     private boolean welcomed = false;
     private boolean canceled = false;
 
     /**
-     * This is the standard constructor.
+     * This is the standard constructor. It sets the context and a sleep time of 3s.
      *
      * @param context the state context
      */
     public AwaitingWelcome(StateContext context) {
+        this(context, 3000);
+    }
+
+    /**
+     * This is the constructor where you can specify the sleep time yourself.
+     * If sleep time is <= 0, the run method will not sleep.
+     *
+     * @param context   the state context
+     * @param sleepTime the sleep time in millis
+     */
+    public AwaitingWelcome(StateContext context, int sleepTime) {
         this.context = context;
+        this.sleepTime = sleepTime;
     }
 
     /**
@@ -41,14 +54,16 @@ public class AwaitingWelcome implements Runnable {
     }
 
     /**
-     * This method waits five seconds. If no welcome message was received in that time,
-     * it disconnects the client from the server.
+     * This method sleeps sleep time millis and then checks if the client was welcomed.
+     * If no welcome message was received in that time, it disconnects the client from the server.
      */
     @Override
     public void run() {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ignored) {
+        if (sleepTime > 0) {
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException ignored) {
+            }
         }
 
         if (canceled) return;
