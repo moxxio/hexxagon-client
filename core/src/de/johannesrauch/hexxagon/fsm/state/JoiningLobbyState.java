@@ -5,8 +5,6 @@ import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.message.*;
 
-import java.util.UUID;
-
 public class JoiningLobbyState implements State {
 
     /**
@@ -23,7 +21,7 @@ public class JoiningLobbyState implements State {
         Hexxagon parent = context.getParent();
         LobbyHandler lobbyHandler = context.getLobbyHandler();
 
-        if (message.getSuccessfullyJoined()) {
+        if (Boolean.TRUE.equals(message.getSuccessfullyJoined())) {
             lobbyHandler.joinedLobby(message.getUserId(), message.getLobbyId());
 
             return null;
