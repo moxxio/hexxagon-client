@@ -3,7 +3,7 @@ package de.johannesrauch.hexxagon.test;
 import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.network.message.*;
-import de.johannesrauch.hexxagon.test.Tools.ClientDummy;
+import de.johannesrauch.hexxagon.test.tools.ClientDummy;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.*;
 

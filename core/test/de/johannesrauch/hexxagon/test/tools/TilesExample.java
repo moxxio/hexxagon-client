@@ -1,4 +1,4 @@
-package de.johannesrauch.hexxagon.test.Tools;
+package de.johannesrauch.hexxagon.test.tools;
 
 public class TilesExample {
     // Initial tile config, 6 - 6

@@ -1,4 +1,4 @@
-package de.johannesrauch.hexxagon.test.Tools;
+package de.johannesrauch.hexxagon.test.tools;
 
 import com.google.gson.Gson;
 import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
@@ -6,7 +6,6 @@ import de.johannesrauch.hexxagon.controller.handler.GameHandler;
 import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.fsm.state.State;
-import de.johannesrauch.hexxagon.test.Tools.HexxagonDummy;
 
 public class TestKit {
 

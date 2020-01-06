@@ -1,4 +1,4 @@
-package de.johannesrauch.hexxagon.test.Tools;
+package de.johannesrauch.hexxagon.test.tools;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.resource.Resources;

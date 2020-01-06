@@ -1,8 +1,8 @@
 package de.johannesrauch.hexxagon.test;
 
 import de.johannesrauch.hexxagon.controller.handler.AwaitingWelcome;
-import de.johannesrauch.hexxagon.test.Tools.StateDummy;
-import de.johannesrauch.hexxagon.test.Tools.TestKit;
+import de.johannesrauch.hexxagon.test.tools.StateDummy;
+import de.johannesrauch.hexxagon.test.tools.TestKit;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package de.johannesrauch.hexxagon.test.Tools;
+package de.johannesrauch.hexxagon.test.tools;
 
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.fsm.state.State;

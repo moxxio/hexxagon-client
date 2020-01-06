@@ -1,4 +1,4 @@
-package de.johannesrauch.hexxagon.test.Tools;
+package de.johannesrauch.hexxagon.test.tools;
 
 import com.google.gson.Gson;
 import de.johannesrauch.hexxagon.network.message.AbstractMessage;
