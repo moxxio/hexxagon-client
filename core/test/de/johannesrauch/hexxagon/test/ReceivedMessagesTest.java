@@ -8,6 +8,7 @@ import de.johannesrauch.hexxagon.network.message.*;
 import de.johannesrauch.hexxagon.network.messagetype.MessageType;
 import de.johannesrauch.hexxagon.test.Tools.ClientDummy;
 import de.johannesrauch.hexxagon.test.Tools.TestKit;
+import de.johannesrauch.hexxagon.test.Tools.TilesExample;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Assert;
 import org.junit.Before;
