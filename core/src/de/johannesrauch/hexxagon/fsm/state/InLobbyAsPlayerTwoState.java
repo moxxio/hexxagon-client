@@ -9,70 +9,6 @@ import java.util.UUID;
 public class InLobbyAsPlayerTwoState implements State {
 
     /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context  the context in which this state is used
-     * @param hostName the hostname of the server
-     * @param port     the port of the server
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedConnect(StateContext context, String hostName, String port) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedDisconnect(StateContext context) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedPlay(StateContext context) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedBack(StateContext context) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @param lobbyId the lobby uuid
-     * @param userName the username string
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedJoinLobby(StateContext context, UUID lobbyId, String userName) {
-        return null;
-    }
-
-    /**
      * When in lobby as player two state and leave is clicked, leave the lobby, go back to select lobby screen and
      * transition to select lobby state.
      *
@@ -83,31 +19,6 @@ public class InLobbyAsPlayerTwoState implements State {
     @Override
     public State reactToClickedLeave(StateContext context) {
         return StateContext.getInLobbyAsPlayerOneState().reactToClickedLeave(context);
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedStart(StateContext context) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @param message the received welcome message
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedWelcome(StateContext context, WelcomeMessage message) {
-        return null;
     }
 
     /**
@@ -154,18 +65,5 @@ public class InLobbyAsPlayerTwoState implements State {
     @Override
     public State reactToReceivedGameStarted(StateContext context, GameStartedMessage message) {
         return StateContext.getInFullLobbyAsPlayerOneState().reactToReceivedGameStarted(context, message);
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @param message the received game status message
-     * @return the next state
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
-        return null;
     }
 }

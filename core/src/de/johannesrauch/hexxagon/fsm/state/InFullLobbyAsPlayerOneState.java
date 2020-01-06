@@ -11,70 +11,6 @@ import java.util.UUID;
 public class InFullLobbyAsPlayerOneState implements State {
 
     /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context  the context in which this state is used
-     * @param hostName the hostname of the server
-     * @param port     the port of the server
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedConnect(StateContext context, String hostName, String port) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedDisconnect(StateContext context) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedPlay(StateContext context) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedBack(StateContext context) {
-        return null;
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @param lobbyId the lobby uuid
-     * @param userName the username string
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToClickedJoinLobby(StateContext context, UUID lobbyId, String userName) {
-        return null;
-    }
-
-    /**
      * When in full lobby as player one state and the user clicked leave, then leave the lobby, show the select lobby
      * screen and transition to select lobby screen.
      *
@@ -102,19 +38,6 @@ public class InFullLobbyAsPlayerOneState implements State {
         lobbyHandler.startGame();
 
         return StateContext.getUninitializedGameState();
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @param message the received welcome message
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedWelcome(StateContext context, WelcomeMessage message) {
-        return null;
     }
 
     /**
@@ -180,18 +103,5 @@ public class InFullLobbyAsPlayerOneState implements State {
         parent.showGameScreen();
 
         return StateContext.getUninitializedGameState();
-    }
-
-    /**
-     * This case should not occur, if it unexpectedly does, then do nothing.
-     *
-     * @param context the context in which this state is used
-     * @param message the received game status message
-     * @return the next state or null, if state does not change
-     * @author Johannes Rauch
-     */
-    @Override
-    public State reactToReceivedGameStatus(StateContext context, GameStatusMessage message) {
-        return null;
     }
 }
