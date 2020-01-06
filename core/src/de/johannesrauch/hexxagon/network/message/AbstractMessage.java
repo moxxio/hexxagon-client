@@ -42,7 +42,6 @@ public abstract class AbstractMessage {
     }
 
     /**
-     * TODO: maybe override equals in all messages, not just the sent ones
      * This method defines whether the given object is equal to this. It is null-pointer proof.
      *
      * @param obj the compared object
