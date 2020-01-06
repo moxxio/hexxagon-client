@@ -17,8 +17,6 @@ import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
-// TODO: make progress bar for uninitialized game state
-
 /**
  * This class is the lobby screen.
  */
@@ -51,20 +49,20 @@ public class LobbyScreen extends BaseScreen {
         this.context = context;
         this.lobbyHandler = lobbyHandler;
 
-        headingLabel = new Label("LOBBY", skin, "title");
-        playerOneLabel = new ButtonStyleLabel("PLAYER ONE: ", skin);
-        playerTwoLabel = new ButtonStyleLabel("PLAYER TWO: ", skin);
-        playerOneUserNameLabel = new TextFieldStyleLabel("<PLAYER ONE USER NAME>", skin);
-        playerTwoUserNameLabel = new TextFieldStyleLabel("<PLAYER TWO USER NAME>", skin);
+        headingLabel = new Label(Lettering.LOBBY, skin, "title");
+        playerOneLabel = new ButtonStyleLabel(Lettering.PLAYER_ONE, skin);
+        playerTwoLabel = new ButtonStyleLabel(Lettering.PLAYER_TWO, skin);
+        playerOneUserNameLabel = new TextFieldStyleLabel(Lettering.PLAYER_ONE_USERNAME, skin);
+        playerTwoUserNameLabel = new TextFieldStyleLabel(Lettering.PLAYER_TWO_USERNAME, skin);
 
-        startButton = new TextButton("START", skin);
+        startButton = new TextButton(Lettering.START, skin);
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 lobbyHandler.startGame();
             }
         });
-        leaveButton = new TextButton("LEAVE", skin);
+        leaveButton = new TextButton(Lettering.LEAVE, skin);
         leaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -173,7 +171,7 @@ public class LobbyScreen extends BaseScreen {
      */
     private void reset() {
         startButton.setVisible(false);
-        playerOneUserNameLabel.setText("<PLAYER ONE USER NAME>");
-        playerTwoUserNameLabel.setText("<PLAYER ONE USER NAME>");
+        playerOneUserNameLabel.setText(Lettering.PLAYER_ONE_USERNAME);
+        playerTwoUserNameLabel.setText(Lettering.PLAYER_TWO_USERNAME);
     }
 }

@@ -54,33 +54,33 @@ public class GameScreen extends BaseScreen {
         this.context = context;
         this.gameHandler = gameHandler;
 
-        playerOneLabel = new ButtonStyleLabel("PLAYER ONE: ", skin);
+        playerOneLabel = new ButtonStyleLabel(Lettering.PLAYER_ONE, skin);
         playerOneLabel.setPosition(20, 80);
         playerOneLabel.setSize(300, 50);
-        playerTwoLabel = new ButtonStyleLabel("PLAYER TWO: ", skin);
+        playerTwoLabel = new ButtonStyleLabel(Lettering.PLAYER_TWO, skin);
         playerTwoLabel.setPosition(960, 80);
         playerTwoLabel.setSize(300, 50);
-        playerOneUserNameLabel = new TextFieldStyleLabel("<PLAYER ONE USER NAME>", skin);
+        playerOneUserNameLabel = new TextFieldStyleLabel(Lettering.PLAYER_ONE_USERNAME, skin);
         playerOneUserNameLabel.setPosition(20, 20);
         playerOneUserNameLabel.setSize(300, 50);
-        playerTwoUserNameLabel = new TextFieldStyleLabel("<PLAYER ONE USER NAME>", skin);
+        playerTwoUserNameLabel = new TextFieldStyleLabel(Lettering.PLAYER_TWO_USERNAME, skin);
         playerTwoUserNameLabel.setPosition(960, 20);
         playerTwoUserNameLabel.setSize(300, 50);
-        playerOneScoreLabel = new TextFieldStyleLabel("<SCORE>", skin);
+        playerOneScoreLabel = new TextFieldStyleLabel(Lettering.SCORE, skin);
         playerOneScoreLabel.setPosition(340, 20);
         playerOneScoreLabel.setSize(50, 50);
-        playerTwoScoreLabel = new TextFieldStyleLabel("<SCORE>", skin);
+        playerTwoScoreLabel = new TextFieldStyleLabel(Lettering.SCORE, skin);
         playerTwoScoreLabel.setPosition(890, 20);
         playerTwoScoreLabel.setSize(50, 50);
-        turnLabel = new ButtonStyleLabel("<WHOSE TURN>", skin);
+        turnLabel = new ButtonStyleLabel(Lettering.TURN, skin);
         turnLabel.setPosition(20, 660);
         turnLabel.setSize(300, 50);
-        winnerLabel = new TextFieldStyleLabel("<WHO WON>", skin);
+        winnerLabel = new TextFieldStyleLabel(Lettering.WHO_WON, skin);
         winnerLabel.setPosition(20, 600);
         winnerLabel.setSize(300, 50);
         winnerLabel.setVisible(false);
 
-        leaveButton = new TextButton("LEAVE", skin);
+        leaveButton = new TextButton(Lettering.LEAVE, skin);
         leaveButton.setPosition(960, 660);
         leaveButton.setSize(300, 50);
         leaveButton.addListener(new ClickListener() {
@@ -156,9 +156,9 @@ public class GameScreen extends BaseScreen {
             turnLabel.setText(gameHandler.getWhoseTurnDesc());
 
             if (gameHandler.isGameOver()) {
-                if (gameHandler.isTie()) winnerLabel.setText("TIE");
-                else if (gameHandler.isWinnerMe()) winnerLabel.setText("WINNER");
-                else winnerLabel.setText("LOSER");
+                if (gameHandler.isTie()) winnerLabel.setText(Lettering.TIE);
+                else if (gameHandler.isWinnerMe()) winnerLabel.setText(Lettering.WINNER);
+                else winnerLabel.setText(Lettering.LOSER);
                 winnerLabel.setVisible(true);
             }
 
@@ -247,12 +247,12 @@ public class GameScreen extends BaseScreen {
         for (TileEnum tile : TileEnum.values()) {
             gameScreenTiles.get(tile).setTexture(parent.getResources().getTileFree());
         }
-        playerOneUserNameLabel.setText("<PLAYER ONE USER NAME>");
-        playerTwoUserNameLabel.setText("<PLAYER TWO USER NAME>");
-        playerOneScoreLabel.setText("<SCORE>");
-        playerTwoScoreLabel.setText("<SCORE>");
-        turnLabel.setText("<WHOSE TURN>");
-        winnerLabel.setText("<WHO WON>");
+        playerOneUserNameLabel.setText(Lettering.PLAYER_ONE_USERNAME);
+        playerTwoUserNameLabel.setText(Lettering.PLAYER_TWO_USERNAME);
+        playerOneScoreLabel.setText(Lettering.SCORE);
+        playerTwoScoreLabel.setText(Lettering.SCORE);
+        turnLabel.setText(Lettering.TURN);
+        winnerLabel.setText(Lettering.WHO_WON);
         winnerLabel.setVisible(false);
     }
 

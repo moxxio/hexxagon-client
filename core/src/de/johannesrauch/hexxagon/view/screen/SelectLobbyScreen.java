@@ -11,13 +11,13 @@ import com.badlogic.gdx.utils.Align;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
+import de.johannesrauch.hexxagon.controller.listener.CreateButtonClickListener;
+import de.johannesrauch.hexxagon.controller.listener.JoinButtonClickListener;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.fsm.state.State;
 import de.johannesrauch.hexxagon.model.lobby.Lobby;
 import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +28,6 @@ import java.util.zip.Adler32;
  * This class represents the select lobby screen.
  */
 public class SelectLobbyScreen extends BaseScreen {
-
-    private static final Logger logger = LoggerFactory.getLogger(SelectLobbyScreen.class);
 
     private Label headingLabel;
     private ButtonStyleLabel userNameLabel;
@@ -68,79 +66,39 @@ public class SelectLobbyScreen extends BaseScreen {
         super(parent);
         Skin skin = parent.getResources().getSkin();
         Adler32 a32 = new Adler32();
-        a32.update(UUID.randomUUID().toString().getBytes());
         MessageEmitter messageEmitter = connectionHandler.getMessageEmitter();
         this.context = context;
         this.lobbyHandler = lobbyHandler;
+        lobbyList = new List<>(skin);
+        lobbyIds = new HashMap<>();
 
-        headingLabel = new Label("CHOOSE LOBBY", skin, "title");
-        userNameLabel = new ButtonStyleLabel("USERNAME: ", skin);
-        joiningLabel = new Label("JOINING LOBBY...", skin);
+        headingLabel = new Label(Lettering.CHOOSE_LOBBY, skin, "title");
+        userNameLabel = new ButtonStyleLabel(Lettering.USERNAME, skin);
+        joiningLabel = new Label(Lettering.JOINING_LOBBY, skin);
 
-        userNameTextField = new TextField("PLAYER" + a32.getValue() / 1000, skin);
+        a32.update(UUID.randomUUID().toString().getBytes());
+        userNameTextField = new TextField("P" + a32.getValue(), skin);
         userNameTextField.setAlignment(Align.center);
 
-        joinButton = new TextButton("JOIN", skin);
-        joinButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                String selected = lobbyList.getSelected();
-                if (selected == null) return;
-                logger.info("Selected lobby " + selected);
-
-                UUID lobbyId = lobbyIds.get(selected);
-                if (lobbyId == null) return;
-                logger.info("Selected lobby UUID " + lobbyId.toString());
-
-                String userName = userNameTextField.getText();
-                if (userName == null) return;
-                context.reactToClickedJoinLobby(lobbyId, userName);
-            }
-        });
-        createButton = new TextButton("CREATE", skin);
-        createButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Label lobbyNameLabel = new Label("TYPE LOBBY NAME: ", skin);
-
-                TextButton createButton = new TextButton("CREATE", skin);
-                TextButton cancelButton = new TextButton("CANCEL", skin);
-
-                a32.update(UUID.randomUUID().toString().getBytes());
-                TextField lobbyNameTextField = new TextField("LOBBY" + a32.getValue(), skin);
-
-                Dialog dialog = new Dialog("CREATE LOBBY", skin) {
-                    @Override
-                    protected void result(Object object) {
-                        boolean result = (boolean) object;
-                        if (result) {
-                            messageEmitter.sendCreateNewLobbyMessage(lobbyNameTextField.getText());
-                        }
-                    }
-                };
-                dialog.getContentTable().pad(15);
-                dialog.getContentTable().add(lobbyNameLabel);
-                dialog.getContentTable().add(lobbyNameTextField).width(500);
-                dialog.button(createButton, true);
-                dialog.button(cancelButton, false);
-                dialog.show(stage);
-            }
-        });
-        refreshButton = new TextButton("REFRESH", skin);
+        joinButton = new TextButton(Lettering.JOIN, skin);
+        joinButton.addListener(new JoinButtonClickListener(context, lobbyList, lobbyIds, userNameTextField));
+        createButton = new TextButton(Lettering.CREATE, skin);
+        createButton.addListener(new CreateButtonClickListener(stage, skin, messageEmitter));
+        refreshButton = new TextButton(Lettering.REFRESH, skin);
         refreshButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 messageEmitter.sendGetAvailableLobbiesMessage();
             }
         });
-        backButton = new TextButton("BACK", skin);
+        backButton = new TextButton(Lettering.BACK, skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 context.reactToClickedBack();
             }
         });
-        cancelButton = new TextButton("CANCEL", skin);
+        cancelButton = new TextButton(Lettering.CANCEL, skin);
         cancelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -148,8 +106,6 @@ public class SelectLobbyScreen extends BaseScreen {
             }
         });
 
-        lobbyList = new List<>(skin);
-        lobbyIds = new HashMap<>();
         scrollPane = new ScrollPane(lobbyList);
         scrollPane.setScrollbarsOnTop(true);
 

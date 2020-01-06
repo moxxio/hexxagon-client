@@ -47,11 +47,11 @@ public class MainMenuScreen extends BaseScreen {
         Skin skin = parent.getResources().getSkin();
         this.context = context;
 
-        headingLabel = new Label("HEXXAGON", skin, "title");
-        connStatusLabel = new ButtonStyleLabel("DISCONNECTED", skin);
+        headingLabel = new Label(Lettering.HEXXAGON, skin, "title");
+        connStatusLabel = new ButtonStyleLabel(Lettering.DISCONNECTED, skin);
         connStatusLabel.setPosition(20, 20);
         connStatusLabel.setSize(300, 50);
-        versionLabel = new ButtonStyleLabel("VERSION " + Hexxagon.getVersion(), skin);
+        versionLabel = new ButtonStyleLabel(Lettering.VERSION + " " + Hexxagon.getVersion(), skin);
         versionLabel.setPosition(960, 20);
         versionLabel.setSize(300, 50);
 
@@ -60,7 +60,7 @@ public class MainMenuScreen extends BaseScreen {
         portTextField = new TextField("4444", skin);
         portTextField.setAlignment(Align.center);
 
-        connectButton = new TextButton("CONNECT", skin);
+        connectButton = new TextButton(Lettering.CONNECT, skin);
         connectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -69,7 +69,7 @@ public class MainMenuScreen extends BaseScreen {
                 context.reactToClickedConnect(hostName, port);
             }
         });
-        disconnectButton = new TextButton("DISCONNECT", skin);
+        disconnectButton = new TextButton(Lettering.DISCONNECT, skin);
         disconnectButton.setTouchable(Touchable.disabled);
         disconnectButton.addListener(new ClickListener() {
             @Override
@@ -77,7 +77,7 @@ public class MainMenuScreen extends BaseScreen {
                 context.reactToClickedDisconnect();
             }
         });
-        playButton = new TextButton("PLAY", skin);
+        playButton = new TextButton(Lettering.PLAY, skin);
         playButton.setVisible(false);
         playButton.addListener(new ClickListener() {
             @Override
@@ -85,7 +85,7 @@ public class MainMenuScreen extends BaseScreen {
                 context.reactToClickedPlay();
             }
         });
-        closeButton = new TextButton("CLOSE", skin);
+        closeButton = new TextButton(Lettering.CLOSE, skin);
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -143,17 +143,17 @@ public class MainMenuScreen extends BaseScreen {
         if (context.hasStateUpdated()) {
             State state = context.getState();
             if (state == StateContext.getDisconnectedState()) {
-                connStatusLabel.setText("DISCONNECTED");
+                connStatusLabel.setText(Lettering.DISCONNECTED);
                 connectButton.setTouchable(Touchable.enabled);
                 disconnectButton.setTouchable(Touchable.disabled);
                 playButton.setVisible(false);
             } else if (state == StateContext.getConnectionAttemptState()) {
-                connStatusLabel.setText("CONNECTING...");
+                connStatusLabel.setText(Lettering.CONNECTING);
                 connectButton.setTouchable(Touchable.disabled);
                 disconnectButton.setTouchable(Touchable.disabled);
                 playButton.setVisible(false);
             } else if (state == StateContext.getConnectedState()) {
-                connStatusLabel.setText("CONNECTED");
+                connStatusLabel.setText(Lettering.CONNECTED);
                 connectButton.setTouchable(Touchable.disabled);
                 disconnectButton.setTouchable(Touchable.enabled);
                 playButton.setVisible(true);

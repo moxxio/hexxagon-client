@@ -13,7 +13,6 @@ import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
 import de.johannesrauch.hexxagon.view.screen.SelectLobbyScreen;
 import org.apache.log4j.BasicConfigurator;
 
-// TODO: create a class with public static values for the ui
 // TODO: dialog window at server disconnect or connection error
 public class Hexxagon extends Game {
 
@@ -81,7 +80,6 @@ public class Hexxagon extends Game {
         setScreen(mainMenuScreen);
     }
 
-    // TODO: use progress bar
     public void showSelectLobbyScreen(boolean showProgressBar) {
         if (showProgressBar) selectLobbyScreen.showProgressBar();
         else selectLobbyScreen.hideProgressBar();

@@ -1,0 +1,66 @@
+package de.johannesrauch.hexxagon.controller.listener;
+
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.UUID;
+
+/**
+ * This class implements the click listener interface and should be added to a join button.
+ */
+public class JoinButtonClickListener extends ClickListener {
+
+    private final Logger logger = LoggerFactory.getLogger(JoinButtonClickListener.class);
+
+    private final StateContext context;
+    private final List<String> lobbyList;
+    private final HashMap<String, UUID> lobbyIds;
+    private final TextField userNameTextField;
+
+    /**
+     * This constructor provides all necessary objects to the class.
+     *
+     * @param context           the state context
+     * @param lobbyList         the lobby list
+     * @param lobbyIds          the lobby uuids
+     * @param userNameTextField the username textfield
+     */
+    public JoinButtonClickListener(StateContext context, List<String> lobbyList, HashMap<String, UUID> lobbyIds, TextField userNameTextField) {
+        this.context = context;
+        this.lobbyList = lobbyList;
+        this.lobbyIds = lobbyIds;
+        this.userNameTextField = userNameTextField;
+    }
+
+    /**
+     * This method triggers the action on click join.
+     * First it looks up the selected lobby. If it is null, it returns.
+     * Afterwards, it looks up the lobby uuid associated to the lobby name. If it is null, it returns.
+     * Then it gets the username. If it is null, it returns.
+     * If it has not returned so far, it informs the context about the clicked join lobby event.
+     *
+     * @param event ignored
+     * @param x     ignored
+     * @param y     ignored
+     */
+    @Override
+    public void clicked(InputEvent event, float x, float y) {
+        String selected = lobbyList.getSelected();
+        if (selected == null) return;
+        logger.info("Selected lobby " + selected);
+
+        UUID lobbyId = lobbyIds.get(selected);
+        if (lobbyId == null) return;
+        logger.info("Selected lobby UUID " + lobbyId.toString());
+
+        String userName = userNameTextField.getText(); // TODO: username regex "([a-zA-Z]{1}[a-zA-Z_0-9]{3,13})"
+        if (userName == null) return;
+        context.reactToClickedJoinLobby(lobbyId, userName);
+    }
+}
