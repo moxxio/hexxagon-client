@@ -13,7 +13,6 @@ import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
 import de.johannesrauch.hexxagon.view.screen.SelectLobbyScreen;
 import org.apache.log4j.BasicConfigurator;
 
-// TODO: dialog window at server disconnect or connection error
 public class Hexxagon extends Game {
 
     private static String version = "1.0";
