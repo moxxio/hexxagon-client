@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class TileClickListener extends ClickListener {
 
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(TileClickListener.class);
 
     private final Hexxagon parent;
     private final GameScreen screen;
@@ -41,7 +41,6 @@ public class TileClickListener extends ClickListener {
         this.parent = parent;
         this.screen = screen;
         this.gameHandler = gameHandler;
-        logger = LoggerFactory.getLogger(TileClickListener.class);
         this.tile = tile;
         this.gameScreenTile = gameScreenTile;
     }
