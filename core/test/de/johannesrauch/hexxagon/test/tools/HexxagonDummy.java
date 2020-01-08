@@ -22,7 +22,7 @@ public class HexxagonDummy extends Hexxagon {
     }
 
     @Override
-    public void showMainMenuScreen() {
+    public void showMainMenuScreen(boolean connectionError, boolean serverDisconnect) {
     }
 
     @Override
