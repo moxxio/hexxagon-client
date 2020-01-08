@@ -51,19 +51,7 @@ public class InFullLobbyAsPlayerOneState implements State {
      */
     @Override
     public State reactToReceivedLobbyJoined(StateContext context, LobbyJoinedMessage message) {
-        Hexxagon parent = context.getParent();
-        LobbyHandler lobbyHandler = context.getLobbyHandler();
-
-        if (message.getSuccessfullyJoined()) {
-            lobbyHandler.joinedLobby(message.getUserId(), message.getLobbyId());
-
-            return null;
-        } else {
-            lobbyHandler.leaveLobby();
-            parent.showSelectLobbyScreen(false);
-
-            return StateContext.getSelectLobbyState();
-        }
+        return StateContext.getJoiningLobbyState().reactToReceivedLobbyJoined(context, message);
     }
 
     /**
