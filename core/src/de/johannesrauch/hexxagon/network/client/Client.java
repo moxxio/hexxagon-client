@@ -72,6 +72,8 @@ public class Client extends WebSocketClient {
      */
     @Override
     public void onError(Exception ex) {
+        if (ex instanceof NullPointerException)
+            return; // websocket implementation throws weird null-pointer exception: ignore this
         logger.error("Client error: " + ex.getMessage());
         context.reactToReceivedConnectionError();
     }
