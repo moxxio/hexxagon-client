@@ -64,7 +64,7 @@ public class JoinButtonClickListener extends ClickListener {
         if (lobbyId == null) return;
         logger.info("Selected lobby UUID " + lobbyId.toString());
 
-        String userName = userNameTextField.getText(); // TODO: username regex "([a-zA-Z]{1}[a-zA-Z_0-9]{3,13})"
+        String userName = userNameTextField.getText();
         if (userName == null) return;
         else if (!userName.matches("([a-zA-Z][a-zA-Z_0-9]{3,13})")) {
             Dialog dialog2 = new Dialog(Lettering.USERNAME_INVALID, skin);
