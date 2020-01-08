@@ -369,15 +369,18 @@ public class GameHandler {
      * @return true, if it is a valid move, false otherwise
      */
     public boolean validMove(TileEnum from, TileEnum to) {
-        if (!isMyTurn() || hasMoved()) return false;
+        if (!isMyTurn() || hasMoved()
+                || (getMyPlayerNumber() == 1 && TileStateEnum.PLAYERONE != getTileState(from))
+                || (getMyPlayerNumber() == 2 && TileStateEnum.PLAYERTWO != getTileState(from)))
+            return false;
 
         List<TileEnum> fromNeighbors = getNeighborsOf(from);
         for (TileEnum otherTile : fromNeighbors) {
-            if (to == otherTile) return true;
+            if (to.equals(otherTile)) return TileStateEnum.FREE.equals(getTileState(otherTile));
 
             List<TileEnum> otherNeighbors = getNeighborsOf(otherTile);
             for (TileEnum anotherTile : otherNeighbors) {
-                if (to == anotherTile) return true;
+                if (to.equals(anotherTile)) return TileStateEnum.FREE.equals(getTileState(anotherTile));
             }
         }
         return false;
