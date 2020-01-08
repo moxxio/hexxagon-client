@@ -8,6 +8,7 @@ public class Lettering {
     public static String CONNECT = "CONNECT";
     public static String CONNECTED = "CONNECTED";
     public static String CONNECTING = "CONNECTING...";
+    public static String CONNECTION_ERROR = "CONNECTION ERROR";
     public static String CREATE = "CREATE";
     public static String CREATE_LOBBY = "CREATE LOBBY";
     public static String CREATE_LOBBY_FAILED = "CREATE LOBBY FAILED";
@@ -27,6 +28,7 @@ public class Lettering {
     public static String PLAYER_ONE_USERNAME = "<PLAYER ONE USER NAME>";
     public static String PLAYER_TWO_USERNAME = "<PLAYER ONE USER NAME>";
     public static String REFRESH = "REFRESH";
+    public static String SERVER_DISCONNECT = "SERVER DISCONNECT";
     public static String SCORE = "<SCORE>";
     public static String START = "START";
     public static String TIE = "TIE";

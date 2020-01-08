@@ -25,7 +25,7 @@ public class ConnectionAttemptState implements State {
 
         ConnectionHandler connectionHandler = context.getConnectionHandler();
         connectionHandler.setUserId(message.getUserId());
-        parent.showMainMenuScreen();
+        parent.showMainMenuScreen(false, false);
 
         return StateContext.getConnectedState();
     }

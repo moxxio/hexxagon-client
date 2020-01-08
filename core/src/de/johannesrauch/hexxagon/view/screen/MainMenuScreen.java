@@ -205,4 +205,18 @@ public class MainMenuScreen extends BaseScreen {
     public void dispose() {
         spriteBatch.dispose();
     }
+
+    public void showConnectionError() {
+        Dialog dialog2 = new Dialog(Lettering.CONNECTION_ERROR, parent.getResources().getSkin());
+        dialog2.getContentTable().add(new Label("A connection error occurred.", parent.getResources().getSkin()));
+        dialog2.button(Lettering.OK);
+        dialog2.show(stage);
+    }
+
+    public void showServerDisconnect() {
+        Dialog dialog2 = new Dialog(Lettering.SERVER_DISCONNECT, parent.getResources().getSkin());
+        dialog2.getContentTable().add(new Label("A server disconnect occurred.", parent.getResources().getSkin()));
+        dialog2.button(Lettering.OK);
+        dialog2.show(stage);
+    }
 }

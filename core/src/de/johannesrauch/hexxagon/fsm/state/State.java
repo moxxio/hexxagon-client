@@ -160,7 +160,7 @@ public interface State {
         Hexxagon parent = context.getParent();
 
         context.getConnectionHandler().disconnect();
-        parent.showMainMenuScreen();
+        parent.showMainMenuScreen(true, false);
 
         return StateContext.getDisconnectedState();
     }
@@ -172,6 +172,11 @@ public interface State {
      * @return the next state or null, if it does not change
      */
     default State reactToReceivedServerDisconnect(StateContext context) {
-        return reactToReceivedConnectionError(context);
+        Hexxagon parent = context.getParent();
+
+        context.getConnectionHandler().disconnect();
+        parent.showMainMenuScreen(false, true);
+
+        return StateContext.getDisconnectedState();
     }
 }

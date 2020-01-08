@@ -56,7 +56,7 @@ public class Hexxagon extends Game {
         lobbyScreen = new LobbyScreen(this, context, lobbyHandler);
         gameScreen = new GameScreen(this, context, gameHandler);
 
-        showMainMenuScreen();
+        showMainMenuScreen(false, false);
     }
 
     @Override
@@ -76,8 +76,10 @@ public class Hexxagon extends Game {
         return resources;
     }
 
-    public void showMainMenuScreen() {
+    public void showMainMenuScreen(boolean connectionError, boolean serverDisconnect) {
         setScreen(mainMenuScreen);
+        if (connectionError) mainMenuScreen.showConnectionError();
+        if (serverDisconnect) mainMenuScreen.showServerDisconnect();
     }
 
     public void showSelectLobbyScreen(boolean showProgressBar) {

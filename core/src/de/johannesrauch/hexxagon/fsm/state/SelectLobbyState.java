@@ -20,7 +20,7 @@ public class SelectLobbyState implements State {
     public State reactToClickedBack(StateContext context) {
         Hexxagon parent = context.getParent();
 
-        parent.showMainMenuScreen();
+        parent.showMainMenuScreen(false, false);
 
         return StateContext.getConnectedState();
     }
