@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.GameHandler;
+import de.johannesrauch.hexxagon.controller.listener.LeaveButtonClickListener;
 import de.johannesrauch.hexxagon.controller.listener.TileClickListener;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.model.tile.GameScreenTile;
@@ -81,30 +82,7 @@ public class GameScreen extends BaseScreen {
         leaveButton = new TextButton(Lettering.LEAVE, skin);
         leaveButton.setPosition(960, 660);
         leaveButton.setSize(300, 50);
-        leaveButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) { // TODO: leave button click listener
-                Label reassureLabel = new Label("ARE YOU SURE YOU WANT TO LEAVE?", skin);
-                TextButton yesButton = new TextButton("YES", skin);
-                TextButton noButton = new TextButton("NO", skin);
-
-                Dialog dialog = new Dialog("LEAVE GAME", skin) {
-                    @Override
-                    protected void result(Object object) {
-                        boolean result = (boolean) object;
-                        if (result) {
-                            context.reactToClickedLeave();
-                        }
-                    }
-                };
-
-                dialog.getContentTable().pad(15);
-                dialog.getContentTable().add(reassureLabel);
-                dialog.button(yesButton, true);
-                dialog.button(noButton, false);
-                dialog.show(stage);
-            }
-        });
+        leaveButton.addListener(new LeaveButtonClickListener(context, stage, skin));
 
         gameScreenTiles = new HashMap<>();
         setupTiles();

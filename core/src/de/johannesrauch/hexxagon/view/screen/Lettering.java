@@ -18,15 +18,18 @@ public class Lettering {
     public static String JOIN = "JOIN";
     public static String JOINING_LOBBY = "JOINING LOBBY...";
     public static String LEAVE = "LEAVE";
+    public static String LEAVE_GAME = "LEAVE GAME";
     public static String LOBBY = "LOBBY";
     public static String LOBBY_NAME = "LOBBY NAME: ";
     public static String LOSER = "LOSER";
+    public static String NO = "NO";
     public static String OK = "OK";
     public static String PLAY = "PLAY";
     public static String PLAYER_ONE = "PLAYER ONE: ";
     public static String PLAYER_TWO = "PLAYER TWO: ";
     public static String PLAYER_ONE_USERNAME = "<PLAYER ONE USER NAME>";
     public static String PLAYER_TWO_USERNAME = "<PLAYER ONE USER NAME>";
+    public static String REALLY_LEAVE = "ARE YOU SURE YOU WANT TO LEAVE?";
     public static String REFRESH = "REFRESH";
     public static String SERVER_DISCONNECT = "SERVER DISCONNECT";
     public static String SCORE = "<SCORE>";
@@ -38,4 +41,5 @@ public class Lettering {
     public static String VERSION = "VERSION";
     public static String WHO_WON = "<WHO WON>";
     public static String WINNER = "WINNER";
+    public static String YES = "YES";
 }
