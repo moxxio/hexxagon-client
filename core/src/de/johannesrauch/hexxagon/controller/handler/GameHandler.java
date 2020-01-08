@@ -4,7 +4,6 @@ import de.johannesrauch.hexxagon.model.board.Board;
 import de.johannesrauch.hexxagon.model.board.BoardGraph;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
-import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import de.johannesrauch.hexxagon.network.message.GameStatusMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,16 +40,20 @@ public class GameHandler {
     }
 
     /**
-     * This method sends a game move message.
-     * It does not validate the game move! This should be done beforehand.
+     * This method sends a game move message, if the move is valid.
      *
      * @param moveFrom the tile that gets moved
      * @param moveTo   the tile where move from gets moved
+     * @return true, if the game move was valid and sent, false otherwise
      */
-    public void gameMove(TileEnum moveFrom, TileEnum moveTo) {
-        if (connectionHandler != null)
+    public boolean gameMove(TileEnum moveFrom, TileEnum moveTo) {
+        if (connectionHandler != null && validMove(moveFrom, moveTo)) {
             connectionHandler.getMessageEmitter().sendGameMoveMessage(gameId, moveFrom, moveTo);
-        else logger.warn("MessageEmitter is null in gameMove(...)!");
+            return true;
+        } else {
+            logger.warn("MessageEmitter is null in gameMove(...)!");
+            return false;
+        }
     }
 
     /**
