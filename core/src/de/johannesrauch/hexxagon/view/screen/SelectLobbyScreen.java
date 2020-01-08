@@ -81,7 +81,7 @@ public class SelectLobbyScreen extends BaseScreen {
         userNameTextField.setAlignment(Align.center);
 
         joinButton = new TextButton(Lettering.JOIN, skin);
-        joinButton.addListener(new JoinButtonClickListener(context, lobbyList, lobbyIds, userNameTextField));
+        joinButton.addListener(new JoinButtonClickListener(context, stage, skin, lobbyList, lobbyIds, userNameTextField));
         createButton = new TextButton(Lettering.CREATE, skin);
         createButton.addListener(new CreateButtonClickListener(stage, skin, messageEmitter));
         refreshButton = new TextButton(Lettering.REFRESH, skin);

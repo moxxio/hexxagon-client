@@ -1,10 +1,11 @@
 package de.johannesrauch.hexxagon.controller.listener;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
+import de.johannesrauch.hexxagon.view.screen.Lettering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,8 @@ public class JoinButtonClickListener extends ClickListener {
     private final Logger logger = LoggerFactory.getLogger(JoinButtonClickListener.class);
 
     private final StateContext context;
+    private final Stage stage;
+    private final Skin skin;
     private final List<String> lobbyList;
     private final HashMap<String, UUID> lobbyIds;
     private final TextField userNameTextField;
@@ -31,8 +34,10 @@ public class JoinButtonClickListener extends ClickListener {
      * @param lobbyIds          the lobby uuids
      * @param userNameTextField the username textfield
      */
-    public JoinButtonClickListener(StateContext context, List<String> lobbyList, HashMap<String, UUID> lobbyIds, TextField userNameTextField) {
+    public JoinButtonClickListener(StateContext context, Stage stage, Skin skin, List<String> lobbyList, HashMap<String, UUID> lobbyIds, TextField userNameTextField) {
         this.context = context;
+        this.stage = stage;
+        this.skin = skin;
         this.lobbyList = lobbyList;
         this.lobbyIds = lobbyIds;
         this.userNameTextField = userNameTextField;
@@ -61,6 +66,13 @@ public class JoinButtonClickListener extends ClickListener {
 
         String userName = userNameTextField.getText(); // TODO: username regex "([a-zA-Z]{1}[a-zA-Z_0-9]{3,13})"
         if (userName == null) return;
+        else if (!userName.matches("([a-zA-Z][a-zA-Z_0-9]{3,13})")) {
+            Dialog dialog2 = new Dialog(Lettering.USERNAME_INVALID, skin);
+            dialog2.getContentTable().add(new Label("The username does not match the required regex.", skin));
+            dialog2.button(Lettering.OK);
+            dialog2.show(stage);
+            return;
+        }
         context.reactToClickedJoinLobby(lobbyId, userName);
     }
 }

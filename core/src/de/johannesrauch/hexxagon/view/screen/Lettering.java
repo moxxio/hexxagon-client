@@ -32,6 +32,7 @@ public class Lettering {
     public static String TIE = "TIE";
     public static String TURN = "<WHOSE TURN>";
     public static String USERNAME = "USERNAME: ";
+    public static String USERNAME_INVALID = "INVALID USERNAME";
     public static String VERSION = "VERSION";
     public static String WHO_WON = "<WHO WON>";
     public static String WINNER = "WINNER";
