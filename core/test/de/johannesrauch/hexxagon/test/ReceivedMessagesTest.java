@@ -122,6 +122,16 @@ public class ReceivedMessagesTest {
         receiver = kit.connectionHandler.getMessageReceiver();
         receiver.handleMessage(kit.gson.toJson(message, LobbyJoinedMessage.class));
         Assert.assertEquals(StateContext.getInLobbyAsPlayerOneState(), kit.context.getState());
+
+        kit = new TestKit(StateContext.getInLobbyAsPlayerTwoState());
+        receiver = kit.connectionHandler.getMessageReceiver();
+        receiver.handleMessage(kit.gson.toJson(message, LobbyJoinedMessage.class));
+        Assert.assertEquals(StateContext.getInLobbyAsPlayerTwoState(), kit.context.getState());
+
+        kit = new TestKit(StateContext.getInFullLobbyAsPlayerOneState());
+        receiver = kit.connectionHandler.getMessageReceiver();
+        receiver.handleMessage(kit.gson.toJson(message, LobbyJoinedMessage.class));
+        Assert.assertEquals(StateContext.getInFullLobbyAsPlayerOneState(), kit.context.getState());
     }
 
     /**
@@ -315,5 +325,27 @@ public class ReceivedMessagesTest {
                 lobby.getPlayerOne(), true, null);
         receiver.handleMessage(kit.gson.toJson(message6, GameStatusMessage.class));
         Assert.assertEquals(StateContext.getTieState(), kit.context.getState());
+    }
+
+    /**
+     * This method tests the reaction of the state context to a received connection error.
+     * It just tests this for one state since this is an standard implementation for all states.
+     */
+    @Test
+    public void reactToReceivedConnectionError() {
+        TestKit kit = new TestKit(StateContext.getConnectedState());
+        kit.context.reactToReceivedConnectionError();
+        Assert.assertEquals(StateContext.getDisconnectedState(), kit.context.getState());
+    }
+
+    /**
+     * This method tests the reaction of the state context to a received server disconnect.
+     * It just tests this for one state since this is an standard implementation for all states.
+     */
+    @Test
+    public void reactToReceivedServerDisconnect() {
+        TestKit kit = new TestKit(StateContext.getConnectedState());
+        kit.context.reactToReceivedServerDisconnect();
+        Assert.assertEquals(StateContext.getDisconnectedState(), kit.context.getState());
     }
 }
