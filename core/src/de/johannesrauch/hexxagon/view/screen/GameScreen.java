@@ -40,7 +40,6 @@ public class GameScreen extends BaseScreen {
 
     private SpriteBatch spriteBatch;
 
-    private final StateContext context;
     private final GameHandler gameHandler;
 
     /**
@@ -51,7 +50,6 @@ public class GameScreen extends BaseScreen {
     public GameScreen(Hexxagon parent, StateContext context, GameHandler gameHandler) {
         super(parent);
         Skin skin = parent.getResources().getSkin();
-        this.context = context;
         this.gameHandler = gameHandler;
 
         playerOneLabel = new ButtonStyleLabel(Lettering.PLAYER_ONE, skin);
@@ -85,7 +83,7 @@ public class GameScreen extends BaseScreen {
         leaveButton.setSize(300, 50);
         leaveButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y) { // TODO: leave button click listener
                 Label reassureLabel = new Label("ARE YOU SURE YOU WANT TO LEAVE?", skin);
                 TextButton yesButton = new TextButton("YES", skin);
                 TextButton noButton = new TextButton("NO", skin);
@@ -148,7 +146,7 @@ public class GameScreen extends BaseScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Draw game board and get player information
-        if (gameHandler.isGameUpdated()) {
+        if (gameHandler != null && gameHandler.isGameUpdated()) {
             playerOneUserNameLabel.setText(gameHandler.getPlayerOneUserName());
             playerTwoUserNameLabel.setText(gameHandler.getPlayerTwoUserName());
             playerOneScoreLabel.setText("" + gameHandler.getPlayerOnePoints());
