@@ -369,6 +369,8 @@ public class GameHandler {
      * @return true, if it is a valid move, false otherwise
      */
     public boolean validMove(TileEnum from, TileEnum to) {
+        if (!isMyTurn() || hasMoved()) return false;
+
         List<TileEnum> fromNeighbors = getNeighborsOf(from);
         for (TileEnum otherTile : fromNeighbors) {
             if (to == otherTile) return true;
