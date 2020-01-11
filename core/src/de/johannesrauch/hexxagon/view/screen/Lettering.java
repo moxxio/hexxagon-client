@@ -1,5 +1,8 @@
 package de.johannesrauch.hexxagon.view.screen;
 
+/**
+ * This class contains all strings the ui uses.
+ */
 public class Lettering {
 
     /**
