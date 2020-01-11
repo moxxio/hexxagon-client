@@ -17,7 +17,6 @@ import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
