@@ -70,7 +70,7 @@ public class StateContext {
      *
      * @return the current state
      */
-    public State getState() {
+    public synchronized State getState() {
         return state;
     }
 
