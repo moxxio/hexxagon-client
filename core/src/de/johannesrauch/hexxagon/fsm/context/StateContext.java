@@ -25,6 +25,7 @@ public class StateContext {
     private GameHandler gameHandler;
 
     private State state;
+    private State previousState;
 
     private static final DisconnectedState disconnectedState = new DisconnectedState();
     private static final ConnectionAttemptState connectionAttemptState = new ConnectionAttemptState();
@@ -52,6 +53,7 @@ public class StateContext {
     public StateContext(Hexxagon parent) {
         this.parent = parent;
         executorService = Executors.newFixedThreadPool(1);
+        setState(disconnectedState); // Call two times to init previous state
         setState(disconnectedState);
         concurrent = true;
     }
@@ -72,6 +74,15 @@ public class StateContext {
      */
     public synchronized State getState() {
         return state;
+    }
+
+    /**
+     * This method returns the previous state.
+     *
+     * @return the previous state
+     */
+    public synchronized State getPreviousState() {
+        return previousState;
     }
 
     /**
@@ -469,6 +480,7 @@ public class StateContext {
      */
     public synchronized void setState(State nextState) {
         if (nextState != null) {
+            previousState = state;
             state = nextState;
             stateUpdated = true;
         }
