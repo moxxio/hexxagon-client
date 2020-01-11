@@ -184,7 +184,7 @@ public class SelectLobbyScreen extends BaseScreen {
 
             java.util.List<String> tmp = new ArrayList<>();
             java.util.List<Lobby> lobbies = lobbyHandler.getAvailableLobbies();
-            lobbies.forEach((lobby) -> {
+            lobbies.forEach(lobby -> {
                 Adler32 a32 = new Adler32();
                 a32.update((lobby.getLobbyName() + lobby.getLobbyId().toString()).getBytes());
 
