@@ -75,7 +75,7 @@ public class LobbyScreen extends BaseScreen {
         mainTable.align(Align.top | Align.center);
         mainTable.setPosition(0, Gdx.graphics.getHeight());
         mainTable.padTop(100);
-        mainTable.add(headingLabel).padBottom(15).minSize(300, 50).colspan(2);
+        mainTable.add(headingLabel).padBottom(15).minSize(300, 50).colspan(2).padLeft(100);
         mainTable.row();
         mainTable.add(playerOneLabel).padBottom(15).minSize(300, 50);
         mainTable.add(playerOneUserNameLabel).padBottom(15).minSize(300, 50);
