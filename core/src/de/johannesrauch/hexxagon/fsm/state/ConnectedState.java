@@ -2,10 +2,6 @@ package de.johannesrauch.hexxagon.fsm.state;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
-import de.johannesrauch.hexxagon.network.message.*;
-import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
-
-import java.util.UUID;
 
 public class ConnectedState implements State {
 
