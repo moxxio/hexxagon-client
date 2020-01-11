@@ -3,7 +3,7 @@ package de.johannesrauch.hexxagon.model.board;
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -17,7 +17,7 @@ public class Board {
      * This is the standard constructor. It creates the tile map.
      */
     public Board() {
-        this.tiles = new HashMap<>();
+        this.tiles = new EnumMap<>(TileEnum.class);
     }
 
     /**
