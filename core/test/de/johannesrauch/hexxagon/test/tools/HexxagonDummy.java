@@ -26,7 +26,7 @@ public class HexxagonDummy extends Hexxagon {
     }
 
     @Override
-    public void showSelectLobbyScreen(boolean showProgressBar) {
+    public void showSelectLobbyScreen(boolean showProgressBar, int millis) {
     }
 
     @Override
