@@ -1,6 +1,5 @@
 package de.johannesrauch.hexxagon.controller.handler;
 
-import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.model.lobby.Lobby;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import java.util.*;
  */
 public class LobbyHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(Hexxagon.class);
+    private final Logger logger = LoggerFactory.getLogger(LobbyHandler.class);
 
     private java.util.List<Lobby> availableLobbies;
     private boolean lobbiesUpdated;
