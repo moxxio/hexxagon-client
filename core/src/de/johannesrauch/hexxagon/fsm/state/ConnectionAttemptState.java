@@ -4,9 +4,6 @@ import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.controller.handler.ConnectionHandler;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.message.*;
-import de.johannesrauch.hexxagon.view.screen.MainMenuScreen;
-
-import java.util.UUID;
 
 public class ConnectionAttemptState implements State {
 
