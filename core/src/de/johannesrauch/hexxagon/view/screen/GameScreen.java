@@ -16,6 +16,7 @@ import de.johannesrauch.hexxagon.model.tile.TileStateEnum;
 import de.johannesrauch.hexxagon.view.label.ButtonStyleLabel;
 import de.johannesrauch.hexxagon.view.label.TextFieldStyleLabel;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +83,7 @@ public class GameScreen extends BaseScreen {
         leaveButton.setSize(300, 50);
         leaveButton.addListener(new LeaveButtonClickListener(context, stage, skin));
 
-        gameScreenTiles = new HashMap<>();
+        gameScreenTiles = new EnumMap<>(TileEnum.class);
         setupTiles();
 
         stage.addActor(playerOneLabel);
