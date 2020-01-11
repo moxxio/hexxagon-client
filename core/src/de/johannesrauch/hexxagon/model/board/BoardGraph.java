@@ -2,10 +2,7 @@ package de.johannesrauch.hexxagon.model.board;
 
 import de.johannesrauch.hexxagon.model.tile.TileEnum;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class represents the game board. Each tile is adjacent to those tile in the graph,
@@ -22,7 +19,7 @@ public class BoardGraph {
      * This is the standard constructor. It creates the tile board graph.
      */
     public BoardGraph() {
-        tileMapping = new HashMap<>();
+        tileMapping = new EnumMap<>(TileEnum.class);
         generateTileMapping();
     }
 
