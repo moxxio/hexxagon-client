@@ -1,10 +1,7 @@
 package de.johannesrauch.hexxagon.fsm.state;
 
-import de.johannesrauch.hexxagon.controller.handler.LobbyHandler;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.message.*;
-
-import java.util.UUID;
 
 public class InLobbyAsPlayerTwoState implements State {
 
