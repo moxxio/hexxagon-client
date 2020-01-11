@@ -1,6 +1,14 @@
 package de.johannesrauch.hexxagon.view.screen;
 
 public class Lettering {
+
+    /**
+     * This private constructor is used to hide the implicit public one since Lettering should not be instantiated.
+     */
+    private Lettering() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static final String BACK = "BACK";
     public static final String CANCEL = "CANCEL";
     public static final String CHOOSE_LOBBY = "CHOOSE LOBBY";
