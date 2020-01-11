@@ -137,8 +137,6 @@ public class Lobby {
         else equal &= playerOneUserName.equals(lobby.playerOneUserName);
         if (playerTwoUserName == null) equal &= lobby.playerTwoUserName == null;
         else equal &= playerTwoUserName.equals(lobby.playerTwoUserName);
-        // if (creationDate == null) equal &= lobby.creationDate == null; // Buggy, when date is serialized
-        // else equal &= creationDate.equals(lobby.creationDate);
         if (isClosed == null) equal &= lobby.isClosed == null;
         else equal &= isClosed.equals(lobby.isClosed);
 
