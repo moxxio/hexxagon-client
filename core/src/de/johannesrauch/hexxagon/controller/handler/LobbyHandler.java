@@ -2,7 +2,6 @@ package de.johannesrauch.hexxagon.controller.handler;
 
 import de.johannesrauch.hexxagon.Hexxagon;
 import de.johannesrauch.hexxagon.model.lobby.Lobby;
-import de.johannesrauch.hexxagon.network.client.MessageEmitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
