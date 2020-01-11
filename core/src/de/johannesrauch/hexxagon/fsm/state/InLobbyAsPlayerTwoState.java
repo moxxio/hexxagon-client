@@ -58,12 +58,7 @@ public class InLobbyAsPlayerTwoState implements State {
      */
     @Override
     public State reactToReceivedLobbyStatus(StateContext context, LobbyStatusMessage message) {
-        LobbyHandler lobbyHandler = context.getLobbyHandler();
-
-        lobbyHandler.updateLobby(message.getLobby());
-
-        if (!lobbyHandler.isLobbyReady()) return StateContext.getInLobbyAsPlayerOneState();
-        return null;
+        return StateContext.getInFullLobbyAsPlayerOneState().reactToReceivedLobbyStatus(context, message);
     }
 
     /**
