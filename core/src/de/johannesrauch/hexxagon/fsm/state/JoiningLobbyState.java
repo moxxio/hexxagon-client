@@ -8,6 +8,18 @@ import de.johannesrauch.hexxagon.network.message.*;
 public class JoiningLobbyState implements State {
 
     /**
+     * When in joining lobby state and the user clicks leave, then leave the lobby und show the select lobby screen.
+     *
+     * @param context the state context
+     * @return the next state
+     * @author Johannes Rauch
+     */
+    @Override
+    public State reactToClickedLeave(StateContext context) {
+        return StateContext.getInLobbyAsPlayerOneState().reactToClickedLeave(context);
+    }
+
+    /**
      * When in joining lobby state and a joined lobby message is received, stay in this state if joining was successful,
      * otherwise transition to select lobby state.
      *
