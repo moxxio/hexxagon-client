@@ -99,7 +99,7 @@ public class Lobby {
      *
      * @return the creation date
      */
-    private Date getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
