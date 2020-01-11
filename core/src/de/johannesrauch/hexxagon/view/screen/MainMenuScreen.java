@@ -185,17 +185,17 @@ public class MainMenuScreen extends BaseScreen {
 
     @Override
     public void pause() {
-
+        // The game is never paused.
     }
 
     @Override
     public void resume() {
-
+        // The game is never paused and thus never resumed.
     }
 
     @Override
     public void hide() {
-
+        // No action on hide.
     }
 
     /**
