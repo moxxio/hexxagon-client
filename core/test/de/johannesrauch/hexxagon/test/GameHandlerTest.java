@@ -154,4 +154,23 @@ public class GameHandlerTest {
         Assert.assertTrue(gameHandler.isGameOver());
         Assert.assertFalse(gameHandler.isTie());
     }
+
+    /**
+     * This method tests the selected tile mechanic.
+     */
+    @Test
+    public void testSelectedTile() {
+        GameHandler gameHandler = new GameHandler();
+        UUID userId = UUID.randomUUID();
+        UUID gameId = UUID.randomUUID();
+        gameHandler.startedGame(userId, gameId);
+        Assert.assertNull(gameHandler.getSelectedTile());
+        gameHandler.setSelectedTile(TileEnum.TILE_1);
+        Assert.assertEquals(TileEnum.TILE_1, gameHandler.getSelectedTile());
+        gameHandler.updateGame(new GameStatusMessage(userId, gameId,
+                userId, UUID.randomUUID(),
+                6, 6, null,
+                userId, false, null));
+        Assert.assertNull(gameHandler.getSelectedTile());
+    }
 }

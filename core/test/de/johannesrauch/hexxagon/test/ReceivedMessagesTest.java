@@ -229,6 +229,19 @@ public class ReceivedMessagesTest {
         kit.lobbyHandler.updateLobby(lobby);
         receiver.handleMessage(kit.gson.toJson(message, GameStartedMessage.class));
         Assert.assertEquals(StateContext.getUninitializedGameState(), kit.context.getState());
+
+        // The fsm is in uninitialized game state and receives why so ever a game started message.
+        // It should stay in its state.
+        kit = new TestKit(StateContext.getUninitializedGameState());
+        receiver = kit.connectionHandler.getMessageReceiver();
+        kit.lobbyHandler.joinedLobby(userId, lobbyId);
+        lobby = new Lobby(lobbyId, "example lobby name",
+                userId, UUID.randomUUID(),
+                "example player one username", "example player two username",
+                new Date(), false);
+        kit.lobbyHandler.updateLobby(lobby);
+        receiver.handleMessage(kit.gson.toJson(message, GameStartedMessage.class));
+        Assert.assertEquals(StateContext.getUninitializedGameState(), kit.context.getState());
     }
 
     /**
