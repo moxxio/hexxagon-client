@@ -9,7 +9,7 @@ import de.johannesrauch.hexxagon.view.screen.Lettering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -23,7 +23,7 @@ public class JoinButtonClickListener extends ClickListener {
     private final Stage stage;
     private final Skin skin;
     private final List<String> lobbyList;
-    private final HashMap<String, UUID> lobbyIds;
+    private final Map<String, UUID> lobbyIds;
     private final TextField userNameTextField;
 
     /**
@@ -34,7 +34,7 @@ public class JoinButtonClickListener extends ClickListener {
      * @param lobbyIds          the lobby uuids
      * @param userNameTextField the username textfield
      */
-    public JoinButtonClickListener(StateContext context, Stage stage, Skin skin, List<String> lobbyList, HashMap<String, UUID> lobbyIds, TextField userNameTextField) {
+    public JoinButtonClickListener(StateContext context, Stage stage, Skin skin, List<String> lobbyList, Map<String, UUID> lobbyIds, TextField userNameTextField) {
         this.context = context;
         this.stage = stage;
         this.skin = skin;
