@@ -113,7 +113,7 @@ public class MessageReceiver {
      * @param message the lobby created message
      */
     private void receivedLobbyCreated(LobbyCreatedMessage message) {
-        if (message.getSuccessfullyCreated()) {
+        if (Boolean.TRUE.equals(message.getSuccessfullyCreated())) {
             if (messageEmitter != null) messageEmitter.sendGetAvailableLobbiesMessage();
             else logger.warn("Received lobby created but message emitter is null!");
         }
