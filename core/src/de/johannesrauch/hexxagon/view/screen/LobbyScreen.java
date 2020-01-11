@@ -145,17 +145,17 @@ public class LobbyScreen extends BaseScreen {
 
     @Override
     public void pause() {
-
+        // The game is never paused.
     }
 
     @Override
     public void resume() {
-
+        // The game is never paused and therefore never resumed.
     }
 
     @Override
     public void hide() {
-
+        // No special actions on hide.
     }
 
     /**
