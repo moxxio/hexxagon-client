@@ -74,7 +74,7 @@ public class SelectLobbyScreen extends BaseScreen {
 
         headingLabel = new Label(Lettering.CHOOSE_LOBBY, skin, "title");
         userNameLabel = new ButtonStyleLabel(Lettering.USERNAME, skin);
-        joiningLabel = new Label(Lettering.JOINING_LOBBY, skin);
+        joiningLabel = new Label(Lettering.JOINING_LOBBY, skin, "title");
 
         a32.update(UUID.randomUUID().toString().getBytes());
         userNameTextField = new TextField("P" + a32.getValue(), skin);
