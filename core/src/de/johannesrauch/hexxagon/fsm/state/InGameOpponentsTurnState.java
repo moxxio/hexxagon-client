@@ -3,8 +3,6 @@ package de.johannesrauch.hexxagon.fsm.state;
 import de.johannesrauch.hexxagon.fsm.context.StateContext;
 import de.johannesrauch.hexxagon.network.message.*;
 
-import java.util.UUID;
-
 public class InGameOpponentsTurnState implements State {
 
     /**
