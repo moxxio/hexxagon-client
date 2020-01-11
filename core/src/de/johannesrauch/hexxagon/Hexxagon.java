@@ -81,13 +81,17 @@ public class Hexxagon extends Game {
         if (serverDisconnect) mainMenuScreen.showServerDisconnect();
     }
 
-    public void showSelectLobbyScreen(boolean showProgressBar) {
+    public void showSelectLobbyScreen(boolean showProgressBar, int millis) {
         if (showProgressBar) selectLobbyScreen.showProgressBar();
-        else selectLobbyScreen.hideProgressBar();
+        else {
+            if (millis > 0) selectLobbyScreen.hideProgressBar(millis);
+            else selectLobbyScreen.hideProgressBar();
+        }
         setScreen(selectLobbyScreen);
     }
 
     public void showLobbyScreen() {
+        selectLobbyScreen.hideProgressBar(3000);
         setScreen(lobbyScreen);
     }
 

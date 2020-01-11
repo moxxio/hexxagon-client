@@ -33,7 +33,7 @@ public class ConnectedState implements State {
         Hexxagon parent = context.getParent();
 
         context.getMessageEmitter().sendGetAvailableLobbiesMessage();
-        parent.showSelectLobbyScreen(false);
+        parent.showSelectLobbyScreen(false, -1);
 
         return StateContext.getSelectLobbyState();
     }

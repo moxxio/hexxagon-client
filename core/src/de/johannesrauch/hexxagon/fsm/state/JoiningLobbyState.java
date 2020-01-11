@@ -39,7 +39,7 @@ public class JoiningLobbyState implements State {
             return null;
         } else {
             lobbyHandler.leaveLobby();
-            parent.showSelectLobbyScreen(false);
+            parent.showSelectLobbyScreen(false, -1);
 
             return StateContext.getSelectLobbyState();
         }

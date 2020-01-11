@@ -20,7 +20,7 @@ public class InLobbyAsPlayerOneState implements State {
         Hexxagon parent = context.getParent();
 
         context.getLobbyHandler().leaveLobby();
-        parent.showSelectLobbyScreen(false);
+        parent.showSelectLobbyScreen(false, -1);
 
         return StateContext.getSelectLobbyState();
     }
