@@ -1,6 +1,4 @@
 buildscript {
-    
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -9,10 +7,13 @@ buildscript {
         jcenter()
         google()
     }
-    dependencies {
-        
 
+    dependencies {
     }
+}
+
+plugins {
+    id "org.sonarqube" version "2.7"
 }
 
 allprojects {
@@ -22,11 +23,11 @@ allprojects {
     version = '1.0'
     ext {
         appName = "sopra1920_client"
-        gdxVersion = '1.9.9'
+        gdxVersion = '1.9.10'
         roboVMVersion = '2.3.6'
-        box2DLightsVersion = '1.4'
+        box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.0'
-        aiVersion = '1.8.0'
+        aiVersion = '1.8.2'
     }
 
     repositories {
@@ -42,7 +43,6 @@ allprojects {
 project(":desktop") {
     apply plugin: "java"
 
-
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
@@ -51,13 +51,11 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
-             
     }
 }
 
 project(":core") {
     apply plugin: "java"
-
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -66,29 +64,27 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        
-        // GSON
-	compile 'com.google.code.gson:gson:2.8.5'
-		
-	// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-commons
-	compile group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.5.0'
-		
-	// https://mvnrepository.com/artifact/org.opentest4j/opentest4j
-	compile group: 'org.opentest4j', name: 'opentest4j', version: '1.2.0'
-	
-	    
-	// TooTallNate/Java-WebSocket
-	compile "org.java-websocket:Java-WebSocket:1.4.0"
-	    
-	// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
-		
-	// https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
-	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.26'
 
-	// https://mvnrepository.com/artifact/junit/junit
-	testCompile group: 'junit', name: 'junit', version: '4.4'   
-        
+        // GSON
+        compile 'com.google.code.gson:gson:2.8.5'
+
+        // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-commons
+        compile group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.5.0'
+
+        // https://mvnrepository.com/artifact/org.opentest4j/opentest4j
+        compile group: 'org.opentest4j', name: 'opentest4j', version: '1.2.0'
+
+        // TooTallNate/Java-WebSocket
+        compile "org.java-websocket:Java-WebSocket:1.4.0"
+
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
+        compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.26'
+
+        // https://mvnrepository.com/artifact/junit/junit
+        testCompile group: 'junit', name: 'junit', version: '4.4'
     }
 }
 
